@@ -6,7 +6,7 @@ public class Block
     private Variable vars[];
     private int size;
     private int indexPointer;
-    private final int BLOCK_CAPACITY=1000;
+    private final int BLOCK_CAPACITY=10;
     private int blockNum;
     
     public Block()
