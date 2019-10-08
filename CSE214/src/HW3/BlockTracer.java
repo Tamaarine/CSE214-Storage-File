@@ -16,7 +16,7 @@ import java.util.Stack;
  *  Stony Brook ID: 112829937
  *  Recitation: Wednesday 11:00AM - 11:53Am
  */
-public class BlockTracerV3
+public class BlockTracer
 {
     public static void main(String [] args)
     {
