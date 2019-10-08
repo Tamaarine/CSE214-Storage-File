@@ -378,33 +378,21 @@ public class BlockTracer
                                     workingTemp=workingTemp.substring(semiIndex+1);
                                 }
                             }
-                            //This means that there are semi colon after the first
-                            //declaration
+                            //This means that comma is after semi colon or no comma left
                             else
                             {
-                                if(equalIndex!=-1)
+                                System.out.println("hello");
+                                
+                                if(commaIndex==-1)
                                 {
-                                    if(intIndex!=-1)
+                                    for(int i=0;i<equalIndex;i++)
                                     {
-                                        for(int i=intIndex+4;i<equalIndex;i++)
+                                        if(workingTemp.charAt(i)!=' ')
                                         {
-                                            if(workingTemp.charAt(i)!=' ')
-                                            {
-                                                varName+=workingTemp.charAt(i);
-                                            }
+                                            varName+=workingTemp.charAt(i);
                                         }
                                     }
-                                    else
-                                    {
-                                        for(int i=0;i<equalIndex;i++)
-                                        {
-                                            if(workingTemp.charAt(i)!=' ')
-                                            {
-                                                varName+=workingTemp.charAt(i);
-                                            }
-                                        }
-                                    }
-                                    
+
                                     for(int i=equalIndex+1;i<semiIndex;i++)
                                     {
                                         if(workingTemp.charAt(i)!=' ')
@@ -412,48 +400,96 @@ public class BlockTracer
                                             strVarValue+=workingTemp.charAt(i);
                                         }
                                     }
+                                    
+                                    int varValue=0;
+
+                                    if(!strVarValue.isEmpty())
+                                    {
+                                        varValue=Integer.parseInt(strVarValue);
+                                    }
+
+                                    toBeAdded.setName(varName);
+                                    toBeAdded.setInitialValue(varValue);
+
+                                    workingTemp=workingTemp.substring(semiIndex+1);
+
+                                    declarationMode=false;
                                 }
+                                //There is still comma left
                                 else
                                 {
-                                    if(intIndex!=-1)
+                                    if(equalIndex != -1)
                                     {
-                                        for(int i=intIndex+4;i<semiIndex;i++)
+                                        if(intIndex != -1)
                                         {
-                                            if(workingTemp.charAt(i)!=' ')
+                                            for (int i = intIndex + 4; i < equalIndex; i++)
                                             {
-                                                varName+=workingTemp.charAt(i);
+                                                if(workingTemp.charAt(i) != ' ')
+                                                {
+                                                    varName += workingTemp.charAt(i);
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            for (int i = 0; i < equalIndex; i++)
+                                            {
+                                                if(workingTemp.charAt(i) != ' ')
+                                                {
+                                                    varName += workingTemp.charAt(i);
+                                                }
+                                            }
+                                        }
+
+                                        for (int i = equalIndex + 1; i < semiIndex; i++)
+                                        {
+                                            if(workingTemp.charAt(i) != ' ')
+                                            {
+                                                strVarValue += workingTemp.charAt(i);
                                             }
                                         }
                                     }
                                     else
                                     {
-                                        for(int i=0;i<semiIndex;i++)
+                                        if(intIndex != -1)
                                         {
-                                            if(workingTemp.charAt(i)!=' ')
+                                            for (int i = intIndex + 4; i < semiIndex; i++)
                                             {
-                                                varName+=workingTemp.charAt(i);
+                                                if(workingTemp.charAt(i) != ' ')
+                                                {
+                                                    varName += workingTemp.charAt(i);
+                                                }
                                             }
                                         }
-                                    }
-                                    
-                                    declarationMode=false;
+                                        else
+                                        {
+                                            for (int i = 0; i < semiIndex; i++)
+                                            {
+                                                if(workingTemp.charAt(i) != ' ')
+                                                {
+                                                    varName += workingTemp.charAt(i);
+                                                }
+                                            }
+                                        }
 
-                                    strVarValue="0";
+                                        strVarValue = "0";
+                                    }
+
+                                    int varValue = 0;
+
+                                    if(!strVarValue.isEmpty())
+                                    {
+                                        varValue = Integer.parseInt(strVarValue);
+                                    }
+
+                                    toBeAdded.setName(varName);
+                                    toBeAdded.setInitialValue(varValue);
+
+                                    workingTemp = workingTemp.substring(semiIndex + 1);
+
                                 }
-                                
-                                int varValue=0;
-                                
-                                if(!strVarValue.isEmpty())
-                                {
-                                    varValue=Integer.parseInt(strVarValue);
-                                }
-                                
-                                toBeAdded.setName(varName);
-                                toBeAdded.setInitialValue(varValue);
-                                
-                                workingTemp=workingTemp.substring(semiIndex+1);
                             }
-                            
+                                
                             try
                             {
                                 blockStack.peek().addElement(toBeAdded);
@@ -466,8 +502,6 @@ public class BlockTracer
                         }
                         else if(printIndex!=-1)
                         {
-                            declarationMode=false;
-                            
                             //That means the directive read is actually valid
                             //thus we need to collect what it want us to print
                             if(directEnd!=-1)

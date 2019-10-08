@@ -2,10 +2,11 @@
 #include <stdio.h>
 main(void)
 {
-	int i=4, gg=5; /*print i*/
+	int i=4, gg=5; /*$print i*/
 	int bbb=69;
 	int hahahahahjk=123;
-	/*$print hahahahahjk*/ int g=5; int k, n=5; /*print n*/
+	/*$print hahahahahjk*/ int g=5; int k, n=5; /*$print n*/
+	/*$print LOCAL*/
 	if(k==yourmum)
 	{
 		int mygod=344;
