@@ -1,14 +1,24 @@
 package HW3;
 
-
+/**
+ *
+ * 
+ * 
+ * @author Ricky Lu
+ *  email: ricky.lu@stonybrook.edu
+ *  Stony Brook ID: 112829937
+ *  Recitation: Wednesday 11:00AM - 11:53Am
+ */
 public class Block
 {
     private Variable vars[];
     private int size;
     private int indexPointer;
     private final int BLOCK_CAPACITY=10;
-    private int blockNum;
     
+    /**
+     * 
+     */
     public Block()
     {
         vars=new Variable[BLOCK_CAPACITY];
@@ -16,26 +26,20 @@ public class Block
         indexPointer=0;
     }
     
-    public Block(int givenBlockNum)
-    {
-        vars=new Variable[BLOCK_CAPACITY];
-        size=0;
-        indexPointer=0;
-        blockNum=givenBlockNum;
-    }
-    
-    //Accessor methods
-    public Variable[] getVars()
-    {
-        return vars;
-    }
-    
+    /**
+     * 
+     * @return 
+     */
     public int getSize()
     {
         return size;
     }
     
-    //Interseting methods
+    /**
+     * 
+     * @param varName
+     * @return 
+     */
     public Variable findVariable(String varName)
     {
         Variable output=null;
@@ -55,6 +59,11 @@ public class Block
         return output;
     }
     
+    /**
+     * 
+     * @param givenVariable
+     * @throws FullBlockException 
+     */
     public void addElement(Variable givenVariable) throws FullBlockException
     { 
         //This means that the block is not full of variables yet and thus we can
@@ -71,6 +80,10 @@ public class Block
         }
     }
     
+    /**
+     * 
+     * @return 
+     */
     public String formatVariable()
     {
         String output="";
@@ -89,22 +102,7 @@ public class Block
         return output;
     }
     
-    public String toString()
-    {
-        String output="Block "+blockNum+" ";
-        
-        for(int i=0;i<size;i++)
-        {
-            Variable variableAtI=vars[i];
-            
-            String varName=variableAtI.getName();
-            int varValue=variableAtI.getInitialValue();
-            
-            output=output+varName+"="+varValue+"|";
-        }
-        
-        return output;
-    }
+   
     
     
     

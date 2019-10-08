@@ -7,12 +7,20 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Stack;
 
+/**
+ * 
+ * 
+ * 
+ * @author Ricky Lu
+ *  email: ricky.lu@stonybrook.edu
+ *  Stony Brook ID: 112829937
+ *  Recitation: Wednesday 11:00AM - 11:53Am
+ */
 public class BlockTracerV3
 {
     public static void main(String [] args)
     {
         Stack<Block> blockStack=new Stack<Block>();
-        int blockCount=1;
         
         InputStreamReader userInput=new InputStreamReader(System.in);
         BufferedReader userInputReader=new BufferedReader(userInput);
@@ -97,9 +105,7 @@ public class BlockTracerV3
 
                         if(containLeftBracket)
                         {
-                            blockStack.add(new Block(blockCount));
-                            
-                            blockCount++;
+                            blockStack.add(new Block());
                             
                             workingTemp=workingTemp.substring(leftBracketIndex+1);
                             
@@ -487,15 +493,6 @@ public class BlockTracerV3
             System.out.println("You have enetered an empty file name to read, please"
                     + " try again with an valid file name.");
         }
-        
-        
-        
-        
-        
-        
-        
-        
-        
         
         
         
