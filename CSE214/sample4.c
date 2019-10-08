@@ -5,7 +5,7 @@ main(void)
 	int i=4, gg=5; /*$print i*/
 	int bbb=69;
 	int hahahahahjk=123;
-	/*$print hahahahahjk*/ int g=5; int k, n=5; /*$print n*/
+	/*$print hahahahahjk*/ int g=5; int k, n; /*$print n*/
 	/*$print LOCAL*/
 	if(k==yourmum)
 	{
@@ -17,7 +17,7 @@ main(void)
 		/*$print LOCAL*/
 		/*$print mygod*/
 	}
-	/*$print mygod*/
+	/*$print n*/
 
 	int er=4,err=4,errrr=6,errrrr=7;
 	/*$print LOCAL*/

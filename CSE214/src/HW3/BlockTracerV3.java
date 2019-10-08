@@ -19,19 +19,6 @@ public class BlockTracerV3
         
         String userInputString="";
         
-        /*
-        int j               =                5              ; 
-        
-        int k, b=69 ,      o=123;
-        
-        int c=69;
-        
-        int g=49, a=123, p=420;
-       
-        
-        System.out.println(j);
-        */
-        
         System.out.print("Please enter a file name to read: ");
         
         try
@@ -310,7 +297,6 @@ public class BlockTracerV3
                                 toBeAdded.setName(varName);
                                 toBeAdded.setInitialValue(varValue);
                                 
-                                System.out.println(commaIndex);
                                 workingTemp=workingTemp.substring(semiIndex+1);
                             }
                             //Means that there is more declaration to handle with
