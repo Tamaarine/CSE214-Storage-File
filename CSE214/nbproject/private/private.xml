@@ -17,32 +17,20 @@
             <file>file:/D:/Java%20Storage/CSE214/src/HiringSystem.java</file>
             <file>file:/D:/Java%20Storage/CSE214/src/HW2/SongLinkedList.java</file>
         </group>
-        <group name="CSE 214">
-            <file>file:/D:/Java%20Storage/CSE214/src/HW2Edited/SongLinkedList.java</file>
-            <file>file:/D:/Java%20Storage/CSE214/src/HW2/NegativeException.java</file>
-            <file>file:/D:/Java%20Storage/CSE214/src/HW3/BlockTracerV2.java</file>
-            <file>file:/D:/Java%20Storage/CSE214/src/ApplicantNotFoundException.java</file>
-            <file>file:/D:/Java%20Storage/CSE214/src/HW2Edited/Song.java</file>
-            <file>file:/D:/Java%20Storage/CSE214/src/HW3/Block.java</file>
-            <file>file:/D:/Java%20Storage/CSE214/src/HW2/Song.java</file>
-            <file>file:/D:/Java%20Storage/CSE214/src/Applicant.java</file>
-            <file>file:/D:/Java%20Storage/CSE214/src/FullTableException.java</file>
-            <file>file:/D:/Java%20Storage/CSE214/src/NegativeException.java</file>
-            <file>file:/D:/Java%20Storage/CSE214/src/HW2Edited/InvalidLengthException.java</file>
-            <file>file:/D:/Java%20Storage/CSE214/src/HW2/Player.java</file>
-            <file>file:/D:/Java%20Storage/CSE214/src/HiringTable.java</file>
-            <file>file:/D:/Java%20Storage/CSE214/src/HW3/BlockTracer.java</file>
-            <file>file:/D:/Java%20Storage/CSE214/src/HW2Edited/SongNode.java</file>
-            <file>file:/D:/Java%20Storage/CSE214/src/HiringSystem.java</file>
-            <file>file:/D:/Java%20Storage/CSE214/src/HW2/SongLinkedList.java</file>
-            <file>file:/D:/Java%20Storage/CSE214/src/HW2Edited/info.txt</file>
-            <file>file:/D:/Java%20Storage/CSE214/src/HW3/Variable.java</file>
-            <file>file:/D:/Java%20Storage/CSE214/src/HW3/FullBlockException.java</file>
-        </group>
         <group>
             <file>file:/C:/Users/FreezyCold/Desktop/CSE214%20Storage%20File/CSE214/src/HW3/FullBlockException.java</file>
             <file>file:/C:/Users/FreezyCold/Desktop/CSE214%20Storage%20File/CSE214/src/HW3/Block.java</file>
             <file>file:/C:/Users/FreezyCold/Desktop/CSE214%20Storage%20File/CSE214/src/HW3/BlockTracer.java</file>
+        </group>
+        <group name="CSE 214">
+            <file>file:/C:/Users/Rwiky/Desktop/CSE214-Storage-File/CSE214/src/HW2Edited/Song.java</file>
+            <file>file:/C:/Users/Rwiky/Desktop/CSE214-Storage-File/CSE214/src/HW3/Block.java</file>
+            <file>file:/C:/Users/Rwiky/Desktop/CSE214-Storage-File/CSE214/src/HW2Edited/SongLinkedList.java</file>
+            <file>file:/C:/Users/Rwiky/Desktop/CSE214-Storage-File/CSE214/src/HW3/Variable.java</file>
+            <file>file:/C:/Users/Rwiky/Desktop/CSE214-Storage-File/CSE214/src/HW3/FullBlockException.java</file>
+            <file>file:/C:/Users/Rwiky/Desktop/CSE214-Storage-File/CSE214/src/HW3/BlockTracerV3.java</file>
+            <file>file:/C:/Users/Rwiky/Desktop/CSE214-Storage-File/CSE214/src/HW2Edited/Player.java</file>
+            <file>file:/C:/Users/Rwiky/Desktop/CSE214-Storage-File/CSE214/src/HW2Edited/InvalidLengthException.java</file>
         </group>
     </open-files>
 </project-private>
