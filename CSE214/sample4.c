@@ -2,20 +2,34 @@
 #include <stdio.h>
 main(void)
 {
+	//hello there
 	int i=4, gg=5; /*$print i*/
 	int bbb=69;
 	int hahahahahjk=123;
-	/*$print hahahahahjk*/ int g=5; int k, n; /*$print n*/
+	/*$print hahahahahjk*/ int g=5; int k=9999, n=k; /*$print n*/
 	/*$print LOCAL*/
-	if(k==yourmum)
+	if(F)
 	{
 		int mygod=344;
 		mygod++;
 		mygod=i+3;
 		mygod=i;
-		int i=5;
+		int i=mygod;
+		int op=i;
+		int sad=op;
+		int big=123456;
+		int small=big;
 		/*$print LOCAL*/
 		/*$print mygod*/
+	}
+	else
+	{
+		int abc=696969;
+		int bcd=abc;
+		/*$print LOCAL*/
+		/*$print bcd*/
+		int asdasd=123123;
+		/*$print LOCAL*/
 	}
 	/*$print n*/
 

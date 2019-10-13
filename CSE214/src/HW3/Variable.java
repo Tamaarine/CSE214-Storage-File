@@ -1,8 +1,10 @@
 package HW3;
 
 /**
- * 
- * 
+ * The Variable class is suppose to model an Variable that is declared within a set
+ * of brackets inside a Block. This Variable is suppose to only model after a
+ * int Variable which means it only have a variable name and the initial value
+ * that it was assigned to it.
  * 
  * @author Ricky Lu
  *  email: ricky.lu@stonybrook.edu
@@ -11,8 +13,11 @@ package HW3;
  */
 public class Variable
 {
-    //Instance variables
+    //This is used to represent the name of a single Variable in a String
     private String name;
+    
+    //This is used to represent the initial int value that the Variable is
+    //assigned to
     private int initialValue;
     
     /**
@@ -22,14 +27,19 @@ public class Variable
      */
     public Variable()
     {
+        //Setting the instance variables to default value
         name="";
         initialValue=0;
     }
     
     /**
+     * The parameterized constructor for the Variable class in which the Variable is
+     * made with given information about the name and its initial value
      * 
      * @param givenName
+     *  The name of the Variable
      * @param givenValue 
+     *  The initial value of the Variable
      */
     public Variable(String givenName, int givenValue)
     {
@@ -38,8 +48,9 @@ public class Variable
     }
     
     /**
+     * Return the name of the Variable 
      * 
-     * @return 
+     * @return Returns the variable's name
      */
     public String getName()
     {
@@ -47,8 +58,9 @@ public class Variable
     }
     
     /**
+     * Return the initial value of the Variable it holds
      * 
-     * @return 
+     * @return Returns the variable's initial value that it contains
      */
     public int getInitialValue()
     {
@@ -56,8 +68,12 @@ public class Variable
     }
     
     /**
+     * The mutator method for the Variable's name
+     * <p>
+     * Postcondition: The Variable's name is set to givenName 
      * 
      * @param givenName 
+     *  The given name that you want to set the Variable's name into
      */
     public void setName(String givenName)
     {
@@ -65,6 +81,9 @@ public class Variable
     }
     
     /**
+     * The mutator method for the Variable's initial value
+     * <p>
+     * Postcondition: The Variable's initial value is set to givenValue
      * 
      * @param givenValue 
      */
@@ -72,7 +91,4 @@ public class Variable
     {
         initialValue=givenValue;
     }
-    
-    
-    
 }

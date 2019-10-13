@@ -14,7 +14,7 @@ public class FullBlockException extends Exception
 {
     public FullBlockException(String msg)
     {
-        super(msg);
+        super(msg+"\n");
     }
     
 }
