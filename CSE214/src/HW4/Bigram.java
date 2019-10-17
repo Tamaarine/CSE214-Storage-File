@@ -1,5 +1,14 @@
 package HW4;
 
+/**
+ * 
+ * 
+ * 
+ * @author Ricky Lu
+ *  email: ricky.lu@stonybrook.edu
+ *  Stony Brook ID: 112829937
+ *  Recitation: Wednesday 11:00AM - 11:53Am
+ */
 public class Bigram
 {
     private char first;

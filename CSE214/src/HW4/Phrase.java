@@ -1,9 +1,16 @@
 package HW4;
 
 import java.util.ArrayList;
-import java.util.Date;
 
-
+/**
+ * 
+ * 
+ * 
+ * @author Ricky Lu
+ *  email: ricky.lu@stonybrook.edu
+ *  Stony Brook ID: 112829937
+ *  Recitation: Wednesday 11:00AM - 11:53Am
+ */
 public class Phrase extends ArrayList implements Queue
 {
     public Phrase()
@@ -215,9 +222,103 @@ public class Phrase extends ArrayList implements Queue
         return output;
     }
     
+    
     public Phrase decrypt(KeyTable key) throws IllegalArgumentException
     {
-        return null;
+        Phrase output=new Phrase();
+        
+        //This means there is no KeyTable being used for the decryption therefore
+        //we tell the user that there is no KeyTable
+        if(key==null)
+        {
+            throw new IllegalArgumentException("Invalid KeyTable");
+        }
+        
+        //If we are out here then that means there is a KeyTable for the decryption
+        //therefore we begin the decryption
+        while(!isEmpty())
+        {
+            Bigram eachB=(Bigram)get(0);
+            
+            Bigram decryptedB=new Bigram();
+            
+            char firstLetter=eachB.getFirst();
+            char secondLetter=eachB.getSecond();
+            
+            int firstLetterRow=key.findRow(firstLetter);
+            int firstLetterCol=key.findCol(firstLetter);
+            
+            int secondLetterRow=key.findRow(secondLetter);
+            int secondLetterCol=key.findCol(secondLetter);
+            
+            //This means that the encrypted Bigram have the same row index
+            //therefore we move back each letter by one col to get the actual
+            //message
+            if(firstLetterRow==secondLetterRow)
+            {
+                //This means that we want to move back one col but it spills over
+                //therefore we take the letter that is in the same row
+                //but the rightmost col
+                if(firstLetterCol==0)
+                {
+                    decryptedB.setFirst(key.getKeyTable()[firstLetterRow][KeyTable.WIDTH-1]);
+                }
+                //This means that the index don't spill over therefore we just
+                //need to move the col one back
+                else
+                {
+                    decryptedB.setFirst(key.getKeyTable()[firstLetterRow][firstLetterCol-1]);
+                }
+                
+                if(secondLetterCol==0)
+                {
+                    decryptedB.setSecond(key.getKeyTable()[secondLetterRow][KeyTable.WIDTH-1]);
+                }
+                else
+                {
+                    decryptedB.setSecond(key.getKeyTable()[secondLetterRow][secondLetterCol-1]);
+                }
+            }
+            //This means that the two letters have the same col therefore we take the
+            //letter that is one row before each letter
+            else if(firstLetterCol==secondLetterCol)
+            {
+                //This means that we want to move back one col but it spills over
+                //therefore we take the letter that is in the same row
+                //but the rightmost col
+                if(firstLetterRow==0)
+                {
+                    decryptedB.setFirst(key.getKeyTable()[KeyTable.HEIGHT-1][firstLetterCol]);
+                }
+                //This means that the index don't spill over therefore we just
+                //need to move the col one back
+                else
+                {
+                    decryptedB.setFirst(key.getKeyTable()[firstLetterRow-1][firstLetterCol]);
+                }
+                
+                if(secondLetterRow==0)
+                {
+                    decryptedB.setSecond(key.getKeyTable()[KeyTable.HEIGHT-1][secondLetterCol]);
+                }
+                else
+                {
+                    decryptedB.setSecond(key.getKeyTable()[secondLetterRow-1][secondLetterCol]);
+                }
+            }
+            //This means that the two letter don't have the same row or the same col
+            //thus we just create a rectangle and swap the col of the two
+            else
+            {
+                decryptedB.setFirst(key.getKeyTable()[firstLetterRow][secondLetterCol]);
+                decryptedB.setSecond(key.getKeyTable()[secondLetterRow][firstLetterCol]);
+            }
+            
+            output.enqueue(decryptedB);
+            dequeue();
+        }
+        
+        return output;
     }
     
     @Override

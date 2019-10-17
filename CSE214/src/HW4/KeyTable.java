@@ -1,5 +1,14 @@
 package HW4;
 
+/**
+ * 
+ * 
+ * 
+ * @author Ricky Lu
+ *  email: ricky.lu@stonybrook.edu
+ *  Stony Brook ID: 112829937
+ *  Recitation: Wednesday 11:00AM - 11:53Am
+ */
 public class KeyTable
 {
     //Instance variables
@@ -126,8 +135,6 @@ public class KeyTable
             }
         }
         
-        System.out.println(toPutInTable);
-        
         int strIndex=0;
         
         //Then we just add everything into the outputKey
@@ -142,6 +149,8 @@ public class KeyTable
         }
         
         output.setKey(outputKey);
+        
+        System.out.println("Generation success!\n");
         
         return output;
     }
@@ -214,7 +223,7 @@ public class KeyTable
         {
             for(int c=0;c<WIDTH;c++)
             {
-                output=output+key[r][c]+","; 
+                output=output+key[r][c]+" "; 
             }
             
             output=output+"\n";

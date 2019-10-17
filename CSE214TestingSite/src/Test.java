@@ -39,6 +39,17 @@ public class Test
             }
         }
         
+        String s1="KXJEY  UREBE  ZWEHE  WRYTU  HEYFS " +
+"KREHE  GOYFI  WTTTU  OLKSY  CAJPO " +
+"BOTEI  ZONTX  BYBWT  GONEY  CUZWR " +
+"GDSON  SXBOU  YWRHE  BAAHY  USEDQ";
+        
+        System.out.println(s1);
+        
+        s1=s1.replaceAll("\\s","");
+        
+        System.out.println(s1);
+        System.out.println(s1.length());
         
     }
 }
