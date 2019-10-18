@@ -3,8 +3,12 @@ package HW4;
 import java.util.ArrayList;
 
 /**
- * 
- * 
+ * The Phrase class is a wrapper class for the queue, in other words it implements it
+ * and becomes a Queue data structure object, it will have the characteristics of a 
+ * Queue, being that it will dequeue and enqueue items. Instead of containing a ArrayList
+ * the Phrase extends the ArrayList API to make itself into a ArrayList therefore
+ * we don't need to write isEmpty and size method from the queue class because it is
+ * inherited from the ArrayList class.
  * 
  * @author Ricky Lu
  *  email: ricky.lu@stonybrook.edu
@@ -13,12 +17,23 @@ import java.util.ArrayList;
  */
 public class Phrase extends ArrayList implements Queue
 {
+    /**
+     * Default constructor of the Phrase class, it calss the super constructor
+     * to construct a empty Phrase that contains nothing inside
+     */
     public Phrase()
     {
         super();
     }
     
-    //Don't need to write size and isEmpty method because Phrase is already a ArrayList
+    /**
+     * Builds and returns a new Phrase object, which is a queue containing bigrams representing
+     * the given String s. This new Phrase object is going to be use for encryption
+     * 
+     * @param s
+     *  The String to represent as a Bigram queue
+     * @return Returns the new Phrase object which contains a queue of Bigram objects representing s
+     */
     public static Phrase buildPhraseFromStringforEnc(String s)
     {
         //This will be where we store our bigram list output
@@ -38,6 +53,7 @@ public class Phrase extends ArrayList implements Queue
         //J in our playfair encryption
         workTemp=workTemp.replaceAll("J","I");
         
+        //Pos will be representing the index we are currently at in workTemp
         int pos=0;
         
         //This for loop will be removing all of the symbols in the workTemp
@@ -48,9 +64,14 @@ public class Phrase extends ArrayList implements Queue
             //This means that it is a symbol we need to remove from the String
             if(charI<65||charI>90)
             {
+                //This is getting the first part up until the symbol but not including
+                //the symbol
                 String firstPart=workTemp.substring(0,i);
+                
+                //This is getting the second part all of the things after the symbol
                 String rest=workTemp.substring(i+1);
                 
+                //Putting them together remvoes the symbol
                 workTemp=firstPart+rest;
                 
                 //We need to decrement one index so we don't accidentally skip over
@@ -59,6 +80,9 @@ public class Phrase extends ArrayList implements Queue
             }
         }
         
+        //If we are after the previous for loop then that means that there is no space
+        //all the J is replaced with I, all symbols are removed, we can start
+        //making the Bigram object by taking a pair of letters
         while(pos<workTemp.length())
         {
             //This is the Bigram that we are preparing to add to the phrase
@@ -126,6 +150,19 @@ public class Phrase extends ArrayList implements Queue
         return output;
     }
     
+    /**
+     * Encrypts this Phrase, storing the encrypted bigrams in a new Phrase queue object
+     * and returns it
+     * <p>
+     * Precondition: key is not null
+     * 
+     * @param key
+     *  The KeyTable to use to encrypt this Phrase
+     * @return Returns the new Phrase object which contains a queue of Bigram that is
+     *  encrypted
+     * @throws IllegalArgumentException 
+     *  Throws IllegalArgumentException to indicate that key is null
+     */
     public Phrase encrypt(KeyTable key) throws IllegalArgumentException
     {
         Phrase output=new Phrase();
@@ -140,17 +177,22 @@ public class Phrase extends ArrayList implements Queue
         //is valid therefore we process on with the encrpytion
         for(int i=0;i<size();i++)
         {
+            //This gets the non-encrypted Bigram from the current Phase
             Bigram eachB=(Bigram)this.get(i);
             
+            //This is making a encrypted Bigram based on the non-encrypted Bigram
             Bigram encryptedB=new Bigram();
             
+            //This gets the first letter and the second letter from the
+            //non-encrypted Bigram
             char firstLetter=eachB.getFirst();
             char secondLetter=eachB.getSecond();
             
-            //This is the index of the first 
+            //This finds the row and col of the first letter
             int firstLetterRow=key.findRow(firstLetter);
             int firstLetterCol=key.findCol(firstLetter);
             
+            //This finds the row and col of the second letter
             int secondLetterRow=key.findRow(secondLetter);
             int secondLetterCol=key.findCol(secondLetter);
             
@@ -189,19 +231,29 @@ public class Phrase extends ArrayList implements Queue
             //same col
             else if(firstLetterCol==secondLetterCol)
             {
+                //This means that the first letter is at the last row and moving on
+                //will be spilling over therefore we just set the encrypted Bigram
+                //first letter to the first row same column
                 if(firstLetterRow==KeyTable.HEIGHT-1)
                 {
                     encryptedB.setFirst(key.getKeyTable()[0][firstLetterCol]);
                 }
+                //This means that it is not at the last row therefore we can just
+                //increment the row to the next one
                 else
                 {
                     encryptedB.setFirst(key.getKeyTable()[firstLetterRow+1][firstLetterCol]);
                 }
                 
+                //This means that the second letter is at the last row and moving on
+                //will be also spilling over therefore we just need to set the
+                //encrypred Bigram's second letter to the first row same column
                 if(secondLetterRow==KeyTable.HEIGHT-1)
                 {
                     encryptedB.setSecond(key.getKeyTable()[0][secondLetterCol]);
                 }
+                //This means that it is not at the last row we just need to
+                //set the second letter to the next row same col's letter
                 else
                 {
                     encryptedB.setSecond(key.getKeyTable()[secondLetterRow+1][secondLetterCol]);
@@ -212,17 +264,30 @@ public class Phrase extends ArrayList implements Queue
             //the letter opposite of each Bigram letter
             else
             {
+                //Swapping the indexes to get the character opposite of the letters
                 encryptedB.setFirst(key.getKeyTable()[firstLetterRow][secondLetterCol]);
                 encryptedB.setSecond(key.getKeyTable()[secondLetterRow][firstLetterCol]);
             }
             
+            //Adding it into the encrypted Phrase
             output.enqueue(encryptedB);
         }
         
         return output;
     }
     
-    
+    /**
+     * Decrypts this Phrase, storing the decrypted Bigrams in a new Phrase queue object and
+     * returning it.
+     * <p>
+     * Precondition: key is not null
+     * 
+     * @param key
+     *  The KeyTable to use to decrypt this Phrase
+     * @return Returns the new Phrase object which contains a queue of decrypted Bigram object
+     * @throws IllegalArgumentException 
+     *  Throws IllegalArgumentException to indicate key is null
+     */
     public Phrase decrypt(KeyTable key) throws IllegalArgumentException
     {
         Phrase output=new Phrase();
@@ -238,16 +303,21 @@ public class Phrase extends ArrayList implements Queue
         //therefore we begin the decryption
         while(!isEmpty())
         {
-            Bigram eachB=(Bigram)get(0);
+            //This gets all the encrypted Bigram from this Phrase for decryption
+            Bigram eachB=dequeue();
             
+            //This represent a decrypted Bigram for the output
             Bigram decryptedB=new Bigram();
             
+            //Getting the first and second letter of the encrypted Bigram
             char firstLetter=eachB.getFirst();
             char secondLetter=eachB.getSecond();
             
+            //Finding the row and col of the first letter
             int firstLetterRow=key.findRow(firstLetter);
             int firstLetterCol=key.findCol(firstLetter);
             
+            //Finding the row and col of the second letter
             int secondLetterRow=key.findRow(secondLetter);
             int secondLetterCol=key.findCol(secondLetter);
             
@@ -270,10 +340,15 @@ public class Phrase extends ArrayList implements Queue
                     decryptedB.setFirst(key.getKeyTable()[firstLetterRow][firstLetterCol-1]);
                 }
                 
+                //This means that the second letter is at the first col and we want
+                //to move back one col thus it spill over, we just set it to the
+                //letter that is in the last col but same row
                 if(secondLetterCol==0)
                 {
                     decryptedB.setSecond(key.getKeyTable()[secondLetterRow][KeyTable.WIDTH-1]);
                 }
+                //This means that the second letter is not at the first col therefore
+                //we can just move back the col by one unit
                 else
                 {
                     decryptedB.setSecond(key.getKeyTable()[secondLetterRow][secondLetterCol-1]);
@@ -297,10 +372,15 @@ public class Phrase extends ArrayList implements Queue
                     decryptedB.setFirst(key.getKeyTable()[firstLetterRow-1][firstLetterCol]);
                 }
                 
+                //This means that the second letter is in the first row and we want
+                //to move back one row but it spill over therefore we just set second
+                //letter to be the same col but the last row
                 if(secondLetterRow==0)
                 {
                     decryptedB.setSecond(key.getKeyTable()[KeyTable.HEIGHT-1][secondLetterCol]);
                 }
+                //This means that the second letter is not in the first row therefore
+                //we can just move back one row
                 else
                 {
                     decryptedB.setSecond(key.getKeyTable()[secondLetterRow-1][secondLetterCol]);
@@ -310,28 +390,40 @@ public class Phrase extends ArrayList implements Queue
             //thus we just create a rectangle and swap the col of the two
             else
             {
+                //Swapping the indexes to get the character opposite of the letters
                 decryptedB.setFirst(key.getKeyTable()[firstLetterRow][secondLetterCol]);
                 decryptedB.setSecond(key.getKeyTable()[secondLetterRow][firstLetterCol]);
             }
             
+            //Adding it into the decrypted Phrase
             output.enqueue(decryptedB);
-            dequeue();
         }
         
         return output;
     }
     
-    @Override
+    /**
+     * Adds a new Bigram to the end of the Phrase
+     * 
+     * @param b
+     *  The Bigram to add into the Phrase
+     */
     public void enqueue(Bigram b)
     {
         this.add(b);
     }
 
-    @Override
+    /**
+     * Removes and returns the first Bigram in the Phrase
+     * 
+     * @return Returns the first Bigram in the Phrase
+     */
     public Bigram dequeue() 
     {
         Bigram output=null;
         
+        //This makes sure that there is Bigram inside the Phrase to be removed
+        //to avoid nullpointer exception
         if(this.size()>0)
         {
             output=(Bigram)this.remove(0);
@@ -342,11 +434,17 @@ public class Phrase extends ArrayList implements Queue
         return output;
     }
 
-    @Override
+    /**
+     * Returns without removing the first Bigram in the Phase
+     * 
+     * @return The first Bigram in the Phrase without removing it
+     */
     public Bigram peek() 
     {
         Bigram output=null;
         
+        //This makes sure that there is Bigram inside the Phrase before
+        //trying to pull out anything
         if(this.size()>0)
         {
             output=(Bigram)this.get(0);
