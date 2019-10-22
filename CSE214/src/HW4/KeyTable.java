@@ -219,11 +219,18 @@ public class KeyTable
      *  The character to locate within the key matrix
      * @return Returns the index of the row in which c occurs
      */
-    public int findRow(char c)
+    public int findRow(char c) throws IllegalArgumentException
     {
         //This is the output of the method, we assume it is at row of 0
         //until we prove it later in the nested for loop
         int output=0;
+        
+        //This makes sure that the letter c is a valid character in the KeyTable
+        //before going to find the row
+        if(c<65||c>90)
+        {
+            throw new IllegalArgumentException("A invalid character");
+        }
         
         //The nested for loop go through the entire matrix to look for c
         for(int row=0;row<HEIGHT;row++)
@@ -254,11 +261,18 @@ public class KeyTable
      *  The character to locate within the key matrix
      * @return The index of the column in which c occurs
      */
-    public int findCol(char c)
+    public int findCol(char c) throws IllegalArgumentException
     {
         //This is the output of the method, we assume it is at col of 0
         //until we prove it later in the nested for loop
         int output=0;
+        
+        //This makes sure that the letter c is a valid character in the KeyTable
+        //before going to find the col
+        if(c<65||c>90)
+        {
+            throw new IllegalArgumentException("A invalid character");
+        }
         
         //The nested for loop go through the entire matrix to look for c
         for(int row=0;row<HEIGHT;row++)
