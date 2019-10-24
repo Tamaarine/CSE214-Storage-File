@@ -10,9 +10,9 @@ public class FoodPyramid
     private OrganismTree tree;
     
     //Default constructor
-    public FoodPyramid()
+    public FoodPyramid(OrganismNode apexPredator)
     {
-        
+        tree=new OrganismTree(apexPredator);
     }
     
     public static void main(String [] args)
@@ -23,6 +23,23 @@ public class FoodPyramid
         String userInput="";
         
         boolean isFinished=false;
+        
+        OrganismNode apexPredator=new OrganismNode("Eagle", false, false, true);
+        
+        OrganismTree foodTree=new OrganismTree(apexPredator);
+
+        
+        try
+        {
+            foodTree.getRoot().addPrey(new OrganismNode("Hello",false,false,false));
+            foodTree.getRoot().addPrey(new OrganismNode("CSE", false, false, false));
+        }
+        catch(Exception e)
+        {
+            System.out.println(e);
+        }
+        foodTree.moveCursor("CSE");
+        System.out.println("Cursor is now on "+foodTree.getCursor().getName());
         
         while(!isFinished)
         {

@@ -70,6 +70,23 @@ public class OrganismNode
         return right;
     }
     
+    //Mutator method
+    public void setIsPlant(boolean isPlant)
+    {
+        this.isPlant=isPlant;
+    }
+    
+    public void setIsCarnivore(boolean isCarnivore)
+    {
+        this.isCarnivore=isCarnivore;
+    }
+    
+    public void setIsHerbivore(boolean isHerbivore)
+    {
+        this.isHerbivore=isHerbivore;
+    }
+    
+    //Interesting methods
     public void addPrey(OrganismNode preyNode) throws PositionNotAvailableException, IsPlantException, DietMismatchException
     {
         //Getting the charactertics of the prey that we are adding

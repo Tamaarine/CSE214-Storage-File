@@ -21,6 +21,29 @@ public class OrganismTree
     
     public void moveCursor(String name) throws IllegalArgumentException
     {
+        if(name.equals(cursor.getName()))
+        {
+            return;
+        }
+        
+        if(cursor.getLeft()!=null)
+        {
+            cursor=cursor.getLeft();
+            moveCursor(name);
+        }
+        if(!cursor.getName().equals(name)&&cursor.getMiddle()!=null)
+        {
+            cursor=cursor.getMiddle();
+            moveCursor(name);
+        }
+        if(!cursor.getName().equals(name)&&cursor.getRight()!=null)
+        {
+            cursor=cursor.getRight();
+            moveCursor(name);
+        }
+        
+        
+        
         
     }
     
@@ -31,6 +54,26 @@ public class OrganismTree
     
     public String listFoodChain()
     {
+        
+        cursorRest();
+        
+        System.out.println(cursor.getName());
+        
+        if(cursor.getLeft()!=null)
+        {
+            cursor=cursor.getLeft();
+            listFoodChain();
+        }
+        if(cursor.getMiddle()!=null)
+        {
+            cursor=cursor.getMiddle();
+            listFoodChain();
+        }
+        if(cursor.getRight()!=null)
+        {
+            cursor=cursor.getRight();
+            listFoodChain();
+        }
         
     }
     
@@ -59,6 +102,15 @@ public class OrganismTree
         
     }
     
+    public OrganismNode getCursor()
+    {
+        return cursor;
+    }
+    
+    public OrganismNode getRoot()
+    {
+        return root;
+    }
     
     
     
