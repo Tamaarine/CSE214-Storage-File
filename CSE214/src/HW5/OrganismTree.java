@@ -21,34 +21,79 @@ public class OrganismTree
     
     public void moveCursor(String name) throws IllegalArgumentException
     {
-        if(name.equals(cursor.getName()))
+        cursorRest();
+        
+        findTarget(name,cursor);
+    }
+    
+    private boolean findTarget(String name, OrganismNode dummyNode)
+    {
+        OrganismNode node=dummyNode;
+        
+        boolean output=false;
+        
+        //This is found return true no need to keep on going, cursor is on
+        //the target species
+        if(name.equals(node.getName()))
         {
-            return;
+            output=true;
+            
+            cursor=node;
+            
+            return output;
         }
         
-        if(cursor.getLeft()!=null)
+        if(node.getLeft()!=null)
         {
-            cursor=cursor.getLeft();
-            moveCursor(name);
-        }
-        if(!cursor.getName().equals(name)&&cursor.getMiddle()!=null)
-        {
-            cursor=cursor.getMiddle();
-            moveCursor(name);
-        }
-        if(!cursor.getName().equals(name)&&cursor.getRight()!=null)
-        {
-            cursor=cursor.getRight();
-            moveCursor(name);
+            output=findTarget(name, node.getLeft());
         }
         
+        if(output==false&&node.getMiddle()!=null)
+        {
+            
+            output=findTarget(name, node.getMiddle());
+        }
         
+        if(output==false&&node.getRight()!=null)
+        {
+            
+            output=findTarget(name, node.getRight());
+        }
         
+        return output;
         
+            
     }
     
     public String listPrey() throws IsPlantException
     {
+        String output=cursor.getName()+"->";
+        
+        OrganismNode left=cursor.getLeft();
+        OrganismNode middle=cursor.getMiddle();
+        OrganismNode right=cursor.getRight();
+        
+        if(cursor.getIsPlant())
+        {
+            throw new IsPlantException("The species is a plant, it doesn't have eat prey");
+        }
+        
+        if(left!=null)
+        {
+            output+=left.getName()+",";
+        }
+        
+        if(middle!=null)
+        {
+            output+=middle.getName()+",";
+        }
+        
+        if(right!=null)
+        {
+            output+=right.getName();
+        }
+        
+        return output;
         
     }
     

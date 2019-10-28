@@ -71,6 +71,11 @@ public class OrganismNode
     }
     
     //Mutator method
+    public void setName(String givenName)
+    {
+        name=givenName;
+    }
+    
     public void setIsPlant(boolean isPlant)
     {
         this.isPlant=isPlant;
