@@ -139,6 +139,29 @@ public class OrganismTree
     
     public void addPlantChild(String name) throws IllegalArgumentException, PositionNotAvailableException
     {
+        //This is the new plant that is going to be added to the cursor as a child
+        OrganismNode toBeAdded=new OrganismNode();
+        
+        //Setting the name of the new plant to the given name
+        toBeAdded.setName(name);
+        
+        try
+        {
+            cursor.addPrey(toBeAdded);
+                                
+            System.out.println(name+" has successfully been added as prey for the "+cursor.getName());
+        }
+        catch(IsPlantException i)
+        {
+            System.out.println(i);
+        }
+        catch(DietMismatchException d)
+        {
+            System.out.println(d);
+        }
+            
+        
+        
         
     }
     

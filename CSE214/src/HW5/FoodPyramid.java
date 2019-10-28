@@ -46,6 +46,7 @@ public class FoodPyramid
             System.out.println("Error when entering in the name of the apex predator");
         }
         
+        //This will keep asking the user for a valid input of the apex predator
         while(!apexValidInput)
         {
             System.out.print("Is the organism an herbivore / a carnivore / an omnivore?"
@@ -153,6 +154,25 @@ public class FoodPyramid
             //child and add it to the cursor node
             if(userInput.equalsIgnoreCase("PC"))
             {
+                //Asking the user for the name of the plant organism
+                System.out.print("What is the name of the organism?: ");
+                try
+                {
+                    userInput=reader.readLine();
+                }
+                catch(IOException i)
+                {
+                    System.out.println(i);
+                }
+                
+                try
+                {
+                    foodTree.addPlantChild(userInput);
+                }
+                catch(PositionNotAvailableException p)
+                {
+                    System.out.println(p);
+                }
                 
             }
             else if(userInput.equalsIgnoreCase("AC"))
