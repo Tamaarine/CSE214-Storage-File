@@ -132,36 +132,88 @@ public class OrganismTree
         
     }
     
-    public String addAnimalChild(String name, boolean isHerbivore, boolean isCarnivore) throws IllegalArgumentException, PositionNotAvailableException
+    public void addAnimalChild(String name, boolean isHerbivore, boolean isCarnivore) throws IllegalArgumentException, PositionNotAvailableException
     {
-        
-    }
-    
-    public void addPlantChild(String name) throws IllegalArgumentException, PositionNotAvailableException
-    {
-        //This is the new plant that is going to be added to the cursor as a child
-        OrganismNode toBeAdded=new OrganismNode();
-        
-        //Setting the name of the new plant to the given name
-        toBeAdded.setName(name);
-        
+        String preys="";
         try
         {
-            cursor.addPrey(toBeAdded);
-                                
-            System.out.println(name+" has successfully been added as prey for the "+cursor.getName());
+            preys=listPrey();
+            
+            //This means that the new prey is already a prey of the spcies
+            //therefore we have to throw a new error to tell the user
+            if(preys.indexOf(name)!=-1)
+            {
+                throw new IllegalArgumentException(name+" is already an prey of "+cursor.getName());
+            }
+            
+            OrganismNode toBeAdded=new OrganismNode();
+            
+            toBeAdded.setIsCarnivore(isCarnivore);
+            toBeAdded.setIsHerbivore(isHerbivore);
+            toBeAdded.setIsPlant(false);
+            
+            try
+            {
+                cursor.addPrey(toBeAdded);
+            }
+            catch(DietMismatchException d)
+            {
+                System.out.println(d);
+            }
         }
         catch(IsPlantException i)
         {
             System.out.println(i);
         }
-        catch(DietMismatchException d)
+        
+    }
+    
+    public void addPlantChild(String name) throws IllegalArgumentException, PositionNotAvailableException
+    {
+        //preys will be containing the listPrey String of the cursor, this will
+        //allow us to check if there are any duplicates of the same prey on
+        //the cursor before adding it
+        String preys="";
+        try
         {
-            System.out.println(d);
-        }
+            preys=listPrey();
             
+            //This means that the prey that is going to be added is a duplicate
+            //prey therefore we must throw the error to let the user know
+            if(preys.indexOf(name)!=-1)
+            {
+                throw new IllegalArgumentException(name+" is already an prey of "+cursor.getName());
+            }
+
+            //This is the new plant that is going to be added to the cursor as a child
+            OrganismNode toBeAdded=new OrganismNode();
+
+            //Setting the name of the new plant to the given name
+            toBeAdded.setName(name);
+            toBeAdded.setIsPlant(true);
+
+            try
+            {
+                cursor.addPrey(toBeAdded);
+
+                System.out.println(name+" has successfully been added as prey for the "+cursor.getName());
+            }
+            catch(IsPlantException i)
+            {
+                System.out.println(i);
+            }
+            catch(DietMismatchException d)
+            {
+                System.out.println(d);
+            }
+        }
+        catch(IsPlantException i)
+        {
+            System.out.println(i);
+        }
         
-        
+
+
         
     }
     

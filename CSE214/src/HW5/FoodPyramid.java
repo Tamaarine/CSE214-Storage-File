@@ -214,10 +214,31 @@ public class FoodPyramid
             }
             else if(userInput.equalsIgnoreCase("R"))
             {
+                foodTree.cursorRest();
                 
+                System.out.println("Cursor successfully reset to root!");
             }
             else if(userInput.equalsIgnoreCase("M"))
             {
+                System.out.print("Move to?: ");
+                try
+                {
+                    userInput=reader.readLine();
+                }
+                catch(IOException i)
+                {
+                    System.out.println("Error when inputting a name to move the cursor to");
+                }
+                
+                try
+                {
+                    foodTree.moveCursor(userInput);
+                }
+                catch(IllegalArgumentException i)
+                {
+                    System.out.println(i);
+                }
+                
                 
                 
             }
