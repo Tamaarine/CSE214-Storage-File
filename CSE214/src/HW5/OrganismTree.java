@@ -219,7 +219,90 @@ public class OrganismTree
     
     public void removeChild(String name) throws IllegalArgumentException
     {
+        boolean complete=removeHelper(name,null,root);
         
+        if(complete)
+        {
+            System.out.println(name+" is removed successfully");
+        }
+        else
+        {
+            System.out.println(name+" is not found");
+        }
+    }
+    
+    public boolean removeHelper(String name, OrganismNode parent, OrganismNode child)
+    {
+        boolean taskComplete=false;
+        
+        //This is the base case when the child is the one that we are looking for
+        //therefore we must remove the child from the parent
+        if(name.equals(child.getName()))
+        {
+            //This means that the child is the root of the entire organismTree
+            //and it is the one we need to remove, therefore we just set the entire
+            //tree to be null because we are removing that root
+            if(parent==null)
+            {
+                root=null;
+            }
+            else
+            {
+                OrganismNode parentLeft=parent.getLeft();
+                OrganismNode parentMiddle=parent.getMiddle();
+                OrganismNode parentRight=parent.getRight();
+
+                boolean isLeft=false;
+                boolean isMiddle=false;
+                boolean isRight=false;
+
+                if(parentLeft==child)
+                {
+                    parent.setLeft(parentMiddle);
+                    parent.setMiddle(parentRight);
+                    parent.setRight(null);
+                }
+                else if(parentMiddle==child)
+                {
+                    parent.setMiddle(parentRight);
+                    parent.setRight(null);
+                }
+                else if(parentRight==child)
+                {
+                    parent.setRight(null);
+                }
+            }
+            
+            return true;
+        }
+        
+        //If we are not in the base case then that means that the child is not the
+        //node we are looking for
+        if(child.getLeft()!=null&&!taskComplete)
+        {
+            OrganismNode dummyParent=child;
+            OrganismNode dummyChild=child.getLeft();
+            
+            taskComplete=removeHelper(name,dummyParent,dummyChild);
+        }
+        
+        if(child.getMiddle()!=null&&!taskComplete)
+        {
+            OrganismNode dummyParent=child;
+            OrganismNode dummyChild=child.getMiddle();
+            
+            taskComplete=removeHelper(name,dummyParent,dummyChild);
+        }
+        
+        if(child.getRight()!=null&&!taskComplete)
+        {
+            OrganismNode dummyParent=child;
+            OrganismNode dummyChild=child.getRight();
+            
+            taskComplete=removeHelper(name,dummyParent,dummyChild);
+        }
+        
+        return taskComplete;
     }
     
     public OrganismNode getCursor()

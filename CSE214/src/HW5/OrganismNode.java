@@ -91,6 +91,21 @@ public class OrganismNode
         this.isHerbivore=isHerbivore;
     }
     
+    public void setLeft(OrganismNode givenNode)
+    {
+        left=givenNode;
+    }
+    
+    public void setMiddle(OrganismNode givenNode)
+    {
+        middle=givenNode;
+    }
+    
+    public void setRight(OrganismNode givenNode)
+    {
+        right=givenNode;
+    }
+    
     //Interesting methods
     public void addPrey(OrganismNode preyNode) throws PositionNotAvailableException, IsPlantException, DietMismatchException
     {

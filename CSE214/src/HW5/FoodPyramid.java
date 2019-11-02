@@ -181,7 +181,16 @@ public class FoodPyramid
             }
             else if(userInput.equalsIgnoreCase("RC"))
             {
+                try
+                {
+                    userInput=reader.readLine();
+                }
+                catch(IOException i)
+                {
+                    System.out.println("Error when entering a organism to remove");
+                }
                 
+                foodTree.removeChild(userInput);
             }
             else if(userInput.equalsIgnoreCase("P"))
             {
