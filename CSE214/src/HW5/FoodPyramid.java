@@ -110,19 +110,14 @@ public class FoodPyramid
         
         try
         {
-            foodTree.getRoot().addPrey(new OrganismNode("Hello",false,false,false));
-            foodTree.getRoot().getLeft().addPrey(new OrganismNode("pew",false,false,false));
-            foodTree.getRoot().getLeft().addPrey(new OrganismNode("asd",false,false,false));
-            foodTree.getRoot().getLeft().addPrey(new OrganismNode("dsa",false,false,false));
-            
-            foodTree.getRoot().addPrey(new OrganismNode("CSE", false, false, false));
-            foodTree.getRoot().addPrey(new OrganismNode("NODAOSDN",false,false,false));
+            foodTree.moveCursor("dsa");
         }
-        catch(Exception e)
+        catch(IllegalArgumentException i)
         {
-            System.out.println(e);
+            System.out.println(i);
         }
-        foodTree.moveCursor("dsa");
+        
+        
         System.out.println("Cursor is now on "+foodTree.getCursor().getName());
         
         while(!isFinished)
@@ -173,14 +168,101 @@ public class FoodPyramid
                 {
                     System.out.println(p);
                 }
+                catch(IllegalArgumentException i)
+                {
+                    System.out.println(i);
+                }
                 
             }
+            //This means that the user entered in AC which means to create a new
+            //animal child and add it to the cursor
             else if(userInput.equalsIgnoreCase("AC"))
             {
+                String organismName="";
+                boolean organismIsHerbivore=false;
+                boolean organismIsCarnivore=false;
+                
+                boolean validInput=false;
+               
+                System.out.print("What is the name of the organism?: ");
+                try
+                {
+                    organismName=reader.readLine();
+                }
+                catch(IOException i)
+                {
+                    System.out.println("Error when entering the name of a organism to be added");
+                }
+                
+                //This for loop will be keep asking the user for a valid option for the
+                //animal that is going to be added to the cursor. It will keep on
+                //repeating until the user have inputted a correct valid choice
+                while(!validInput)
+                {
+                    //Prompting the user for a input
+                    System.out.print("Is the organism an herbivore / a carnivore / an omnivore?"
+                            + " (H / C / O): ");
+                    try
+                    {
+                        userInput=reader.readLine();
+                    }
+                    catch(IOException i)
+                    {
+                        System.out.println("Error when entering the ");
+                    }
+                    
+                    //This means that the user have picked the organism to be a herbivore
+                    if(userInput.equalsIgnoreCase("H"))
+                    {
+                        organismIsHerbivore=true;
+                        organismIsCarnivore=false;
+                        
+                        validInput=true;
+                    }
+                    //This means that the user have picked the organism to be a 
+                    //carnivore
+                    else if(userInput.equalsIgnoreCase("C"))
+                    {
+                        organismIsHerbivore=false;
+                        organismIsCarnivore=true;
+                        
+                        validInput=true;
+                    }
+                    //This means that the user have picked the organism to be a
+                    //omnivore
+                    else if(userInput.equalsIgnoreCase("O"))
+                    {
+                        organismIsHerbivore=true;
+                        organismIsCarnivore=true;
+                        
+                        validInput=true;
+                    }
+                }
+                
+                //After the while loop then we have all of the information that we
+                //need to add the new organism node to the cursor
+                try
+                {
+                    foodTree.addAnimalChild(organismName, organismIsHerbivore, organismIsCarnivore);
+                }
+                catch(PositionNotAvailableException p)
+                {
+                    System.out.println(p);
+                }
+                catch(IllegalArgumentException i)
+                {
+                    System.out.println(i);
+                }
+                
+                
+                
                 
             }
+            //This means that the user have entered in RC which means to remove
+            //a child node of the cursor based on the inputted name
             else if(userInput.equalsIgnoreCase("RC"))
             {
+                System.out.print("What is the name of the organism to be removed?: ");
                 try
                 {
                     userInput=reader.readLine();
@@ -190,7 +272,15 @@ public class FoodPyramid
                     System.out.println("Error when entering a organism to remove");
                 }
                 
-                foodTree.removeChild(userInput);
+                try
+                {
+                    foodTree.removeChild(userInput);
+                }
+                catch(IllegalArgumentException i)
+                {
+                    System.out.println(i);
+                }
+                
             }
             else if(userInput.equalsIgnoreCase("P"))
             {
@@ -206,19 +296,20 @@ public class FoodPyramid
                 }
                 
             }
+            //This means that the user want to print out the food chain 
             else if(userInput.equalsIgnoreCase("C"))
             {
-                
-                
-                
+               System.out.println(foodTree.listFoodChain());
             }
+            //This means that the user have inputted in F which means to print the
+            //food pyramid at cursor. Calling the printOrganismTree method
             else if(userInput.equalsIgnoreCase("F"))
             {
-                
+                foodTree.printOrganismTree();
             }
             else if(userInput.equalsIgnoreCase("LP"))
             {
-                
+                System.out.println(foodTree.listAllPlants());
                 
             }
             else if(userInput.equalsIgnoreCase("R"))
@@ -247,6 +338,8 @@ public class FoodPyramid
                 {
                     System.out.println(i);
                 }
+                
+                System.out.println(foodTree.getCursor().getName());
                 
                 
                 

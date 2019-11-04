@@ -11,6 +11,8 @@ public class OrganismNode
     private OrganismNode middle;
     private OrganismNode right;
     
+    private int depth;
+    
     //Default constructor
     public OrganismNode()
     {
@@ -21,6 +23,7 @@ public class OrganismNode
         left=null;
         middle=null;
         right=null;
+        depth=0;
     }
     
     public OrganismNode(String givenName, boolean isPlant, boolean isHerbivore, boolean isCarnivore)
@@ -32,6 +35,7 @@ public class OrganismNode
         left=null;
         middle=null;
         right=null;
+        depth=0;
     }
     
     //Accesor method
@@ -70,6 +74,11 @@ public class OrganismNode
         return right;
     }
     
+    public int getDepth()
+    {
+        return depth;
+    }
+    
     //Mutator method
     public void setName(String givenName)
     {
@@ -106,11 +115,19 @@ public class OrganismNode
         right=givenNode;
     }
     
+    public void setDepth(int givenDepth)
+    {
+        depth=givenDepth;
+    }
+    
     //Interesting methods
     public void addPrey(OrganismNode preyNode) throws PositionNotAvailableException, IsPlantException, DietMismatchException
     {
         //Getting the charactertics of the prey that we are adding
         boolean preyIsPlant=preyNode.getIsPlant();
+        
+        //Getting the name of the organism
+        String name=preyNode.getName();
         
         //This means that the left middle and right, all three children of the 
         //species node is all full therefore we must throw the PositionNotAvailableException
@@ -128,13 +145,16 @@ public class OrganismNode
                     + " child");
         }
         
-        if(preyIsPlant&&isCarnivore)
+        if(!isCarnivore||!isHerbivore)
         {
-            throw new DietMismatchException("This species is not a herbivore");
-        }
-        else if(!preyIsPlant&&isHerbivore)
-        {
-            throw new DietMismatchException("This species is not a carnivore");
+            if(preyIsPlant&&isCarnivore)
+            {
+                throw new DietMismatchException("This species is not a herbivore");
+            }
+            else if(!preyIsPlant&&isHerbivore)
+            {
+                throw new DietMismatchException("This species is not a carnivore");
+            }
         }
         
         //This means that the left node is empty therefore we can put the new prey
@@ -156,10 +176,7 @@ public class OrganismNode
             right=preyNode;
         }
         
-        
-        
-        
-        
+        System.out.println(name+" has successfully been added as prey for the "+this.name);
         
     }
     
