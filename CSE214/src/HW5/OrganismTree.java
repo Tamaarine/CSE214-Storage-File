@@ -61,14 +61,23 @@ public class OrganismTree
     }
     
     /**
-     * 
-     * 
+     * This method moves cursor to one of cursor's children
+     * <p>
+     * Precondition: The name reference to a valid name of one of cursor's children
+     * <p>
+     * Postcondition: The method either throw an exception or the cursor is now pointing
+     * to the node whose name is reference by the given name. Essentially mean
+     * cursor is now pointing to a child of the original cursor
      * 
      * @param name
-     * @throws IllegalArgumentException 
+     *  The name of the node to move to
+     * @throws IllegalArgumentException
+     *  IllegalArgumentException is thrown if the name is not a direct child of
+     *  cursor
      */
     public void moveCursor(String name) throws IllegalArgumentException
     {
+        //Getting the left, middle, and right node of the cursor for comparsion
         OrganismNode left=cursor.getLeft();
         OrganismNode middle=cursor.getMiddle();
         OrganismNode right=cursor.getRight();
@@ -116,53 +125,71 @@ public class OrganismTree
     }
     
     /**
+     * This method returns a String that include the organism at the cursor and all
+     * the possible prey it can eat on
+     * <p>
+     * Postcondition: The cursor is not moved
      * 
-     * 
-     * 
-     * @return
+     * @return Returns a String that contain the name of the cursor and all of its prey
      * @throws IsPlantException 
+     *  IsPlantException is thrown if the cursor is currently pointing to a plant
+     *  OrganismNode
      */
     public String listPrey() throws IsPlantException
     {
+        //Output represent the chain of prey that the cursor can have
         String output=cursor.getName()+"->";
         
+        //Getting the left, middle, and right node of cursor
         OrganismNode left=cursor.getLeft();
         OrganismNode middle=cursor.getMiddle();
         OrganismNode right=cursor.getRight();
         
+        //This means that the cursor is currently a plant node therefore we have
+        //to throw the exception telling the user
         if(cursor.getIsPlant())
         {
             throw new IsPlantException("The species is a plant, it doesn't have eat prey");
         }
         
+        //This makes sure to check that left is not null before getting the name
+        //to prevent the null exception error
         if(left!=null)
         {
             output+=left.getName()+",";
         }
         
+        //This makes sure to check the mdidle is not null before getting the name
+        //to prevent the null exception error
         if(middle!=null)
         {
             output+=middle.getName()+",";
         }
         
+        //This makes sure to check the right is not null before getting the name
+        //to prevent the null exception error
         if(right!=null)
         {
             output+=right.getName();
         }
         
         return output;
-        
     }
     
     /**
+     * This method will return a String that contain the correct path of organisms
+     * it needs to take to lead from the apex predator to the organism at the cursor
+     * <p>
+     * Postcondition: cursor have not been moved
      * 
-     * 
-     * @return 
+     * @return Returns a String that contain the food chain path from apex predator
+     *  to the cursor
      */
     public String listFoodChain()
     {
         foodChainStr="";
         
+        //Calling the listFoodChainHelper method
         listFoodChainHelper(root);
         
         return foodChainStr;
@@ -170,20 +197,27 @@ public class OrganismTree
     }
     
     /**
-     * 
-     * 
+     * The helper method for listFoodChain, it will recursively go through the 
+     * nodes to check whether or not it is the correct path and then use the foodChainStr
+     * global variable to help make the path to the cursor
      * 
      * @param dummyNode
-     * @return 
+     *  The node to start the searching from, which will be root in the 1st call
+     *  It will also be used as recursively
+     * @return Returns a boolean value to tell the recursive calls whether or not
+     *  the target have been found
      */
     private boolean listFoodChainHelper(OrganismNode dummyNode)
     {
         OrganismNode node=dummyNode;
         
+        //This output will be initially false until the recursively case make it 
+        //true which means the target have been fouund
         boolean output=false;
         
         //This is found return true no need to keep on going, cursor is on
         //the target species
+        //This is also the base case
         if(cursor.getName().equalsIgnoreCase(node.getName()))
         {
             output=true;
@@ -193,11 +227,15 @@ public class OrganismTree
             return output;
         }
         
+        //First recursive case to go to the left
         if(node.getLeft()!=null)
         {
             output=listFoodChainHelper(node.getLeft());
         }
         
+        //After each recursive call we have to check whether or not the returned output
+        //is true, if it is true then we stop going to the other recursive call since
+        //we have found the correct path
         if(output)
         {
             foodChainStr=node.getName()+"->"+foodChainStr;
@@ -205,12 +243,15 @@ public class OrganismTree
             return output;
         }
         
+        //This is the second recursive case to go to the middle
         if(output==false&&node.getMiddle()!=null)
         {
             
             output=listFoodChainHelper( node.getMiddle());
         }
         
+        //Again after the middle recursive call we check whether or not output have been found
+        //so we can ignore the other recursive calls
         if(output)
         {
             foodChainStr=node.getName()+"->"+foodChainStr;
@@ -218,12 +259,15 @@ public class OrganismTree
             return output;
         }
         
+        //This is the third recursive case
         if(output==false&&node.getRight()!=null)
         {
             
             output=listFoodChainHelper(node.getRight());
         }
         
+        //As well we must check whether or not output is found so we can
+        //stop the other recursive calls
         if(output)
         {
             foodChainStr=node.getName()+"->"+foodChainStr;
@@ -235,82 +279,123 @@ public class OrganismTree
     }
     
     /**
-     * 
+     * This method will print out a layered, indented tree by performing a
+     * preorder traversal starting at the cursor throughout the entire OrganismTree
+     * with the cursor noting as the root of the tree. It will be calling
+     * the printOrganismTreeHelper to do this task
+     * <p>
+     * Postcondition: Cursor is not moved and so is root is not moved as well
      */
     public void printOrganismTree()
     {
+        //First we have to call the fixDepth method to assign the depth of each 
+        //node respect to the cursor because we are referring cursor as the root
+        //in this method. So that we can properly indent the nodes
        fixDepth(cursor,0);
         
+       //Then we call the printOrganismTreeHelper with cursor as the root to print
+       //out the OrganismNode in the layered and indented tree style
        printOrganismTreeHelper(cursor);
+       
+        System.out.println("");
     }
     
     /**
-     * 
+     * This is the helper method for the printOrganismTree method, it takes in a
+     * OrganismNode and perform a preorder traversal and printing it.
+     * <p>
+     * Postcondition: A layered, indented tree is printed with the cursor as the root
+     * and all the other OrganismNode to its correct palce
      * 
      * @param dummyNode 
+     *  The root of the OrganismTree to start the printing on
      */
-    public void printOrganismTreeHelper(OrganismNode dummyNode)
+    private void printOrganismTreeHelper(OrganismNode dummyNode)
     {
+        //The base case, which when the node is null we don't do anything
         if(dummyNode==null)
         {
             return;
         }
         
+        //This is the thing we want to do for the preorder traversal which is
+        //to print out the OrganismNode's name with the proper sign in front of it.
+        //And this is the case for when it is a plant which we just use - in front
         if(dummyNode.getIsPlant())
         {
+            //Using the depth of the node to properly indent it to it's corresponding
+            //place in the tree
             for(int i=0;i<dummyNode.getDepth();i++)
             {
                 System.out.print("  ");
             }
+            
             System.out.print("-"+dummyNode.getName()+"\n");
 
         }
+        //This is the second case which is when the node is an animal therefore
+        //we use |- in front of the node name
         else
         {
+            //Using the depth of the node to properly indent it to it's corresponding
+            //place in the tree
             for(int i=0;i<dummyNode.getDepth();i++)
             {
                 System.out.print("  ");
             }
+            
             System.out.print("|-"+dummyNode.getName()+"\n");
         }
         
+        //Recursive case to go to the left first
         if(dummyNode.getLeft()!=null)
         {
             printOrganismTreeHelper(dummyNode.getLeft());
         }
         
+        //Recursive case to the middle after the left
         if(dummyNode.getMiddle()!=null)
         {
             printOrganismTreeHelper(dummyNode.getMiddle());
         }
         
+        //Recursive case to the right as the final one
         if(dummyNode.getMiddle()!=null)
         {
             printOrganismTreeHelper(dummyNode.getRight());
         }
-        
     }
     
     /**
-     * 
+     * Helper method for the printOrganismTree which will perform a preorder traversal
+     * that sets the depth of each tree node respect to the given node as the 0
+     * depth
      * 
      * @param dummyNode
-     * @param depth 
+     *  The node to denote as the root, and it also represent all the recursive call's
+     *  OrganismNode
+     * @param depth
+     *  The starting depth will always be 0 and it will be passed on recursively
+     *  to assign to each dummyNode
      */
     private void fixDepth(OrganismNode dummyNode, int depth)
     {
+        //Setting the depth of the node to depth
         dummyNode.setDepth(depth);
         
+        //Recursive call for the left node
         if(dummyNode.getLeft()!=null)
         {
             fixDepth(dummyNode.getLeft(),depth+1);
         }
         
+        //Recursive call for the middle node
         if(dummyNode.getMiddle()!=null)
         {
             fixDepth(dummyNode.getMiddle(),depth+1);
         }
         
+        //Recursive call for the right node
         if(dummyNode.getRight()!=null)
         {
             fixDepth(dummyNode.getRight(),depth+1);
@@ -318,9 +403,13 @@ public class OrganismTree
     }
     
     /**
+     * This method will return a list of all of the plants that is at cursor and
+     * below it in the food pyramid
+     * <p>
+     * Postcondition: cursor is not moved and so is root
      * 
-     * 
-     * @return 
+     * @return Returns a String that contain a list of all of the plants in the food pyramid
+     *  at and after the cursor
      */
     public String listAllPlants()
     {
@@ -332,20 +421,24 @@ public class OrganismTree
     }
     
     /**
-     * 
+     * This is the helper method for the listAllPlants method, it will return a
+     * String that contains a list of all of the plant at the cursor and then
+     * below it
+     * <p>
+     * Postcondition: The cursor is not moved and so is the root
      * 
      * @param dummyNode
-     * @return 
+     *  This is the node to start gathering all of the plant node from
+     * @return Returns a String that represent all of the plants that is
+     *  supporting this OrganismNode
      */
     private String listAllPlantsHelper(OrganismNode dummyNode)
     {
-        OrganismNode node=dummyNode;
-        
         String output="";
         
         //This is found return true no need to keep on going, cursor is on
         //the target species
-        if(node==null)
+        if(dummyNode==null)
         {
             return "";
         }
@@ -358,19 +451,22 @@ public class OrganismTree
             
         }
         
-        if(node.getLeft()!=null)
+        //Recursive case to the left node
+        if(dummyNode.getLeft()!=null)
         {
-            output+=listAllPlantsHelper(node.getLeft());
+            output+=listAllPlantsHelper(dummyNode.getLeft());
         }
         
-        if(node.getMiddle()!=null)
+        //Recursive case to the middle node
+        if(dummyNode.getMiddle()!=null)
         {
-            output+=listAllPlantsHelper(node.getMiddle());
+            output+=listAllPlantsHelper(dummyNode.getMiddle());
         }
         
-        if(node.getRight()!=null)
+        //Recursive case to the right node
+        if(dummyNode.getRight()!=null)
         {
-            output+=listAllPlantsHelper(node.getRight());
+            output+=listAllPlantsHelper(dummyNode.getRight());
         }
         
         return output;
@@ -410,13 +506,31 @@ public class OrganismTree
         try
         {
             //Getting the cursor's prey
-            preys=listPrey();
+            preys="$"+listPrey()+"$";
+            
+            int nameIndex=preys.indexOf(name);
             
             //This means that the new prey is already a prey of the spcies
-            //therefore we have to throw a new error to tell the user
-            if(preys.indexOf(name)!=-1)
+            //therefore we have to throw a new error to tell the user.
+            //However before throwing the error we must check further because
+            //a cursor having pondweed and then adding weed can still result in
+            //this error thus we need to check even further
+            if(nameIndex!=-1)
             {
-                throw new IllegalArgumentException(name+" is already an prey of "+cursor.getName());
+                String rightAfterName=preys.substring(nameIndex+name.length(),nameIndex+name.length()+1);
+                String rightBeforeName=preys.substring(nameIndex-1,nameIndex);
+                
+                //This is 100% certain that it is a duplicate name therefore we can
+                //throw the error now
+                if(rightAfterName.equals(",")&&rightBeforeName.equals(">"))
+                {
+                    throw new IllegalArgumentException(name+" is already an prey of "+cursor.getName());
+                }
+                //This is another case that it can happen
+                else if(rightAfterName.equals(",")&&rightBeforeName.equals(","))
+                {
+                    throw new IllegalArgumentException(name+" is already an prey of "+cursor.getName());
+                }
             }
             
             //If we are outside then the name is not a duplicate therefore we can
@@ -480,16 +594,35 @@ public class OrganismTree
         //allow us to check if there are any duplicates of the same prey on
         //the cursor before adding it
         String preys="";
+        
         try
         {
             //Gettign the cursor's prey
-            preys=listPrey();
+            preys="$"+listPrey()+"$";
             
-            //This means that the prey that is going to be added is a duplicate
-            //prey therefore we must throw the error to let the user know
-            if(preys.indexOf(name)!=-1)
+            int nameIndex=preys.indexOf(name);
+            
+            //This means that the new prey is already a prey of the spcies
+            //therefore we have to throw a new error to tell the user.
+            //However before throwing the error we must check further because
+            //a cursor having pondweed and then adding weed can still result in
+            //this error thus we need to check even further
+            if(nameIndex!=-1)
             {
-                throw new IllegalArgumentException(name+" is already an prey of "+cursor.getName());
+                String rightAfterName=preys.substring(nameIndex+name.length(),nameIndex+name.length()+1);
+                String rightBeforeName=preys.substring(nameIndex-1,nameIndex);
+                
+                //This is 100% certain that it is a duplicate name therefore we can
+                //throw the error now
+                if(rightAfterName.equals(",")&&rightBeforeName.equals(">"))
+                {
+                    throw new IllegalArgumentException(name+" is already an prey of "+cursor.getName());
+                }
+                //This is another case that it can happen
+                else if(rightAfterName.equals(",")&&rightBeforeName.equals(","))
+                {
+                    throw new IllegalArgumentException(name+" is already an prey of "+cursor.getName());
+                }
             }
 
             //This is the new plant that is going to be added to the cursor as a child
@@ -603,14 +736,16 @@ public class OrganismTree
     }
     
     /**
+     * Returns the boolean value that represent whether the cursor's three child
+     * is completely filled or not
      * 
-     * 
-     * @return 
+     * @return Returns a boolean value that shows whether or not cursor's child is full
      */
     public boolean cursorIsFull()
     {
         boolean output=false;
         
+        //Getting the left, middle, and right node of cursor
         OrganismNode left=cursor.getLeft();
         OrganismNode middle=cursor.getMiddle();
         OrganismNode right=cursor.getRight();
@@ -630,9 +765,9 @@ public class OrganismTree
     }
     
     /**
+     * Returns the cursor OrganismNode
      * 
-     * 
-     * @return 
+     * @return Returns the cursor
      */
     public OrganismNode getCursor()
     {

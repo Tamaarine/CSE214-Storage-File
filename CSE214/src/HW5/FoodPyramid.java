@@ -5,6 +5,33 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 /**
+ * The FoodPyramid class will be the main driver application of the ternary 
+ * organism tree. It will contain a OrganismTree member variable that is named
+ * tree which will be the one that the user will be interacting with through a list
+ * of commands. At the start of the program, the user will be asked about the apex
+ * predator to get information about its name and diet in order to begin the organism
+ * tree, and cannot be changed after the user have entered it. The list of commands
+ * are.
+ * <p>
+ * (PC) - Create New Plant Child
+ * <p>
+ * (AC) -Create New Animal Child
+ * <p>
+ * (RC) - Remove Child
+ * <p>
+ * (P) - Print out Cursor's Prey
+ * <p>
+ * (C) - Print Out Food Chain
+ * <p>
+ * (F) - Print Out Food Pyramid at Cursor
+ * <p>
+ * (LP) - List All Plants Supporting Cursor
+ * <p>
+ * (R) - Reset Cursor to Root
+ * <p>
+ * (M) - Move Cursor to Child
+ * <p>
+ * (Q) - Quit
  * 
  * @author Ricky Lu
  *  email: ricky.lu@stonybrook.edu
@@ -13,15 +40,28 @@ import java.io.InputStreamReader;
  */
 public class FoodPyramid
 {
-    //Instance variable
+    //This OrganismTree will serve as the main OrganismTree that the user will
+    //be able to interacting with
     private OrganismTree tree;
     
-    //Default constructor
+    /**
+     * Default constructor of the FoodPyramid, it will take in an OrganismNode
+     * which is the apexPredator and start the OrganismTree with it
+     * 
+     * @param apexPredator 
+     *  The apex predator to start the tree with
+     */
     public FoodPyramid(OrganismNode apexPredator)
     {
         tree=new OrganismTree(apexPredator);
     }
     
+    /**
+     * 
+     * 
+     * @param args 
+     *  args contains the text from the command line that starts the program
+     */
     public static void main(String [] args)
     {
         InputStreamReader input=new InputStreamReader(System.in);
