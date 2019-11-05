@@ -57,20 +57,27 @@ public class FoodPyramid
     }
     
     /**
-     * 
+     * The main method will start the program and contain a menu screen that
+     * allow the user to interact various function with the OrganismTree
      * 
      * @param args 
      *  args contains the text from the command line that starts the program
      */
     public static void main(String [] args)
     {
+        //InputStreamReader and BufferedReader work together to receive the
+        //user input from the keyboard
         InputStreamReader input=new InputStreamReader(System.in);
         BufferedReader reader=new BufferedReader(input);
         
         String userInput="";
         
+        //This boolean represent whether or not the user have finish with the
+        //program or not
         boolean isFinished=false;
         
+        //apexValidInput are the boolean to check whether or not the finish have
+        //finished making the apexPredator for the start of the OrganismTree
         boolean apexValidInput=false;
         
         //This is before the consturction of the food pyramid. Asking the user for
@@ -155,8 +162,10 @@ public class FoodPyramid
         //Starting the organism tree with our apex predator
         OrganismTree foodTree=new OrganismTree(apexPredator);
         
+        //Making Prgoram
         while(!isFinished)
         {
+            //Menu options
             System.out.println("Menu:\n"
                     + "(PC) - Create New Plant Child\n"
                     + "(AC) - Create New Animal Child\n"
@@ -169,8 +178,8 @@ public class FoodPyramid
                     + "(M) - Move Cursor to Child\n"
                     + "(Q) - Quit\n");
             
+            //Asking the user for a option input
             System.out.print("Please select an option: ");
-            
             try
             {
                 userInput=reader.readLine();
@@ -184,14 +193,12 @@ public class FoodPyramid
             //child and add it to the cursor node
             if(userInput.equalsIgnoreCase("PC"))
             {
+                //These four boolean variables are used to whether or not to
+                //proceed to add the new plant node to the cursor
                 boolean isAPlant=foodTree.getCursor().getIsPlant();
-                
-                //Used to determine whether to proceed to add the animal or not
                 boolean cursorFull=foodTree.cursorIsFull();
-                
                 boolean isAHerbivore=foodTree.getCursor().getIsHerbivore();
                 boolean isACarnivore=foodTree.getCursor().getIsCarnivore();
-                
                 
                 //This means that the cursor is currently full of nodes therefore
                 //we tell the user that we cannot add anymore nodes to it
@@ -200,6 +207,7 @@ public class FoodPyramid
                     System.out.println("ERROR: There is no more room for more prey"
                             + " for this predator.\n");
                 }
+                //Otherwise we keep checking using the other booleans
                 else
                 {
                     //This means that the cursor is currently on a plant OrganismNode
@@ -208,12 +216,13 @@ public class FoodPyramid
                     if(isAPlant)
                     {
                         System.out.println("ERROR: The cursor is at a plant node. Plants"
-                                + " cannot be predators");
+                                + " cannot be predators.\n");
                     }
-                    //If it is not a plant then we can proceed to ask the user to add
-                    //a plant to the cursor
+                    //Then we keep going to check with the diet of the cursor
                     else
                     {
+                        //This means that the animal is either omnivore or
+                        //herbivore therefore we can add the new plant node to it
                         if(isACarnivore&&isAHerbivore||(isAHerbivore))
                         {
                             //Asking the user for the name of the plant organism
@@ -227,6 +236,7 @@ public class FoodPyramid
                                 System.out.println(i);
                             }
 
+                            //Adding the plant child to the foodTree at the cursor
                             try
                             {
                                 foodTree.addPlantChild(userInput);
@@ -240,10 +250,14 @@ public class FoodPyramid
                                 System.out.println(i+"\n");
                             }
                         }
+                        //But otherweise this means that the cursor is not a
+                        //omnivore or is a carnivore therefore we don't add the
+                        //new plant and tell the user about it
                         else
                         {
+                            //Error
                             System.out.println("ERROR: This prey cannot be added as it"
-                                    + " does not match the diet of the predator.");
+                                    + " does not match the diet of the predator.\n");
                         }
                     }
                 }
@@ -252,16 +266,17 @@ public class FoodPyramid
             //animal child and add it to the cursor
             else if(userInput.equalsIgnoreCase("AC"))
             {
+                //Information about the new animal cursor that is going to be added
                 String organismName="";
+                boolean validInput=false;
                 boolean organismIsHerbivore=false;
                 boolean organismIsCarnivore=false;
                 
-                boolean validInput=false;
-                
-                //Used to determine whether to proceed to add the animal or not
+                //These four boolean variables are used to determine whether to
+                //proceed to ask the user about the new animal node to add to
+                //the cursord
                 boolean cursorFull=foodTree.cursorIsFull();
                 boolean isAPlant=foodTree.getCursor().getIsPlant();
-                
                 boolean isAHerbivore=foodTree.getCursor().getIsHerbivore();
                 boolean isACarnivore=foodTree.getCursor().getIsCarnivore();
                 
@@ -272,17 +287,24 @@ public class FoodPyramid
                     System.out.println("ERROR: There is no more room for more prey"
                             + " for this predator.\n");
                 }
+                //Otherwise we keep checking
                 else
                 {
+                    //This means that the cursor is currently a plant therefore
+                    //we cannot add any prey to it
                     if(isAPlant)
                     {
                         System.out.println("ERROR: The cursor is at a plant node. Plants"
-                                + " cannot be predators");
+                                + " cannot be predators.\n");
                     }
+                    //Otherweise we continue checking
                     else
                     {
+                        //This means that the cursor is either a omnivore or a 
+                        //carnivore so adding a new animal node to it is okay
                         if(isAHerbivore&&isACarnivore||(isACarnivore))
                         {
+                            //Asking the name of the prey
                             System.out.print("What is the name of the organism?: ");
                             try
                             {
@@ -290,7 +312,8 @@ public class FoodPyramid
                             }
                             catch(IOException i)
                             {
-                                System.out.println("Error when entering the name of a organism to be added\n");
+                                System.out.println("Error when entering the name"
+                                        + " of a organism to be added\n");
                             }
 
                             //This for loop will be keep asking the user for a valid option for the
@@ -299,7 +322,8 @@ public class FoodPyramid
                             while(!validInput)
                             {
                                 //Prompting the user for a input
-                                System.out.print("Is the organism an herbivore / a carnivore / an omnivore?"
+                                System.out.print("Is the organism an herbivore /"
+                                        + " a carnivore / an omnivore?"
                                         + " (H / C / O): ");
                                 try
                                 {
@@ -337,13 +361,22 @@ public class FoodPyramid
 
                                     validInput=true;
                                 }
+                                //Telling the user that they have enter in a 
+                                //invalid option
+                                else
+                                {
+                                    System.out.println("Invalid apex predator diet"
+                                            + " option, please try again\n");
+                                }
+                                
                             }
 
                             //After the while loop then we have all of the information that we
                             //need to add the new organism node to the cursor
                             try
                             {
-                                foodTree.addAnimalChild(organismName, organismIsHerbivore, organismIsCarnivore);
+                                foodTree.addAnimalChild(organismName, organismIsHerbivore,
+                                        organismIsCarnivore);
                             }
                             catch(PositionNotAvailableException p)
                             {
@@ -354,70 +387,109 @@ public class FoodPyramid
                                 System.out.println(i+"\n");
                             }
                         }
+                        //But this means that the animal is not omnivore or is 
+                        //a herbivore therefore we have to tell the user that
+                        //they cannot add any prey to it
                         else
                         {
+                            //Error
                             System.out.println("ERROR: This prey cannot be added as it"
-                                    + " does not match the diet of the predator.");
+                                    + " does not match the diet of the predator.\n");
                         }
                     }
-                    
                 }
-                
             }
             //This means that the user have entered in RC which means to remove
             //a child node of the cursor based on the inputted name
             else if(userInput.equalsIgnoreCase("RC"))
             {
-                System.out.print("What is the name of the organism to be removed?: ");
-                try
-                {
-                    userInput=reader.readLine();
-                }
-                catch(IOException i)
-                {
-                    System.out.println("Error when entering a organism to remove");
-                }
+                boolean cursorEmpty=foodTree.cursorIsEmpty();
                 
-                try
+                //Again this means that the cursor have no prey then there
+                //is no point in entering any names
+                if(cursorEmpty)
                 {
-                    foodTree.removeChild(userInput);
+                    System.out.println("The cursor have no prey\n");
                 }
-                catch(IllegalArgumentException i)
+                //Then if cursor is not empty then we can proceed to ask about the
+                //child that it want to remove
+                else
                 {
-                    System.out.println(i);
+                    //Asking the user for the name of the cursor's child to remove
+                    System.out.print("What is the name of the organism to be removed?: ");
+                    try
+                    {
+                        userInput=reader.readLine();
+                    }
+                    catch(IOException i)
+                    {
+                        System.out.println("Error when entering a organism to remove");
+                    }
+
+                    //Trying to remove the child from the cursor
+                    try
+                    {
+                        foodTree.removeChild(userInput);
+                    }
+                    //IllegalArgumentException means that the child is not found in
+                    //the direct child of the cursor
+                    catch(IllegalArgumentException i)
+                    {
+                        System.out.println(i);
+                    }
                 }
-                
             }
+            //This means that the user have inputed in P which means to print out
+            //the prey of the cursor
             else if(userInput.equalsIgnoreCase("P"))
             {
-                try
-                {
-                    String toPrint=foodTree.listPrey();
-
-                    System.out.println(toPrint+"\n");
-                }
-                catch(IsPlantException i)
-                {
-                    System.out.println(i);
-                }
+                boolean cursorEmpty=foodTree.cursorIsEmpty();
                 
+                //This means that the cursor have no prey therefore we don't
+                //need to remove anything
+                if(cursorEmpty)
+                {
+                    System.out.println("The cursor have no prey\n");
+                }
+                //However, this means that the cursor have some prey therefore
+                //we can proceed to remove
+                else
+                {
+                    //Listing out the prey of the cursor
+                    try
+                    {
+                        String toPrint=foodTree.listPrey();
+
+                        System.out.println(toPrint+"\n");
+                    }
+                    catch(IsPlantException i)
+                    {
+                        System.out.println(i);
+                    }
+                }
             }
             //This means that the user want to print out the food chain 
             else if(userInput.equalsIgnoreCase("C"))
             {
+                //Printing out the foodchain by calling the listFoodChain mehtod
                System.out.println(foodTree.listFoodChain());
+                System.out.println("");
             }
             //This means that the user have inputted in F which means to print the
             //food pyramid at cursor. Calling the printOrganismTree method
             else if(userInput.equalsIgnoreCase("F"))
             {
+                //Printing out the OrganismTree by calling the printOrganismTree
+                //method
                 foodTree.printOrganismTree();
             }
-            //This means that the user have inputted LP which means to 
+            //This means that the user have inputted LP which means to list out
+            //all of the plants that is supporting the cursor
             else if(userInput.equalsIgnoreCase("LP"))
             {
+                //Listing out all the plant by calling the listAllPlants method
                 System.out.println(foodTree.listAllPlants());
-                
+                System.out.println("");
             }
             //This means that the user have uinputted in R which means to reset the
             //cursor back to the root and displaying the correct message
@@ -432,28 +504,42 @@ public class FoodPyramid
             //to one of its child
             else if(userInput.equalsIgnoreCase("M"))
             {
-                //Asking the user for the child to move the cursor to
-                System.out.print("Move to?: ");
-                try
+                boolean cursorEmpty=foodTree.cursorIsEmpty();
+                
+                //This means that there are no prey for the cursor to move to there
+                //fore there is no point in asking the user for a node
+                if(cursorEmpty)
                 {
-                    userInput=reader.readLine();
+                    System.out.println("The cursor have no prey to move to\n");
                 }
-                catch(IOException i)
+                //If this is true then there are node for the cursor to move to
+                //therefore we can ask the user which one
+                else
                 {
-                    System.out.println("Error when inputting a name to move "
-                            + "the cursor to");
+                    //Asking the user for the child to move the cursor to
+                    System.out.print("Move to?: ");
+                    try
+                    {
+                        userInput=reader.readLine();
+                    }
+                    catch(IOException i)
+                    {
+                        System.out.println("Error when inputting a name to move "
+                                + "the cursor to");
+                    }
+
+                    //Moving the cursor to one of it's child, if it doesn't find it as
+                    //a child then the corresponding message will be displayed to the user
+                    try
+                    {
+                        foodTree.moveCursor(userInput);
+                    }
+                    catch(IllegalArgumentException i)
+                    {
+                        System.out.println(i+"\n");
+                    }
                 }
                 
-                //Moving the cursor to one of it's child, if it doesn't find it as
-                //a child then the corresponding message will be displayed to the user
-                try
-                {
-                    foodTree.moveCursor(userInput);
-                }
-                catch(IllegalArgumentException i)
-                {
-                    System.out.println(i+"\n");
-                }
             }
             //This means that the user have inputted Q which means to shut down the program
             else if(userInput.equalsIgnoreCase("Q"))
@@ -464,6 +550,5 @@ public class FoodPyramid
                         + "Have a great day ^ w ^");
             }
         }
-        
     }
 }

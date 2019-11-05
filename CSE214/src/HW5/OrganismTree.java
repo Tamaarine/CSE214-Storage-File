@@ -189,8 +189,17 @@ public class OrganismTree
     {
         foodChainStr="";
         
-        //Calling the listFoodChainHelper method
-        listFoodChainHelper(root);
+        //This means taht the cursor is at the root therefore there is nothing
+        //to be printed
+        if(root==cursor)
+        {
+            foodChainStr="Cursor is at the root, it is the apex predator";
+        }
+        else
+        {
+            //Calling the listFoodChainHelper method
+            listFoodChainHelper(root);
+        }
         
         return foodChainStr;
         
@@ -416,6 +425,11 @@ public class OrganismTree
         String output="";
         
         output=listAllPlantsHelper(cursor);
+        
+        if(output.isEmpty())
+        {
+            output="There are no plants supporting this cursor";
+        }
         
         return output;
     }
@@ -686,7 +700,7 @@ public class OrganismTree
         //This means that there is no child to remove for the cursor
         if(left==null&&middle==null&&right==null)
         {
-            throw new IllegalArgumentException("There is no child to remove for this organism node");
+            throw new IllegalArgumentException("There is no child to remove for this organism node\n");
         }
         
         //This means that the left node is the one we need to remove
@@ -701,7 +715,7 @@ public class OrganismTree
             
             //Print out the approariate message after removing
             System.out.println(name+" has been successfully removed as prey for the "
-                    +cursor.getName());
+                    +cursor.getName()+"\n");
         }
         //This means that the middle node is the one we need to remove
         //and we must shift right to middle, and right to null
@@ -714,7 +728,7 @@ public class OrganismTree
             
             //Print out the approariate message after removing
             System.out.println(name+" has been successfully removed as prey for the "
-                    +cursor.getName());
+                    +cursor.getName()+"\n");
         }
         //This means that the right node is the one we need to remove
         //and we must set right to null
@@ -725,13 +739,13 @@ public class OrganismTree
             
             //Print out the approariate message after removing
             System.out.println(name+" has been successfully removed as prey for the "
-                    +cursor.getName());
+                    +cursor.getName()+"\n");
         }
         //If it dooesn't match with any of the child thus we throw the exception
         else
         {
             throw new IllegalArgumentException("ERROR: This prey does not exist for"
-                    + " this predator thus cannot successfully remove.");
+                    + " this predator thus cannot successfully remove.\n");
         }
     }
     
@@ -753,6 +767,35 @@ public class OrganismTree
         //This means that all of the nodes of the cursor are filled which means
         //that the cursor is full of child
         if(left!=null&&middle!=null&&right!=null)
+        {
+            output=true;
+            
+            return output;
+        }
+        
+        //If we are outside then that means that there is at least one node
+        //of the cursor is empty thus the cursor is not completely full
+        return output;
+    }
+    
+    /**
+     *  Returns the boolean value that represent whether the cursor's three child
+     *  is completely empty or not
+     * 
+     * @return Returns a boolean value that shows whether or not cursor is empty
+     */
+    public boolean cursorIsEmpty()
+    {
+         boolean output=false;
+        
+        //Getting the left, middle, and right node of cursor
+        OrganismNode left=cursor.getLeft();
+        OrganismNode middle=cursor.getMiddle();
+        OrganismNode right=cursor.getRight();
+        
+        //This means that all of the nodes of the cursor are filled which means
+        //that the cursor is full of child
+        if(left==null&&middle==null&&right==null)
         {
             output=true;
             
