@@ -1,4 +1,6 @@
-package HW5;
+package HW5Extra;
+
+import HW5.*;
 
 /**
  * OrganismNode class represent a single node in the OrganismTree. The node will represent

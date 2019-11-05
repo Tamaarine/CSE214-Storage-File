@@ -1,4 +1,6 @@
-package HW5;
+package HW5Extra;
+
+import HW5.*;
 
 /**
  * PositionNotAvailableException is a custom exception that is thrown when the

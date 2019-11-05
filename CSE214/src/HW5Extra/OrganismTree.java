@@ -1,4 +1,6 @@
-package HW5;
+package HW5Extra;
+
+import HW5.*;
 
 /**
  * The OrganismTree class will be the representation of the ternary tree of OrganismNode.
@@ -115,13 +117,63 @@ public class OrganismTree
         System.out.println("Cursor successfully moved to "+name+"\n");
     }
     
-    /**
-     * 
-     * 
-     * 
-     * @return
-     * @throws IsPlantException 
-     */
+    //Wrong method these two method will instead remove the node no matter where the
+    //child is
+    /*
+    public void moveCursor(String name) throws IllegalArgumentException
+    {
+        boolean found=findTarget(name,cursor);
+        
+        if(found)
+        {
+            System.out.println("Cursor successfully moved to "+name);
+        }
+        else
+        {
+            System.out.println(name+" cannot be found as a child of Cursor");
+        }
+    }
+    
+    private boolean findTarget(String name, OrganismNode dummyNode)
+    {
+        OrganismNode node=dummyNode;
+        
+        boolean output=false;
+        
+        //This is found return true no need to keep on going, cursor is on
+        //the target species
+        if(name.equalsIgnoreCase(node.getName()))
+        {
+            output=true;
+            
+            cursor=node;
+            
+            return output;
+        }
+        
+        if(node.getLeft()!=null)
+        {
+            output=findTarget(name, node.getLeft());
+        }
+        
+        if(output==false&&node.getMiddle()!=null)
+        {
+            
+            output=findTarget(name, node.getMiddle());
+        }
+        
+        if(output==false&&node.getRight()!=null)
+        {
+            
+            output=findTarget(name, node.getRight());
+        }
+        
+        return output;
+        
+            
+    }
+*/
+    
     public String listPrey() throws IsPlantException
     {
         String output=cursor.getName()+"->";
@@ -154,11 +206,8 @@ public class OrganismTree
         
     }
     
-    /**
-     * 
-     * 
-     * @return 
-     */
+    //This method will be tracking from the root of the food tree, which is the apex
+    //predator all the way up to the cursor
     public String listFoodChain()
     {
         foodChainStr="";
@@ -169,13 +218,6 @@ public class OrganismTree
         
     }
     
-    /**
-     * 
-     * 
-     * 
-     * @param dummyNode
-     * @return 
-     */
     private boolean listFoodChainHelper(OrganismNode dummyNode)
     {
         OrganismNode node=dummyNode;
@@ -232,11 +274,11 @@ public class OrganismTree
         }
         
         return output;
+        
+            
     }
     
-    /**
-     * 
-     */
+    
     public void printOrganismTree()
     {
        fixDepth(cursor,0);
@@ -244,11 +286,6 @@ public class OrganismTree
        printOrganismTreeHelper(cursor);
     }
     
-    /**
-     * 
-     * 
-     * @param dummyNode 
-     */
     public void printOrganismTreeHelper(OrganismNode dummyNode)
     {
         if(dummyNode==null)
@@ -291,12 +328,6 @@ public class OrganismTree
         
     }
     
-    /**
-     * 
-     * 
-     * @param dummyNode
-     * @param depth 
-     */
     private void fixDepth(OrganismNode dummyNode, int depth)
     {
         dummyNode.setDepth(depth);
@@ -317,11 +348,6 @@ public class OrganismTree
         }
     }
     
-    /**
-     * 
-     * 
-     * @return 
-     */
     public String listAllPlants()
     {
         String output="";
@@ -331,12 +357,6 @@ public class OrganismTree
         return output;
     }
     
-    /**
-     * 
-     * 
-     * @param dummyNode
-     * @return 
-     */
     private String listAllPlantsHelper(OrganismNode dummyNode)
     {
         OrganismNode node=dummyNode;
@@ -376,40 +396,11 @@ public class OrganismTree
         return output;
     }
     
-    /**
-     * This method creates a new animal nodew ith the specified name and the dietary
-     * preferences and add it to the cursor as one of its child
-     * <p>
-     * Precondition: The name is not duplicate, it is not the same name as one of
-     * the cursor's already's child. The cursor have an available position for another
-     * child node to be added
-     * <p>
-     * Postcondition: Either an exception is thrown or the new animal node named name
-     * is added as a child of the cursor with the specified diet preferences and the
-     * cursor did not mvoed
-     * 
-     * @param name
-     *  This is the name of the child node to be added
-     * @param isHerbivore
-     *  Dietary preference whether or not the child eat plant or not
-     * @param isCarnivore
-     *  Dietary preference whether or not the child eat meat
-     * @throws IllegalArgumentException
-     *  IllegalArgumentException is thrown to indicate that the given name shares
-     *  the same name of the already child of cursor
-     * @throws PositionNotAvailableException 
-     *  PositionNotAvailableException is thrown to indicate that there is no more
-     *  available child position for the new node to be added
-     */
     public void addAnimalChild(String name, boolean isHerbivore, boolean isCarnivore) throws IllegalArgumentException, PositionNotAvailableException
     {
-        //This String represent will be storing all of the prey of the cursor in
-        //a String format
         String preys="";
-        
         try
         {
-            //Getting the cursor's prey
             preys=listPrey();
             
             //This means that the new prey is already a prey of the spcies
@@ -419,36 +410,22 @@ public class OrganismTree
                 throw new IllegalArgumentException(name+" is already an prey of "+cursor.getName());
             }
             
-            //If we are outside then the name is not a duplicate therefore we can
-            //proceed to create the new OrganismNode with the name name to be
-            //add it into the cursor as a child
             OrganismNode toBeAdded=new OrganismNode();
             
-            //Setting the name of the new node
             toBeAdded.setName(name);
-            
-            //Setting the dietary preference of the new node
             toBeAdded.setIsCarnivore(isCarnivore);
             toBeAdded.setIsHerbivore(isHerbivore);
-            
-            //Because this method adds an animal child thus the new node is not a
-            //plant
             toBeAdded.setIsPlant(false);
             
-            //Adding it to the cursor
             try
             {
                 cursor.addPrey(toBeAdded);
             }
-            //This means that the diet doesn't match with the cursor thus the error
-            //is thrown to tell the user
             catch(DietMismatchException d)
             {
                 System.out.println(d);
             }
         }
-        //This means that the cursor is a plant therefore it cannot have any prey
-        //thus the error is thrown to tell the user
         catch(IsPlantException i)
         {
             System.out.println("Using listPrey in addAnimalChild method on a plant,"
@@ -457,23 +434,6 @@ public class OrganismTree
         
     }
     
-    /**
-     * This method create a new plant OrganismNode with the specified name and
-     * add it as a child of the cursor node
-     * <p>
-     * Precondition: The name is not a duplicate of a already child of the cursor,
-     * and that the cursor have an available postiion for another child node to be
-     * added to it
-     * 
-     * @param name
-     *  This is the name of the child node that is going to be added
-     * @throws IllegalArgumentException
-     *  IllegalArgumentException is thrown to indicate that the given name is a 
-     *  duplicate of a child node in the cursor
-     * @throws PositionNotAvailableException 
-     *  PositionNotAvailableException is thrown to indicate that there is no more
-     *  available child spot for the new node to be added
-     */
     public void addPlantChild(String name) throws IllegalArgumentException, PositionNotAvailableException
     {
         //preys will be containing the listPrey String of the cursor, this will
@@ -482,7 +442,6 @@ public class OrganismTree
         String preys="";
         try
         {
-            //Gettign the cursor's prey
             preys=listPrey();
             
             //This means that the prey that is going to be added is a duplicate
@@ -498,54 +457,32 @@ public class OrganismTree
             //Setting the name of the new plant to the given name
             toBeAdded.setName(name);
             toBeAdded.setIsPlant(true);
-            
-            //Adding the new node into the cursor
+
             try
             {
                 cursor.addPrey(toBeAdded);
             }
-            //IsPlantException is thrown if the cursor is a plant to tell the user
-            //that a plant cannot have any prey
             catch(IsPlantException i)
             {
                 System.out.println(i);
             }
-            //DietMismatchException is thrown if the new node does not match with
-            //the cursor species' diet preferences
             catch(DietMismatchException d)
             {
                 System.out.println(d);
             }
         }
-        //Because listPrey throws a error when being used we must catch it and
-        //tell the user about it 
         catch(IsPlantException i)
         {
             System.out.println(i);
         }
+        
+
+
+        
     }
     
-    /**
-     * This method remove the child node of cursor with the name name, and then
-     * shifts the remaining nodes to the leftmost spot. The descendants of the
-     * deleted node are remvoed as well
-     * <p>
-     * Precondition: The name references to a direct child of the cursor
-     * <p>
-     * Postcondition: The child node of cursor with the name name have been removed
-     * and the remaining node have been properly shifted, and the descendants of the
-     * the removed node are also deleted as well, and that cursor have not been moved
-     * 
-     * @param name
-     *  The name of the node that is going to be deleted
-     * @throws IllegalArgumentException 
-     *  IllegalArgumentException is thrown if the name does not match with a
-     *  direct child of the cursor
-     */
     public void removeChild(String name) throws IllegalArgumentException
     {
-        //Getting the left, middle, right child of the cursor to be checking
-        //with the name
         OrganismNode left=cursor.getLeft();
         OrganismNode middle=cursor.getMiddle();
         OrganismNode right=cursor.getRight();
@@ -560,8 +497,6 @@ public class OrganismTree
         //and we must shift middle to left, and right to middle, and set right to null
         if(left!=null&&name.equals(left.getName()))
         {
-            //Shifting the remaining child of the cursor so it is to the leftmost
-            //as possible
             cursor.setLeft(middle);
             cursor.setMiddle(right);
             cursor.setRight(null);
@@ -574,8 +509,6 @@ public class OrganismTree
         //and we must shift right to middle, and right to null
         else if(middle!=null&&name.equalsIgnoreCase(middle.getName()))
         {
-            //Shifting the remaining child of the cursor so it is to the leftmost
-            //as possible
             cursor.setMiddle(right);
             cursor.setRight(null);
             
@@ -587,7 +520,6 @@ public class OrganismTree
         //and we must set right to null
         else if(right!=null&&name.equalsIgnoreCase(right.getName()))
         {
-            //Since it only removed the right there is no need to shift all of the other nodes
             cursor.setRight(null);
             
             //Print out the approariate message after removing
@@ -602,11 +534,94 @@ public class OrganismTree
         }
     }
     
-    /**
-     * 
-     * 
-     * @return 
-     */
+    
+    /*
+    public void removeChild(String name) throws IllegalArgumentException
+    {
+        boolean complete=removeHelper(name,null,cursor);
+        
+        if(complete)
+        {
+            System.out.println(name+" is removed successfully");
+        }
+        else
+        {
+            System.out.println(name+" is not found");
+        }
+    }
+    
+    private boolean removeHelper(String name, OrganismNode parent, OrganismNode child)
+    {
+        boolean taskComplete=false;
+        
+        //This is the base case when the child is the one that we are looking for
+        //therefore we must remove the child from the parent
+        if(name.equals(child.getName()))
+        {
+            //This means that the child is the root of the entire organismTree
+            //and it is the one we need to remove, therefore we just set the entire
+            //tree to be null because we are removing that root
+            if(parent==null)
+            {
+                root=null;
+            }
+            else
+            {
+                OrganismNode parentLeft=parent.getLeft();
+                OrganismNode parentMiddle=parent.getMiddle();
+                OrganismNode parentRight=parent.getRight();
+
+                if(parentLeft==child)
+                {
+                    parent.setLeft(parentMiddle);
+                    parent.setMiddle(parentRight);
+                    parent.setRight(null);
+                }
+                else if(parentMiddle==child)
+                {
+                    parent.setMiddle(parentRight);
+                    parent.setRight(null);
+                }
+                else if(parentRight==child)
+                {
+                    parent.setRight(null);
+                }
+            }
+            
+            return true;
+        }
+        
+        //If we are not in the base case then that means that the child is not the
+        //node we are looking for
+        if(child.getLeft()!=null&&!taskComplete)
+        {
+            OrganismNode dummyParent=child;
+            OrganismNode dummyChild=child.getLeft();
+            
+            taskComplete=removeHelper(name,dummyParent,dummyChild);
+        }
+        
+        if(child.getMiddle()!=null&&!taskComplete)
+        {
+            OrganismNode dummyParent=child;
+            OrganismNode dummyChild=child.getMiddle();
+            
+            taskComplete=removeHelper(name,dummyParent,dummyChild);
+        }
+        
+        if(child.getRight()!=null&&!taskComplete)
+        {
+            OrganismNode dummyParent=child;
+            OrganismNode dummyChild=child.getRight();
+            
+            taskComplete=removeHelper(name,dummyParent,dummyChild);
+        }
+        
+        return taskComplete;
+    }
+
+    */
+    
     public boolean cursorIsFull()
     {
         boolean output=false;
@@ -629,11 +644,6 @@ public class OrganismTree
         return output;
     }
     
-    /**
-     * 
-     * 
-     * @return 
-     */
     public OrganismNode getCursor()
     {
         return cursor;
