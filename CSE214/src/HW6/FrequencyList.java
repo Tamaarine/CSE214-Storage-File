@@ -3,25 +3,55 @@ package HW6;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * This class will be representing one word's frequency in each and every single given
+ * Passages. The frequencies will be stored in an external data structure which is
+ * an ArrayList of Integers. It will contain a String instance variable to keep track
+ * of which word this FrequencyList is representing
+ * 
+ * @author Ricky Lu
+ *  email: ricky.lu@stonybrook.edu
+ *  Stony Brook ID: 112829937
+ *  Recitation: Wednesday 11:00AM - 11:53Am
+ */
 public class FrequencyList
 {   
-    //Instance variables
+    //The word this FrequencyList represents
     private String word;
+    
+    //This stores the frequency of the word as it relattes to each Passages
     private ArrayList<Double> frequencies;
+    
+    //passageindices will have a collection of the title of each Passage as its key
+    //and the corresponding index in the ArrayList
     private HashMap<String, Integer> passageIndices;
     
     //arrayCounter will be keeping track of the net available space in frequencies
     private int arrayCounter;
     
+    /**
+     * Paramaterized constructor of the FrequencyList, it will construct a
+     * FrequencyList based on the given word and the given passages
+     * 
+     * @param word
+     *  The word for this FrequencyList to represent
+     * @param passages 
+     *  The list of passages to pull the information about word from
+     */
     public FrequencyList(String word, ArrayList<Passage> passages)
     {
+        //Setting the word to the given word
         this.word=word;
         
+        //Setting the array counter to be 0 for the next available space
         arrayCounter=0;
         
+        //Default value
         frequencies=new ArrayList();
         passageIndices=new HashMap();
         
+        //This for loop will go through each and every single passages and check
+        //for the word frequency of each
         for(int i=0;i<passages.size();i++)
         {
             //p will be representing every single passage in passages
@@ -50,9 +80,18 @@ public class FrequencyList
                 arrayCounter++;
             }
         }
-        
     }
     
+    /**
+     * This method will add a Passage to this FrequencyList
+     * <p>
+     * Postcondition: The passageIndices will now contain p's title which maps to
+     * the next available index in this ArrayList, and that the ArrayList will now
+     * also contain an additional index containing the frequency of word in the Passage
+     * 
+     * @param p 
+     *  The Passage to add to this FrequencyList
+     */
     public void addPassage(Passage p)
     {
         //Getting the title's name
@@ -79,12 +118,23 @@ public class FrequencyList
         //And we don't add it if the frequency is 0 since there is no point
     }
     
+    /**
+     * Returns the frequency of the word that this FrequencyList hold in the given
+     * Passage. It will return 0 if the Passage does not contain the word
+     * 
+     * @param p
+     *  The Passage to check the word in
+     * @return Returns the frequency of the word that occurs in the given passage
+     */
     public double getFrequency(Passage p)
     {
+        //Output will represent the frequency of word in Passage p
         double output=0;
         
+        //Getting the title of the Passage so we can search through passageIndices
         String passageTitle=p.getTitle();
         
+        //Searching through passageIndices
         Object obj=passageIndices.get(passageTitle);
         
         //That means that the given passage is inside the ArrayList
@@ -105,7 +155,11 @@ public class FrequencyList
         }
     }
     
-    //Accessor method
+    /**
+     * Return the word that this FrequencyList is currently holding
+     * 
+     * @return Returns the word that this FrequencyList is currently holding
+     */
     public String getWord()
     {
         return word;
