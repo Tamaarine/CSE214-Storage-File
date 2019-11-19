@@ -14,25 +14,38 @@ public class Passage extends HashMap<String, Integer>
 {
     //Instance variables
     private String title;
-    private int wordCount;
+     int wordCount;
     private HashMap<String, Double> similarTitles;
-    private HashMap stopWordStr;
+    private static HashMap stopWordStr;
     
     //Paramaterized constructor
     public Passage(String title, File file)
     {
         this.title=title;
         
-        stopWordStr=new HashMap();
-        
-        produceStopWord(new File("StopWords.txt"));
+        similarTitles=new HashMap();
         
         parseFile(file);
+    }
+    
+    public Passage()
+    {
+        title="";
+        
+        similarTitles=new HashMap();
+        
+        stopWordStr=new HashMap();
     }
     
     public static double cosineSimilarity(Passage passage1, Passage passage2)
     {
         double output;
+        
+        HashMap similar1=passage1.getSimilarTitles();
+        HashMap similar2=passage2.getSimilarTitles();
+        
+        String passage1Name=passage1.getTitle();
+        String passage2Name=passage2.getTitle();
         
         Set<String> words1=passage1.getWords();
         Set<String> words2=passage2.getWords();
@@ -43,8 +56,9 @@ public class Passage extends HashMap<String, Integer>
         ArrayList<Double> topPortion=new ArrayList();
         ArrayList<Double> botLeftPart=new ArrayList();
         ArrayList<Double> botRightPart=new ArrayList();
+        
         //We use words1
-        if(length1<length2)
+        if(length1>length2)
         {
             for(String word:words1)
             {
@@ -98,7 +112,21 @@ public class Passage extends HashMap<String, Integer>
             sumOfRight+=d;
         }
         
-        output=sumOfTop/(Math.sqrt(sumOfLeft)*Math.sqrt(sumOfRight));
+        output=(sumOfTop)/(Math.sqrt(sumOfLeft)*Math.sqrt(sumOfRight));
+        
+        Object keyValue1=similar1.get(passage2Name);
+        Object keyValue2=similar2.get(passage1Name);
+        
+        if(keyValue1==null)
+        {
+            similar1.put(passage2Name, output);
+        }
+        
+        if(keyValue2==null)
+        {
+            similar2.put(passage1Name, output);
+        }
+        
         
         return output;
         
@@ -337,6 +365,17 @@ public class Passage extends HashMap<String, Integer>
         
         //After the adding process, there might be empty spaces that is mapped
         //into passage therefore we must remove it
+        Object obj=this.get("");
+        
+        int spaces=0;
+        
+        if(obj!=null)
+        {
+            spaces=(int)obj;
+        }
+        
+        wordCount=wordCount-spaces;
+        
         this.remove("");
     }
     
@@ -425,7 +464,7 @@ public class Passage extends HashMap<String, Integer>
     
     public HashMap getSimilarTitles()
     {
-        
+        return similarTitles;
     }
     
     //Mutator method
@@ -438,7 +477,6 @@ public class Passage extends HashMap<String, Integer>
     {
         this.similarTitles=similarTitles;
     }
-    
     
     public String toString()
     {
