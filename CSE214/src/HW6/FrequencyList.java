@@ -110,19 +110,5 @@ public class FrequencyList
     {
         return word;
     }
-    
-    public ArrayList<Double> getFrequencies()
-    {
-        return frequencies;
-    }
-    
-    public String toString()
-    {
-        String output="";
-        
-        output=frequencies.toString();
-        
-        return output;
-    }
-    
+   
 }

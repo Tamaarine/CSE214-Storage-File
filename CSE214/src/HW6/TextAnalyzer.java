@@ -22,8 +22,6 @@ public class TextAnalyzer
     {
         DecimalFormat df=new DecimalFormat("0");
         
-        TextAnalyzer analyzer;
-        
         InputStreamReader input=new InputStreamReader(System.in);
         BufferedReader reader=new BufferedReader(input);
         
@@ -46,7 +44,7 @@ public class TextAnalyzer
         ArrayList<Passage> passages=new ArrayList();
         ArrayList<String> titles=new ArrayList();
         
-        File directoryOfFiles[]=new File("C:\\Users\\FreezyCold\\Desktop\\CSE214 Storage File\\HW6 Test").listFiles();
+        File directoryOfFiles[]=new File(userInput).listFiles();
         
         //This is the file to store the location of the StopWords
         //Since we are guranteed that StopWords.txt will be in the directory
@@ -73,7 +71,11 @@ public class TextAnalyzer
         {
             if(!i.getName().equals("StopWords.txt"))
             {
-                String title=i.getName();
+                String fileName=i.getName();
+                
+                int comma=fileName.indexOf(".");
+                
+                String title=fileName.substring(0,comma);
                 
                 Passage toBeAdded=new Passage(title,i);
                 
@@ -83,10 +85,6 @@ public class TextAnalyzer
                 titles.add(title);
             }
         }
-        
-        FrequencyTable toBeAdded=FrequencyTable.buildTable(passages);
-        
-        analyzer=new TextAnalyzer(toBeAdded);
         
         for(int i=0;i<passages.size();i++)
         {
@@ -102,8 +100,10 @@ public class TextAnalyzer
             }
         }
         
-        String titleFormat="%-40s|%-50s";
-        System.out.println(String.format(titleFormat, "Hello there mother","HIIIIIiiii"));
+        String titleFormat="%-35s|%-35s";
+        System.out.println(String.format(titleFormat, "Text (title)","Similarities (%)"));
+        System.out.println("---------------------------------------------------------"
+                + "--------------------------------------------------------------");
         
         String formattedPercent="";
         
@@ -115,23 +115,53 @@ public class TextAnalyzer
             {
                 if(!name.equals(p.getTitle()))
                 {
-                    formattedPercent+=name+df.format((double)map.get(name)*100)+",";
+                    formattedPercent+=name+" ("+df.format((double)map.get(name))+"%),";
                 }
             }
             
             System.out.println(String.format(titleFormat, p.getTitle(),formattedPercent));
             
+            System.out.println("----------------------------------------------------------"
+                    + "----------------------------------------------------------");
+            
             formattedPercent="";
         }
         
-        System.out.println("------------");
+        System.out.println("Suspected Texts With Same Authors");
+        System.out.println("----------------------------------------------------------------------------");
         
-        Passage pass1=new Passage("Night",new File("C:\\Users\\FreezyCold\\Desktop\\CSE214 Storage File\\HW6 Test\\Frankenstein.txt"));
-        Passage pass2=new Passage("Hey",new File("C:\\Users\\FreezyCold\\Desktop\\CSE214 Storage File\\HW6 Test\\ThatLittleSquareBox.txt"));
+        for(Passage p:passages)
+        {
+            HashMap map=p.getSimilarTitles();
+            
+            for(Passage p2:passages)
+            {
+                String name=p2.getTitle();
+                
+                HashMap map2=p2.getSimilarTitles();
+                
+                if(!name.equals(p.getTitle()))
+                {
+                    Object obj=map.get(name);
+                    
+                    if(obj!=null)
+                    {
+                        double similarPercent=(double)obj;
+                        
+                        if(similarPercent>=60)
+                        {
+                            System.out.println("'"+p.getTitle()+"' and '"+name+"' may"
+                                    + " have the same author ("+df.format(similarPercent)+"% similar).");
+                            map.remove(name);
+                            map2.remove(p.getTitle());
+                        }
+                    }
+                }
+            }
+        }
         
-        System.out.println(Passage.cosineSimilarity(pass1, pass2));
         
-        System.out.println(passages.get(2).wordCount);
-         
+            
+        
     }
 }

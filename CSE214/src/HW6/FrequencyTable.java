@@ -43,7 +43,19 @@ public class FrequencyTable extends ArrayList<FrequencyList>
     
     public void addPassage(Passage p) throws IllegalArgumentException
     {
+        //This means that the passage is either null or empty therefore we have 
+        //to tell the user that
+        if(p==null||p.getWordCount()==0)
+        {
+            throw new IllegalArgumentException("Passage is empty or null");
+        }
         
+        for(int i=0;i<size();i++)
+        {
+            FrequencyList listI=get(i);
+            
+            listI.addPassage(p);
+        }
     }
     
     public double getFrequency(String word, Passage p) throws IllegalArgumentException
@@ -52,18 +64,4 @@ public class FrequencyTable extends ArrayList<FrequencyList>
         
         return output;
     }
-    
-    public String toString()
-    {
-        String output="";
-        
-        for(FrequencyList f:this)
-        {
-            output+=f+"\n";
-        }
-        
-        return output;
-    }
-    
-    
 }

@@ -58,7 +58,7 @@ public class Passage extends HashMap<String, Integer>
         ArrayList<Double> botRightPart=new ArrayList();
         
         //We use words1
-        if(length1>length2)
+        if(length1<length2)
         {
             for(String word:words1)
             {
@@ -113,6 +113,8 @@ public class Passage extends HashMap<String, Integer>
         }
         
         output=(sumOfTop)/(Math.sqrt(sumOfLeft)*Math.sqrt(sumOfRight));
+        
+        output=output*100;
         
         Object keyValue1=similar1.get(passage2Name);
         Object keyValue2=similar2.get(passage1Name);
