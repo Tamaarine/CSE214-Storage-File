@@ -1,6 +1,8 @@
 package HW7;
 
-public class User
+import java.io.Serializable;
+
+public class User implements Serializable
 {
     //Instance variables
     private String userName;
@@ -16,6 +18,7 @@ public class User
         //in the index position before incrementing the userCount. So if this constructor
         //is called 
         indexPos=userCount;
+        
         //We have to increment the userCount because we just added in a new user
         userCount++;
     }
@@ -42,9 +45,12 @@ public class User
         userName=givenName;
     }
     
+    //toString method
     public String toString()
     {
+        String output=userName;
         
+        return output;
     }
     
 }
