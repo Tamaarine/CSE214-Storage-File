@@ -138,6 +138,22 @@ public class FollowGraph implements Serializable
     
     public String shortestPath(String userFrom, String userTo)
     {
+        String output="";
+        
+        Double dist[][]=new Double[MAX_USERS][MAX_USERS];
+        User next[][]=new User[MAX_USERS][MAX_USERS];
+        
+        for(int r=0;r<dist.length;r++)
+        {
+            for(int c=0;c<dist[0].length;c++)
+            {
+                dist[r][c]=Double.POSITIVE_INFINITY;
+                next[r][c]=null;
+            }
+        }
+        
+        
+        
         
     }
     
