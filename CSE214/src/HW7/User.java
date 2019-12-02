@@ -9,6 +9,9 @@ public class User implements Serializable
     private int indexPos;
     private static int userCount=0;
     
+    private int numberOfFollower;
+    private int numberOfFollowing;
+    
     //Paramaterized constructor of the user
     public User(String givenName)
     {
@@ -21,6 +24,9 @@ public class User implements Serializable
         
         //We have to increment the userCount because we just added in a new user
         userCount++;
+        
+        numberOfFollower=0;
+        numberOfFollowing=0;
     }
     
     //Accessor method
@@ -38,11 +44,51 @@ public class User implements Serializable
     {
         return indexPos;
     }
+    
+    public int getNumFollower()
+    {
+        return numberOfFollower;
+    }
+    
+    public int getNumFollowing()
+    {
+        return numberOfFollowing;
+    }
 
     //Mutator method
     public void setUserName(String givenName)
     {
         userName=givenName;
+    }
+    
+    public void setNumFollowing(int givenNum)
+    {
+        numberOfFollowing=givenNum;
+    }
+    
+    public void setNumFollower(int givenNum)
+    {
+        numberOfFollower=givenNum;
+    }
+    
+    public void setIndexPos(int givenNum)
+    {
+        indexPos=givenNum;
+    }
+    
+    public static void decreaseUserCount()
+    {
+        userCount--;
+    }
+    
+    public void decreaseFollower()
+    {
+        numberOfFollower--;
+    }
+    
+    public void decreaseFollowing()
+    {
+        numberOfFollowing--;
     }
     
     //toString method
@@ -52,5 +98,8 @@ public class User implements Serializable
         
         return output;
     }
+    
+
+   
     
 }

@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.Collections;
 
 public class FollowGraphDriver
 {
@@ -42,7 +43,6 @@ public class FollowGraphDriver
         {
             System.out.println(c);
         }
-        
         
         //This String will be keeping track of the userInput
         String userInput="";
@@ -127,17 +127,78 @@ public class FollowGraphDriver
                 
                 graph.addConnection(userFrom, userTo);
             }
+            //This means that the user have entered in AU which means to load in a
+            //file that contains different users
             else if(userInput.equalsIgnoreCase("AU"))
             {
+                //Asking the user for the file name
+                System.out.print("Enter the file name: ");
+                try
+                {
+                    userInput=reader.readLine();
+                }
+                catch(IOException i)
+                {
+                    System.out.println("Error when entering in the file name to load");
+                }
                 
+                graph.loadAllUsers(userInput);
             }
             else if(userInput.equalsIgnoreCase("AC"))
             {
+                System.out.print("Enter the file name: ");
+                try
+                {
+                    userInput=reader.readLine();
+                }
+                catch(IOException i)
+                {
+                    System.out.println("Error when entering the connection text file");
+                }
                 
+                graph.loadAllConnections(userInput);
             }
+            //This means that the user have entered in P which means to print all
+            //users based on the next menu options that user picked which sorts
+            //the user list in a specific order
             else if(userInput.equalsIgnoreCase("P"))
             {
-                graph.printAllUsers(null);
+                System.out.println("(SA) Sort Users by Name\n"
+                        + "(SB) Sort Users by Number of Followers\n"
+                        + "(SC) Sort Users by Number of Following\n"
+                        + "(Q) Quit - Going back to the main menu\n");
+                
+                System.out.print("Enter a selection: ");
+                try
+                {
+                    userInput=reader.readLine();
+                }
+                catch(IOException i)
+                {
+                    System.out.println("Error when entering in the secondary option"
+                            + " for the print menu");
+                }
+                
+                //This means that the user want to sort the list of users by 
+                //their names
+                if(userInput.equalsIgnoreCase("SA"))
+                {
+                    graph.printAllUsers(new NameComparator());
+                }
+                //This means that the user want to sort the list of users by their
+                //amount of followers they have
+                else if(userInput.equalsIgnoreCase("SB"))
+                {
+                    graph.printAllUsers(new FollowersComparator());
+                }
+                //This means that the user want to sort the list of users by their
+                //amount of following
+                else if(userInput.equalsIgnoreCase("SC"))
+                {
+                    graph.printAllUsers(new FollowingComparator());
+                }
+                
+                System.out.println();
             }
             else if(userInput.equalsIgnoreCase("L"))
             {
@@ -155,9 +216,7 @@ public class FollowGraphDriver
                     System.out.println("Error when entering the user to remove");
                 }
                 
-                
-                
-                
+                graph.removeUser(userInput);
             }
             else if(userInput.equalsIgnoreCase("RC"))
             {
@@ -199,6 +258,9 @@ public class FollowGraphDriver
             {
                 isFinished=true;
                 
+                System.out.println("FollowGraph object saved into file FollowGraph.obj");
+                System.out.println("Program terminating.... Have a great day ^ w ^!");
+                
                 //We have to do the serailization here
                 try
                 {
@@ -215,8 +277,6 @@ public class FollowGraphDriver
                 {
                     System.out.println("Error when constructing outStream");
                 }
-                
-                
             }
             
             

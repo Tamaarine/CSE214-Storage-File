@@ -1,15 +1,18 @@
 package HW7;
 
-public class NameComparator implements Comparator
+import java.util.Comparator;
+
+public class NameComparator implements Comparator<User>
 {
     public NameComparator()
     {
         
     }
-    
-    public int compare(Object o1, Object o2)
+
+    @Override
+    public int compare(User user1, User user2)
     {
-        
-        
+        //Calling the compareTo method of the String to compare those two users
+        return user1.getUserName().compareTo(user2.getUserName());
     }
 }
