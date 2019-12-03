@@ -1,13 +1,7 @@
-na, omg
-na, your mum
-na, ricky
-na, doreen
-na, wu
-na, janna
-omg, ricky
-xin, ricky
-ricky, xin
-ricky, doreen
-doreen, janna
-fuck off, fuck you
-janna, ricky
+paul smith, homer simpson
+homer simpson, jane doe
+jane doe, paul smith
+paul smith, jane doe
+tom doe, jane doe
+bart simpson, homer simpson
+bart simpson, paul smith

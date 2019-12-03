@@ -202,7 +202,30 @@ public class FollowGraphDriver
             }
             else if(userInput.equalsIgnoreCase("L"))
             {
+                String from="";
+                String to="";
                 
+                System.out.print("Please enter the desired source: ");
+                try
+                {
+                    from=reader.readLine();
+                }
+                catch(IOException i)
+                {
+                    System.out.println(i);
+                }
+                
+                System.out.print("Please enter the desired destination: ");
+                try
+                {
+                    to=reader.readLine();
+                }
+                catch(IOException i)
+                {
+                    System.out.println(i);
+                }
+                
+                System.out.println(graph.shortestPath(from, to));
             }
             else if(userInput.equalsIgnoreCase("RU"))
             {

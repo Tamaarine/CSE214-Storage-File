@@ -79,6 +79,7 @@ public class User implements Serializable
     public static void decreaseUserCount()
     {
         userCount--;
+        System.out.println(userCount);
     }
     
     public void decreaseFollower()

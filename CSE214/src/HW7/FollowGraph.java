@@ -30,9 +30,6 @@ public class FollowGraph implements Serializable
     
     public void addUser(String userName)
     {
-        //This is the new user that is oging to be added to the list of users
-        User toBeAdded=new User(userName);
-        
         //This variable will be determining whether the user already existed in
         //the ArrayList
         boolean userExisted=false;
@@ -55,6 +52,9 @@ public class FollowGraph implements Serializable
         //can add in the user
         if(!userExisted)
         {
+            //This is the new user that is oging to be added to the list of users
+            User toBeAdded=new User(userName);
+            
             users.add(toBeAdded);
         }
     }
@@ -64,60 +64,63 @@ public class FollowGraph implements Serializable
         User theUserFrom=null;
         User theUserTo=null;
         
-        //This for loop will be responisble going through the entire list of
-        //users and finding the two users, userFrom and userTo's User object
-        for(int i=0;i<users.size();i++)
+        if(!userFrom.equals(userTo))
         {
-            User userAtI=users.get(i);
-            
-            //This means that the userFrom is found
-            if(userAtI.getUserName().equals(userFrom))
+            //This for loop will be responisble going through the entire list of
+            //users and finding the two users, userFrom and userTo's User object
+            for(int i=0;i<users.size();i++)
             {
-                theUserFrom=userAtI;
+                User userAtI=users.get(i);
+
+                //This means that the userFrom is found
+                if(userAtI.getUserName().equals(userFrom))
+                {
+                    theUserFrom=userAtI;
+                }
+                //This means that the userTo is found
+                else if(userAtI.getUserName().equals(userTo))
+                {
+                    theUserTo=userAtI;
+                }
             }
-            //This means that the userTo is found
-            else if(userAtI.getUserName().equals(userTo))
+
+            //After the for loop either the userFrom and userTo are both found or
+            //one of the is null or both of them are null, if one of them are not found
+            //we don't do anything. But if they are found then we will add the new
+            //connections by getting their respective index
+            if(theUserFrom!=null&&theUserTo!=null)
             {
-                theUserTo=userAtI;
+                //Getting the index of both user
+                int userFromIndex=theUserFrom.getIndexPos();
+                int userToIndex=theUserTo.getIndexPos();
+
+                //This means that the connection did not exist before therefore we have
+                //to make it exist and increment their follower and following count
+                //respectively
+                if(!connections[userFromIndex][userToIndex])
+                {
+                    //Updating the number of followers and followings
+                    //This is information for userFrom
+                    int numberOfFollowing=theUserFrom.getNumFollowing();
+
+                    //Updating the number of following for theUserFrom because it is following
+                    //a new person
+                    theUserFrom.setNumFollowing(numberOfFollowing+1);
+
+                    //This is inforamtion for userTo
+                    int numberOfFollower=theUserTo.getNumFollower();
+
+                    //Updating the number of follower for the userTo because it have
+                    //a new person following them
+                    theUserTo.setNumFollower(numberOfFollower+1);
+
+                    //Adding the connecting in the matrix and since the graph is directed
+                    //only the connection userFrom to userTo is established
+                    connections[userFromIndex][userToIndex]=true;
+                }
+                //Else we don't need to do any more updates because the connections already
+                //existed
             }
-        }
-        
-        //After the for loop either the userFrom and userTo are both found or
-        //one of the is null or both of them are null, if one of them are not found
-        //we don't do anything. But if they are found then we will add the new
-        //connections by getting their respective index
-        if(theUserFrom!=null&&theUserTo!=null)
-        {
-            //Getting the index of both user
-            int userFromIndex=theUserFrom.getIndexPos();
-            int userToIndex=theUserTo.getIndexPos();
-            
-            //This means that the connection did not exist before therefore we have
-            //to make it exist and increment their follower and following count
-            //respectively
-            if(!connections[userFromIndex][userToIndex])
-            {
-                //Updating the number of followers and followings
-                //This is information for userFrom
-                int numberOfFollowing=theUserFrom.getNumFollowing();
-
-                //Updating the number of following for theUserFrom because it is following
-                //a new person
-                theUserFrom.setNumFollowing(numberOfFollowing+1);
-
-                //This is inforamtion for userTo
-                int numberOfFollower=theUserTo.getNumFollower();
-
-                //Updating the number of follower for the userTo because it have
-                //a new person following them
-                theUserTo.setNumFollower(numberOfFollower+1);
-
-                //Adding the connecting in the matrix and since the graph is directed
-                //only the connection userFrom to userTo is established
-                connections[userFromIndex][userToIndex]=true;
-            }
-            //Else we don't need to do any more updates because the connections already
-            //existed
         }
     }
     
@@ -186,6 +189,10 @@ public class FollowGraph implements Serializable
                 }
             }
             
+            //After the previous process then we proced to remove the toRemove
+            //user from the list of users
+            users.remove(toRemoveIndex);
+            
             for(int i=0;i<users.size();i++)
             {
                 User userI=users.get(i);
@@ -193,14 +200,13 @@ public class FollowGraph implements Serializable
                 userI.setIndexPos(i);
             }
             
-            //After the previous process then we proced to remove the toRemove
-            //user from the list of users
-            users.remove(toRemoveIndex);
             
             //Then we have to decrease the number of users to update the next
             //available position in the matrix
             User.decreaseUserCount();
         }
+        
+        System.out.println(user+" have been removed");
     }
     
     public void removeConnection(String userFrom, String userTo)
@@ -252,9 +258,106 @@ public class FollowGraph implements Serializable
     
     public String shortestPath(String userFrom, String userTo)
     {
+        ArrayList<String> paths=new ArrayList();
+        
+        User theUserFrom=null;
+        User theUserTo=null;
+        
+        
+        for(int i=0;i<users.size();i++)
+        {
+            User userI=users.get(i);
+            
+            if(userI.getUserName().equals(userFrom))
+            {
+                theUserFrom=userI;
+            }
+            else if(userI.getUserName().equals(userTo))
+            {
+                theUserTo=userI;
+            }
+        }
+        
+        int userFromIndex=theUserFrom.getIndexPos();
+        int userToIndex=theUserTo.getIndexPos();
+        
+        String none=shortestPathHelper(0,0,userToIndex,paths);
+        
+        int smallest=0;
+        
+        for(int i=1;i<paths.size();i++)
+        {
+            if(paths.get(i).length()<paths.get(smallest).length())
+            {
+                smallest=i;
+            }
+        }
+        
+       
+        return paths.get(smallest);
+        
+    }
+    
+    public String shortestPathHelper(int source, int dest, int goal, ArrayList<String> paths)
+    {
+        boolean visited[]=new boolean[users.size()];
+        
+        String output="";
+        
+        if(dest==goal)
+        {
+            return dest+"";
+        }
+        else if(dest==users.size()||source==users.size())
+        {
+            return "";
+        }
+        
+        if(connections[source][dest]&&!visited[dest]&&dest>source)
+        {
+            visited[dest]=true;
+
+            output+=dest+shortestPathHelper(dest, 0, goal, paths);
+        }
+        else if(!connections[source][dest])
+        {
+            output+=shortestPathHelper(source,dest+1,goal,paths);
+        }
+            
+        paths.add(output);
+        
+        if(dest+1!=users.size())
+        {
+            shortestPathHelper(source,dest+1,goal,paths);
+        }
+        
+        return "";
+    }
+    
+    /*
+    public String shortestPath(String userFrom, String userTo)
+    {
         Double dist[][]=new Double[users.size()][users.size()];
         
-        int next[][]=new int[users.size()][users.size()];
+        Integer next[][]=new Integer[users.size()][users.size()];
+        
+        //Users
+        User theUserFrom=null;
+        User theUserTo=null;
+        
+        for(int i=0;i<users.size();i++)
+        {
+            User userI=users.get(i);
+            
+            if(userI.getUserName().equals(userFrom))
+            {
+                theUserFrom=userI;
+            }
+            else if(userI.getUserName().equals(userTo))
+            {
+                theUserTo=userI;
+            }
+        }
         
         for(int r=0;r<dist.length;r++)
         {
@@ -284,17 +387,19 @@ public class FollowGraph implements Serializable
                     
                     //Then we assign its weight to be 1
                     dist[sourcePos][destinationPos]=new Double(1);
+                    
+                    next[sourcePos][destinationPos]=c;
                 }
                 
-                next[r][c]=c;
+                
             }
         }
         
-        for(int k=1;k<users.size();k++)
+        for(int k=0;k<users.size();k++)
         {
-            for(int i=1;1<users.size();i++)
+            for(int i=0;i<users.size();i++)
             {
-                for(int j=1;j<users.size();j++)
+                for(int j=0;j<users.size();j++)
                 {
                     if(dist[i][k]+dist[k][j]<dist[i][j])
                     {
@@ -307,12 +412,48 @@ public class FollowGraph implements Serializable
         }
         
         //Procedure path
+        int userFromIndex=theUserFrom.getIndexPos();
+        int userToIndex=theUserTo.getIndexPos();
         
+        String output="";
         
+        if(next[userFromIndex][userToIndex]==null)
+        {
+            return output;
+        }
         
+        ArrayList<Integer> path=new ArrayList();
+        
+        path.add(userFromIndex);
+        
+        for(int r=0;r<connections.length;r++)
+        {
+            for(int c=0;c<connections[0].length;c++)
+            {
+                //Consist of a vertex
+                if(connections[r][c])
+                {
+                    path.add(c);
+                }
+                
+                if(r==c)
+                {
+                    break;
+                }
+            }
+        }
+        
+        for(Integer i:path)
+        {
+            User inPath=users.get(i);
+            
+            output+=inPath.getUserName()+", ";
+        }
+        
+        return output;
         
     }
-    
+    */
     public List<String> allPaths(String userFrom, String userTo)
     {
         
@@ -337,7 +478,7 @@ public class FollowGraph implements Serializable
         String userFormat="%-38s%-35s%-10s";
         System.out.println(String.format(format, "User Name","Number of Followers","Number Following"));
 
-        for(int i=0;i<users.size();i++)
+        for(int i=0;i<temp.size();i++)
         {
             User userI=temp.get(i);
             
