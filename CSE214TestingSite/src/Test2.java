@@ -7,16 +7,35 @@ import java.util.Set;
 
 public class Test2
 {
-    public static void main(String [] args)
-    {
-        ArrayList<TestClass> s=new ArrayList();
-        
-        s.add(new TestClass("Hello World",12));
-        s.add(new TestClass("Bitch pls",12));
-        
-        System.out.println(s.contains(new TestClass("Bitch pls",12)));
-        
-        System.out.println(5.4*5.3);
-        
+    public static void dfs(int i, boolean[][] graph, boolean[] visited) {
+    if(!visited[i]){        
+        visited[i] = true; // Mark node as "visited"
+        System.out.print(i+1 + " ");
+
+        for (int j = 0; j < graph[i].length; j++) {
+            if (graph[i][j] && !visited[j]) {   
+                dfs(j, graph, visited); // Visit node
+            }
+        }
+    }   
+}
+
+public static void main(String[] args) {
+    boolean graph[][]=new boolean[4][4];
+    
+    graph[0][1]=true;
+    graph[0][2]=true;
+    graph[1][2]=true;
+    graph[2][3]=true;
+    
+    boolean [] visited = new boolean[4];
+    int count = 0;
+    for(int i = 0; i < graph.length; i++) {
+        if(!visited[i]) {
+            System.out.println(i);
+            dfs(i,graph,visited);
+        }
     }
+    System.out.println("Total number of Components: " + count);
+}
 }

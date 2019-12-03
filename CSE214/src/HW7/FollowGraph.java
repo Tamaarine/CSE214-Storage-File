@@ -298,40 +298,13 @@ public class FollowGraph implements Serializable
         
     }
     
-    public String shortestPathHelper(int source, int dest, int goal, ArrayList<String> paths)
+    public String shortestPathHelper(int source, int dest, int goal, boolean visited[][], ArrayList<Integer> paths)
     {
-        boolean visited[]=new boolean[users.size()];
+        visited[source][dest]=true;
         
-        String output="";
         
-        if(dest==goal)
-        {
-            return dest+"";
-        }
-        else if(dest==users.size()||source==users.size())
-        {
-            return "";
-        }
         
-        if(connections[source][dest]&&!visited[dest]&&dest>source)
-        {
-            visited[dest]=true;
-
-            output+=dest+shortestPathHelper(dest, 0, goal, paths);
-        }
-        else if(!connections[source][dest])
-        {
-            output+=shortestPathHelper(source,dest+1,goal,paths);
-        }
-            
-        paths.add(output);
         
-        if(dest+1!=users.size())
-        {
-            shortestPathHelper(source,dest+1,goal,paths);
-        }
-        
-        return "";
     }
     
     /*
