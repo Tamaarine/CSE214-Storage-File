@@ -1,0 +1,398 @@
+
+<!-- saved from url=(0130)https://blackboard.stonybrook.edu/bbcswebdav/pid-5130591-dt-content-rid-37054968_1/courses/1198-CSE-214-SEC01-89003/hw3%281%29.htm -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>CSE214 Homework 3</title>
+</head>
+<body bgcolor="#FFFFFF">
+<h2 align="center"><img border="0" src="./CSE214 Homework 3_files/logo.gif" width="200" height="100">&nbsp; <font color="#800080"><br>
+</font>
+<font color="#800000" face="Arial">HOMEWORK - FALL 2019</font></h2>
+<hr>
+<h3><font face="Arial"><strong>HOMEWORK 3 - due Tuesday, October 8th no later 
+than 5:00PM<br></strong></font>
+</h3>
+
+
+<p><font face="Arial"><strong>REMINDERS: 
+</strong></font></p><ul><font face="Arial"><strong>
+<li>Be sure your code follows the <a href="http://www.cs.sunysb.edu/~cse214/codingstyle.htm">coding
+style</a> for CSE214. </li>
+
+<li>Make sure you read the warnings about <a href="http://www.cs.sunysb.edu/~cse214/courseinfo.htm">academic
+dishonesty</a>. <i>Remember, all work you submit for homework or exams MUST be your own work.</i> </li>
+
+<li>Login to your <a href="http://facdev02.cs.stonybrook.edu:8080/grade.Login">grading account</a> and click "Submit Assignment" to upload and submit your assignment.  </li>
+
+
+<!--li><span style="color:red">You are not allowed to use ArrayList, LinkedList, Vector or any other Java API Data Structure classes to implement this assignment.</span></li-->
+<li><span style="color:green">You may use any Java API class that you wish. </span></li>
+<li>You may use Scanner, InputStreamReader, or any other class that you wish for keyboard input.</li>
+</strong></font></ul><font face="Arial"><strong>
+	 </strong></font><p></p> 
+
+<hr>
+
+<p><b>One of the important features of the C programming language is the block structure of its programs.  A block in C is a group of declarations and statements that are included within a pair of curly braces, each of which contains its own set of local variables as well as other control statements such as loops, ifs, function calls, and so on and so forth.  A major feature of these blocks is the fact that they are able to be nested, which basically means that any given block can contain other blocks inside of them.  The purpose of this assignment is to read a C program from a text file and keep track of the initial values stored within variables of any given block.  Here are some rules about the structure of such programs: 
+
+</b></p><ul><b>
+  <li><strong>Each open bracket, "{", denotes the beginning of a new block.</strong></li>
+  <li><strong>The programmer must define variables before any executable instruction in a block.</strong></li>
+  <li><strong>Variables that are located in different blocks may be given the same name.</strong></li>
+</b></ul><b>
+
+
+For example:
+<pre>	#include &lt;stdio.h&gt;
+	main(void)
+	{   /*Begins a new block*/
+	    int i=10;		/*Variable Declarations*/
+	    int j=20;
+	    int k=30;
+	    k = i + j;  	/*Non-declaration line: no more variables can be defined in this block*/
+	    if(j &gt; k)
+	    {	/*Inner block*/
+		int i=30;	/*Declarations begin again, this i "shadows" the outer i variable*/
+		int a=20;
+		j = a + k;
+	    }	/*Close inner block*/
+	    printf("The value of i is %d\n", i);
+	    return 0;
+	}   /*Close outer block*/
+
+</pre>
+ </b><p></p>
+
+
+<b><p>For this assignment, we will also add the two following compiler directives for finding the initial values for certain variables:
+</p><ul>
+  <li><strong><code>/*$print LOCAL*/</code>: prints all local variables for this block and their initial values (if the variable appears first outside of this block, its initial value is the one given to it at the start of this block).</strong></li>
+  <li><strong><code>/*$print "variable-name"*/</code>: prints the initial value of this variable, if found, or prints an error message if it was not found.</strong></li>
+</ul>
+Note that these new directives are of our own design and are not part of the standard C programming language.
+
+You may also make the following assumptions about program input to make this assignment more simplistic:
+<ul>
+  <li><strong>You may assume that the C code read into the program DOES NOT have any syntax errors.</strong></li>
+  <li><strong>All variables that you will need to track will be of the type <code>int</code>. </strong></li>
+<li><strong>When the code includes "int", we are referring to the primitive variable type and not things such as arrays of integers.
+</strong></li>
+  <li><strong>All variables that are not initialized will be assumed to have an initial value of 0. (this part is worth 4 points)</strong></li>
+  <li><strong>No declarations of variables will appear before main in our test cases.</strong></li>
+  <li><strong>Your program will not be tested on dealing with more than 10 variables in a given block.  You may assume this fact and thus do not have to test for it.</strong></li>
+  <li><strong>Any changes to the variables inside a block will not be reflected as changes in its initial value.</strong></li>
+
+  <li><strong>The important tokens, such as "int", "{", "}", and print directives, will not appear in C comments.</strong></li>
+  <li><strong>While multiple variables may be declared on a single line, no variable declaration will be split across two lines.<br>
+
+For example, the following variable declaration, in this assignment, would not be considered valid:
+
+<pre>	int
+	     i
+	       = 10;
+
+</pre>
+</strong></li>
+</ul>
+
+<b>A block tracer is a program that reads a C program and provides a mechanism for obtaining the values of variables in a given block.  Similar tools are used in applications such as debuggers for many different integrated development environments.
+<br><br>
+<i>NOTE: It is NOT important for you to have background in the C programming language to successfully complete this assignment.  The parts of the language that you must be familiar with are generally no different than the syntax that appears in the Java programming language. </i></b>
+
+</b>
+
+
+<hr>
+
+
+<p><strong><u>SPECIFICATIONS</u></strong></p> 
+<p><b>The purpose of this assignment is to write a simple block tracer based
+ on the rules described above.</b></p>
+<p><strong>1. Your parser will need to use a stack to hold the names of the variables and their initial values for each block. In
+ this assignment, you can either write your own Stack class or you may use the standard <font face="Courier New">Stack</font>
+class that is in the <font face="Courier New">java.util</font> package. Go to
+the HELP section and view the online documentation for 
+<font face="Courier New"> Stack</font> from the Java API.</strong></p>
+ <blockquote> <p><strong><font color="red">CAUTION: Although the <font face="Courier New">Stack
+</font> class has push and pop methods, the <font face="Courier New">Stack
+</font> class is a subclass of <font face="Courier New">Vector</font>. 
+Therefore, all of the methods of <font face="Courier New">Vector</font> are
+also accessible in the <font face="Courier New">Stack</font> class. However,
+if you use any of the inherited <font face="Courier New">Vector</font> methods
+in your solution, you will be penalized in this assignment, since some of the
+ <font face="Courier New"> Vector</font> methods are not supposed to apply to
+ a <font face="Courier New">Stack</font> ADT in general. (That is, the 
+designers of Java basically define that a <font face="Courier New">Stack</font> is a special type of <font face="Courier New">Vector</font>, but it really
+ isn't.)</font></strong></p>
+
+</blockquote><blockquote> <p><strong>HINT: You might want to consider writing your own <font face="Courier New">Block</font> class that will be used to hold all of the variable information for a given block.</strong></p>
+
+</blockquote>
+<p><strong>
+
+2. Write a fully-documented class named <font face="Courier New">BlockTracer</font> that reads a C program from a text file and prints all information when the special directives have been reached about the initial values of the appropriate variables.  The input filename must be received from the keyboard by prompting the user. <!--should be specified on the Java command line as shown below, which is subsequently passed to the main program through args[0]:-->
+<!--
+<blockquote><pre>
+        java  yourProgram  inputFileName
+</blockquote></pre>
+-->
+</strong></p><pre><strong>public static void main(String[] args)</strong></pre><strong>
+The main method first prompts the user to input a filename and then parses the file, processing all of our new <code>/*$print</code> directives. When the file is fully processed, the program terminates.
+<br><br>
+
+<p><strong><font color="red">Note: You may include additional classes, methods, and variables in any class as necessary or as you find convenient.</font></strong></p>
+
+<hr>
+<p><strong><u>SAMPLE UML</u></strong></p>
+As an example starting point for an approach you may take, consider the following UML diagram.
+<center><img src="./CSE214 Homework 3_files/hw3-uml.png"></center>
+<!--If you have trouble getting the filename from the command line, you may prompt the user for the input filename.--> 
+The <code>BlockTracer</code> contains a <code>Stack</code> object. The <code>Stack</code> object may contain many <code>Block</code> objects, which are representations of the various code blocks in the input file. Each <code>Block</code> object can have at most 10 variables that we have to keep track of. This can be implemented as either an array of fixed size or as a dynamically growing linked list. With this general overview, it should just be a matter of filling in the details.
+
+<hr>
+<p><strong><u>READING FILES</u></strong></p>
+You may use the following code to open
+an input stream for reading from a text file:  
+</strong><blockquote><strong>
+</strong><p></p><strong></strong><pre><strong>FileInputStream fis = new FileInputStream(<font color="blue">fileName</font>); 
+InputStreamReader inStream = new InputStreamReader(fis);
+BufferedReader stdin = new BufferedReader(inStream);</strong></pre>
+</blockquote>
+
+<p><strong>Once the stream is open, you can read one line at a time as follows:</strong></p>
+<blockquote>
+<pre><strong>String data = stdin.readLine();</strong></pre>
+</blockquote>
+
+<p><strong>Alternatively, you could use a Scanner object to read from a text file:
+</strong></p><blockquote><strong>
+</strong><p></p><strong></strong><pre><strong>File file = new File(<font color="blue">fileName</font>);
+Scanner stdin = new Scanner(file);</strong></pre>
+</blockquote>
+
+<p><strong>You can then read from the file using the same methods that you would use to read user input from the keyboard:
+</strong></p><blockquote><strong>
+<pre><strong>String data = stdin.nextLine();</strong></pre>
+</strong></blockquote><strong>
+
+</strong><p></p>
+
+<hr>
+<!--<blockquote>-->
+
+
+
+<p><strong><u>GENERAL ALGORITHM</u></strong></p>
+<p><strong>Read the input text file line by line, and for each line, scan for the key items: <font face="Courier New">"{", "int ", /*$print,</font> and <font face="Courier New">"}"</font>. For each <font face="Courier New">"{"</font> you find, prepare a new block and push it on the
+ stack. For each <font face="Courier New">"int "</font> read for as many identifers and initial values there are on the given line.  Store this information in the new block you just prepared. This extra space in <font face="Courier New">"int "</font> is necessary because it is possible that variable names contain the letters "int" in them, such as "interest" or "numPrinters".  Any time you reach a <font face="Courier New">/*$print</font>, read the token that comes after it and perform the appropriate printing operation.  For each <font face="Courier New">"}"</font> you find, pop off the current block from top of the stack. There should be nothing left on the stack when you are finished.</strong></p><p><strong>Note: To implement the print directive that looks for a variable name, the variable doesn't always have to be in the block on top of the stack.  You might want to consider popping blocks off of the original stack and pushing them onto a second stack until either you find the variable you are seeking or the original stack is empty. When you are done, you can pop the blocks off of the second stack and push them back onto the original stack.</strong></p><strong>
+
+</strong>
+<p><strong>Hint: While parsing the variables, consider looking at the line until you reach a semicolon.  You may then further break down the string by using the "=" sign or the "," as delimiters.  Refer to the documentation for the <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a> class. From there it should be a relatively straightforward process.</strong></p><strong>
+
+</strong>
+<p></p>
+
+
+
+
+
+<!--</blockquote>-->
+
+<hr>
+
+<p><strong><u>INPUT FORMAT:</u></strong></p>
+
+<ul><b>
+<li>Each variable name is up to 20 letters. No word longer than 20 letters will be used in our test cases.
+</li><li>The maximum number of blocks in a program is not known in advance.
+</li><li>Just like with any C program, the identifiers ARE case-sensitive.
+<!-- <li>If the input file name is missing on the command line, print an appropriate message. -->
+</li></b></ul>
+<p></p>
+
+
+
+
+
+<p><strong><u>OUTPUT FORMAT:</u></strong></p><strong>
+The only output requirement for this assignment is that all variable(s) that are supposed to be printed are done so in a neatly formatted list with both their name and initial values listed on the same line with one variable per single line.  If the variables to be printed cannot be found, simply print an appropriate error message to inform the user of the situation.</strong>
+
+
+<hr>
+
+
+<p><u><b>DOCUMENTATION:</b></u></p>
+<p><b>If you decide to use the standard Stack class in java.util, javadoc format is not necessary for this part of the assignment since you are writing an application 
+only and the data structure you're using is already predefined and has javadoc
+ documentation. However, you must document your application well, including 
+preconditions and postconditions if you use additional methods. Otherwise, if you define your own Stack class or Block class, javadoc format documentation is required.</b></p>
+
+<hr>
+
+<p><u><b>SAMPLE STACK TRACES:</b></u></p>
+<p><b>Below are sample programs with their input files listed along with the results (in blue) from the appropriate print directives:
+
+</b></p><pre><b>// Input files in black, <font color="blue">Resulting Output in blue</font></b></pre><b>
+<pre>#include &lt;stdio.h&gt;
+main(void)
+{
+    int i = 0;
+    int j = 2, k = 3, n;
+    int m;	         /*Default value of zero*/
+    k = 20 + i;	         /*Doesn't affect the initial value*/
+    /*$print LOCAL*/
+    /*$print k*/
+    j = 10 + k;	         /*Doesn't affect the initial value*/
+    i++;	         /*Neither does this*/
+    if(k &gt;= 0)
+    {
+        int i = 15;
+        k = i;    	 /*Doesn't affect the initial value*/
+        i++;	         /*Doesn't affect the initial value*/
+        /*$print LOCAL*/
+	/*$print i*/
+	/*$print j*/
+    }
+    return 0;
+}
+
+<font color="blue">Variable Name	Initial Value
+i		0
+j		2
+k		3
+n               0
+m		0
+
+Variable Name	Initial Value
+k		3
+
+Variable Name	Initial Value
+i		15
+
+Variable Name	Initial Value
+i		15
+
+Variable Name	Initial Value
+j		2</font>
+
+#include &lt;stdio.h&gt;
+main(void)
+{
+    int numPrinters = 10;
+    int numPhones = 20, numDesks = 15;
+    /*$print LOCAL*/
+    /*$print k*/
+    while(numPhones &gt;= 0)
+    {
+        int numPrinters = 15;
+	int i = 50;
+	int j = 60;
+        /*$print LOCAL*/
+	if(numPrinters == 15)
+	{
+            i = j + numPrinters;   
+            /*$print LOCAL*/
+	    /*$print numPrinters*/
+	    /*$print numPhones*/		
+	    return 0;	
+	}
+	j = i + j;	/*No change here*/
+        /*$print numPrinters*/
+    }
+    /*$print numPrinters*/
+    return 0;
+}
+
+<font color="blue">Variable Name	Initial Value
+numPrinters 	10
+numPhones 	20
+numDesks 	15
+
+Variable not found: k
+
+Variable Name	Initial Value
+numPrinters	15
+i		50
+j		60
+
+No local variables to print.
+
+Variable Name	Initial Value
+numPrinters	15
+
+Variable Name	Initial Value
+numPhones	20
+
+Variable Name	Initial Value
+numPrinters	15
+
+Variable Name	Initial Value
+numPrinters	10
+
+</font>
+
+#include &lt;stdio.h&gt;
+main(void)
+{
+    int i, j = 2, k = 3;
+    /*$print LOCAL*/
+    /*$print k*/
+    if(k &gt;= 0)
+    {
+        int x = 15;
+        k = x;
+        x++;
+        /*$print LOCAL*/
+	/*$print i*/
+	/*$print j*/
+    }
+    { int i=5; /*$print LOCAL*/ k = i;}
+    return 0;
+}
+
+<font color="blue">Variable Name	Initial Value
+i		0
+j		2
+k		3
+
+Variable Name	Initial Value
+k		3
+
+Variable Name	Initial Value
+x		15
+
+Variable Name	Initial Value
+i		0
+
+Variable Name	Initial Value
+j		2
+
+Variable Name	Initial Value
+i		5
+</font></pre><font color="blue">
+</font>
+
+
+
+
+
+<hr>
+
+    <p align="center">
+      <font face="Arial" color="#800000"><strong><a href="http://www.cs.sunysb.edu/~cse214/courseinfo.htm">Course
+      Info</a> | <a href="http://www.cs.sunysb.edu/~cse214/schedule.htm">Schedule</a>
+
+      | <a href="http://www.cs.sunysb.edu/~cse214/sections.htm">Sections</a>
+      | <a href="http://www.cs.sunysb.edu/~cse214/index.html">Announcements</a>
+      | <a href="http://www.cs.sunysb.edu/~cse214/homework.htm">Homework</a>
+      | <a href="http://www.cs.sunysb.edu/~cse214/exams.htm">Exams</a> |
+      <a href="http://www.cs.sunysb.edu/~cse214/help.htm">Help/FAQ</a> |
+      <a href="http://www.cs.sunysb.edu/~cse214/grades.htm">Grades</a> |
+      <a href="http://www.cs.sunysb.edu/~cse214/index.html">HOME</a></strong></font>
+
+    </p><br>
+ 
+
+
+
+
+</b></body></html>

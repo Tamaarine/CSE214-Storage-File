@@ -1,0 +1,616 @@
+
+<!-- saved from url=(0131)https://blackboard.stonybrook.edu/bbcswebdav/pid-5139620-dt-content-rid-37393445_1/courses/1198-CSE-214-SEC01-89003/hw4%282%29.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>CSE214 Homework 4</title>
+</head>
+<body bgcolor="#FFFFFF">
+<h2 align="center"><img border="0" src="./CSE214 Homework 4_files/logo.gif" width="200" height="100">&nbsp; <font color="#800080"><br>
+</font>
+<font color="#800000" face="Arial">HOMEWORK - FALL 2019</font></h2>
+<hr>
+<h3><font face="Arial"><strong>HOMEWORK 4 - due Tuesday, October 22nd no later
+than 5:00PM<br></strong></font>
+</h3>
+
+
+<p><font face="Arial"><strong>REMINDERS:
+</strong></font></p><ul><font face="Arial"><strong>
+<li>Be sure your code follows the <a href="http://www.cs.sunysb.edu/~cse214/codingstyle.htm">coding
+style</a> for CSE214. </li>
+
+<li>Make sure you read the warnings about <a href="http://www.cs.sunysb.edu/~cse214/courseinfo.htm">academic
+dishonesty</a>. <i>Remember, all work you submit for homework or exams MUST be your own work.</i> </li>
+
+<li>Login to your <a href="http://facdev04.cs.stonybrook.edu:8080/grade.Login">grading account</a> and click "Submit Assignment" to upload and submit your assignment.  </li>
+
+
+<!--li><span style="color:red">You are not allowed to use ArrayList, LinkedList, Vector or any other Java API Data Structure classes to implement this assignment.</span></li-->
+<li><span style="color:green">You may use any Java API class that you wish. If you choose to utilize a Java API class, you must extend the existing class.</span></li>
+<li>You may use Scanner, InputStreamReader, or any other class that you wish for keyboard input.</li>
+</strong></font></ul><font face="Arial"><strong>
+	 </strong></font><p></p>
+
+<hr>
+
+<p><b>Encryption is an integral part of cybersecurity and security in general, being used to hide information through some form of obfuscation of the original information. Though modern
+techniques utilize far more complex forms of encryption, the Playfair Cipher is still effective at masking information and presents a difficult problem to crack without its key. The Playfair
+Cipher was invented in 1854 by Charles Wheatstone and uses symmetric encryption. This technique takes pairs of letters (often referred to as <i>bigrams</i> or <i>digrams</i>) and encrypts them.
+This creates a more difficult encyption than simple substitution ciphers which are vulnerable to frequency analysis. The Playfair Cipher uses a 5-by-5 table that contains either a keyword or phrase which acts
+as the encryption key.
+
+</b></p><p><b><b>In this assignment, you will execute Playfair Cipher encryption using queues. These will be utilized to transform a sentence or phrase submitted by the user into bigrams. Once these bigrams are created,
+the set will be encrypted based off a Playfair Cipher key table. The final product will be presented to the user. The user can also request decryptions based off the key used by the current iteration of the program.
+</b></b></p><hr><b><b>
+<p><strong><u>ABOUT THE PLAYFAIR CIPHER</u></strong></p>
+
+<p><strong>Playfair Cipher Keys have a few rules:
+</strong></p><ul><strong>
+<li>The keyword or phrase is placed in the key, dropping any duplicate letters.</li>
+<li>The remaining spaces are filled in alphabetical order, omitting "J" to make the alphabet fit.</li>
+</strong></ul><strong>
+
+<p><strong>The generation of a key with a phrase would occur as follows:
+</strong></p><ol><strong>
+Phrase: PLAYFAIR EXAMPLE<br><br>
+<li>The phrase is placed into the key in the order the characters appear with duplicates removed.<br><br></li>
+Key: PLAYFIREXM<br><br>
+<li>The remaining alphabet letters (excluding "J") are then appended to the key to bring the key length to 25.<br><br></li>
+Key: PLAYFIREXMBCDGHKNOQSTUVWZ<br><br>
+<li>These characters are then arranged in a 5x5 table in the order which they appear.<br><br></li>
+
+<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;}
+.tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:black;}
+.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:black;}
+.tg .tg-naq5{font-weight:bold;font-family:"Courier New", Courier, monospace !important;;text-align:center;vertical-align:top}
+.tg .tg-c499{font-weight:bold;font-family:"Courier New", Courier, monospace !important;;text-align:center;vertical-align:middle}
+</style>
+<table class="tg">
+  <tbody><tr>
+    <td class="tg-c499"><pre> P </pre></td>
+    <td class="tg-naq5"><pre> L </pre></td>
+    <td class="tg-naq5"><pre> A </pre></td>
+    <td class="tg-naq5"><pre> Y </pre></td>
+    <td class="tg-naq5"><pre> F </pre></td>
+  </tr>
+  <tr>
+    <td class="tg-naq5">I</td>
+    <td class="tg-naq5">R</td>
+    <td class="tg-naq5">E</td>
+    <td class="tg-naq5">X</td>
+    <td class="tg-naq5">M</td>
+  </tr>
+  <tr>
+    <td class="tg-naq5">B</td>
+    <td class="tg-naq5">C</td>
+    <td class="tg-naq5">D</td>
+    <td class="tg-naq5">G</td>
+    <td class="tg-naq5">H</td>
+  </tr>
+  <tr>
+    <td class="tg-naq5">K</td>
+    <td class="tg-naq5">N</td>
+    <td class="tg-naq5">O</td>
+    <td class="tg-naq5">Q</td>
+    <td class="tg-naq5">S</td>
+  </tr>
+  <tr>
+    <td class="tg-naq5">T</td>
+    <td class="tg-naq5">U</td>
+    <td class="tg-naq5">V</td>
+    <td class="tg-naq5">W</td>
+    <td class="tg-naq5">Z</td>
+  </tr>
+</tbody></table>
+</strong></ol><strong>
+
+<p><strong>Once the key is made, the data is ready to be encrypted. The sentence must first be broken down into bigrams. In the example "Hello World", the phrase will be broken into "HE LL OW OR LD".
+
+</strong></p><p><strong><strong>There are four rules to Playfair Cipher encryption:
+</strong></strong></p><ul><strong><strong>
+<li>If two letters in a bigram are the same (or there is only one letter), an "X" is added after the first letter and a new pair is formed.</li>
+Ex. "HE LL OW OR LD" -&gt; "HE LX LO WO RL DX"<br><br>
+<li>Letters of a bigram appearing in the same row of the key table are replaced with the letters to their immediate right, respectively. You will need to wrap around to the left if a letter is on the far right side of the table.</li>
+Ex. "EX" -&gt; "XM"
+<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;}
+.tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:black;}
+.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:black;}
+.tg .tg-naq5{font-weight:bold;font-family:"Courier New", Courier, monospace !important;;text-align:center;vertical-align:top}
+.tg .tg-c499{font-weight:bold;font-family:"Courier New", Courier, monospace !important;;text-align:center;vertical-align:middle}
+.tg .tg-sjq0{font-weight:bold;font-family:"Courier New", Courier, monospace !important;;color:#009901;text-align:center;vertical-align:top}
+.tg .tg-9bo6{font-weight:bold;font-family:"Courier New", Courier, monospace !important;;color:#cb0000;text-align:center;vertical-align:top}
+</style>
+<table class="tg">
+  <tbody><tr>
+    <td class="tg-c499"><pre> P </pre></td>
+    <td class="tg-naq5"><pre> L </pre></td>
+    <td class="tg-naq5"><pre> A </pre></td>
+    <td class="tg-naq5"><pre> Y </pre></td>
+    <td class="tg-naq5"><pre> F </pre></td>
+  </tr>
+  <tr>
+    <td class="tg-naq5">I</td>
+    <td class="tg-naq5">R</td>
+    <td class="tg-sjq0">E&#8594;</td>
+    <td class="tg-sjq0">X&#8594;</td>
+    <td class="tg-9bo6">M</td>
+  </tr>
+  <tr>
+    <td class="tg-naq5">B</td>
+    <td class="tg-naq5">C</td>
+    <td class="tg-naq5">D</td>
+    <td class="tg-naq5">G</td>
+    <td class="tg-naq5">H</td>
+  </tr>
+  <tr>
+    <td class="tg-naq5">K</td>
+    <td class="tg-naq5">N</td>
+    <td class="tg-naq5">O</td>
+    <td class="tg-naq5">Q</td>
+    <td class="tg-naq5">S</td>
+  </tr>
+  <tr>
+    <td class="tg-naq5">T</td>
+    <td class="tg-naq5">U</td>
+    <td class="tg-naq5">V</td>
+    <td class="tg-naq5">W</td>
+    <td class="tg-naq5">Z</td>
+  </tr>
+</tbody></table><br><br>
+<li>Letters if a bigram appearing in the same column of the key table are replaced with the letters immediately below them, respectively. You need to wrap around to the top of the column if a letter is at the bottom of the table.</li>
+Ex. "DE" -&gt; "OD"
+<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;}
+.tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:black;}
+.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:black;}
+.tg .tg-xdu1{font-weight:bold;font-family:"Courier New", Courier, monospace !important;;color:#333333;text-align:center;vertical-align:top}
+.tg .tg-naq5{font-weight:bold;font-family:"Courier New", Courier, monospace !important;;text-align:center;vertical-align:top}
+.tg .tg-c499{font-weight:bold;font-family:"Courier New", Courier, monospace !important;;text-align:center;vertical-align:middle}
+.tg .tg-sjq0{font-weight:bold;font-family:"Courier New", Courier, monospace !important;;color:#009901;text-align:center;vertical-align:top}
+.tg .tg-9bo6{font-weight:bold;font-family:"Courier New", Courier, monospace !important;;color:#cb0000;text-align:center;vertical-align:top}
+</style>
+<table class="tg">
+  <tbody><tr>
+    <td class="tg-c499"><pre> P </pre></td>
+    <td class="tg-naq5"><pre> L </pre></td>
+    <td class="tg-naq5"><pre> A </pre></td>
+    <td class="tg-naq5"><pre> Y </pre></td>
+    <td class="tg-naq5"><pre> F </pre></td>
+  </tr>
+  <tr>
+    <td class="tg-naq5">I</td>
+    <td class="tg-naq5">R</td>
+    <td class="tg-sjq0">E&#8595;</td>
+    <td class="tg-xdu1">X</td>
+    <td class="tg-xdu1">M</td>
+  </tr>
+  <tr>
+    <td class="tg-naq5">B</td>
+    <td class="tg-naq5">C</td>
+    <td class="tg-sjq0">D&#8595;</td>
+    <td class="tg-naq5">G</td>
+    <td class="tg-naq5">H</td>
+  </tr>
+  <tr>
+    <td class="tg-naq5">K</td>
+    <td class="tg-naq5">N</td>
+    <td class="tg-9bo6">O</td>
+    <td class="tg-naq5">Q</td>
+    <td class="tg-naq5">S</td>
+  </tr>
+  <tr>
+    <td class="tg-naq5">T</td>
+    <td class="tg-naq5">U</td>
+    <td class="tg-naq5">V</td>
+    <td class="tg-naq5">W</td>
+    <td class="tg-naq5">Z</td>
+  </tr>
+</tbody></table><br><br>
+<li>Letters of a bigram not appearing in the same row or column are replaced with the letters on the same rows, respectively, but at the opposite corners of the rectangle formed by the positions of the original letters.</li>
+Ex. "HI" -&gt; "BM"
+<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;}
+.tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:black;}
+.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:black;}
+.tg .tg-od4w{font-weight:bold;font-family:"Courier New", Courier, monospace !important;;color:#333333;border-color:inherit;text-align:center;vertical-align:top}
+.tg .tg-0y7w{font-weight:bold;font-family:"Courier New", Courier, monospace !important;;border-color:inherit;text-align:center;vertical-align:top}
+.tg .tg-gjqz{font-weight:bold;font-family:"Courier New", Courier, monospace !important;;background-color:#c0c0c0;color:#009901;border-color:#000000;text-align:center;vertical-align:top}
+.tg .tg-hz38{font-weight:bold;font-family:"Courier New", Courier, monospace !important;;border-color:inherit;text-align:center;vertical-align:middle}
+.tg .tg-7fey{font-weight:bold;font-family:"Courier New", Courier, monospace !important;;background-color:#c0c0c0;border-color:#000000;text-align:center;vertical-align:top}
+.tg .tg-75tz{font-weight:bold;font-family:"Courier New", Courier, monospace !important;;background-color:#c0c0c0;color:#cb0000;border-color:#000000;text-align:center;vertical-align:top}
+</style>
+<table class="tg">
+  <tbody><tr>
+    <td class="tg-hz38"><pre> P </pre></td>
+    <td class="tg-0y7w"><pre> L </pre></td>
+    <td class="tg-0y7w"><pre> A </pre></td>
+    <td class="tg-0y7w"><pre> Y </pre></td>
+    <td class="tg-0y7w"><pre> F </pre></td>
+  </tr>
+  <tr>
+    <td class="tg-gjqz">I</td>
+    <td class="tg-7fey">R</td>
+    <td class="tg-7fey">E</td>
+    <td class="tg-7fey">X</td>
+    <td class="tg-75tz">M</td>
+  </tr>
+  <tr>
+    <td class="tg-75tz">B</td>
+    <td class="tg-7fey">C</td>
+    <td class="tg-7fey">D</td>
+    <td class="tg-7fey">G</td>
+    <td class="tg-gjqz">H</td>
+  </tr>
+  <tr>
+    <td class="tg-0y7w">K</td>
+    <td class="tg-0y7w">N</td>
+    <td class="tg-od4w">O</td>
+    <td class="tg-0y7w">Q</td>
+    <td class="tg-0y7w">S</td>
+  </tr>
+  <tr>
+    <td class="tg-0y7w">T</td>
+    <td class="tg-0y7w">U</td>
+    <td class="tg-0y7w">V</td>
+    <td class="tg-0y7w">W</td>
+    <td class="tg-0y7w">Z</td>
+  </tr>
+</tbody></table>
+</strong></strong></ul><strong><strong>
+
+<p><strong>Decryption of the Playfair Cipher is executed by performing these rules in reverse with the proper key.</strong>
+
+</p><p><strong>For more information about the Playfair Cipher, refer to <a href="https://en.wikipedia.org/wiki/Playfair_cipher" target="_blank">this Wikipedia article</a>.</strong>
+</p><hr>
+<p><b><u>GENERAL ALGORITHM</u></b></p>
+<p><b>
+    For encryption:
+    </b></p><pre><b>    create a queue p to hold the plaintext bigrams
+    for each pair of letters in input string s
+        create a bigram b and enqueue b in p
+    create a queue e to hold the encrypted bigrams
+    while p is not empty
+        dequeue bigram b from p
+        encrypt bigram b
+        enqueue b in e
+    return e
+
+    </b></pre><b>
+
+    For decryption:
+    <pre>    create a queue d to hold the encrypted bigrams
+    for each pair of letters in input string s
+        create a bigram b and enqueue b in d
+    create a queue p to hold the plaintext bigrams
+    while d is not empty
+        dequeue bigram b from d
+        decrypt bigram b
+        enqueue b in p
+    return p
+    </pre>
+
+    To print out a Phrase:
+    <pre>    while phrase is not empty
+        dequeue bigram b
+        print b
+
+    </pre>
+
+    As an example, consider encoding the text "Hello World" with the key "Playfair example":
+
+    The string "Hello World" is split into Bigrams and inserted into a Queue:
+    <pre>    Plaintext Queue: (H,E) (L,X) (L,O) (W,O) (R,L) (D,X)
+                       ^                             ^
+                     front                          rear
+    </pre>
+    These bigrams are then dequeued one at a time, encypted, and enqueued into another queue containing the encrypted bigrams:
+    <pre>    First step:
+    (H,E) is dequeued from the plaintext queue, encrypted, and enqueued into the encrypted queue
+    Plaintext Phrase: (L,X) (L,O) (W,O) (R,L) (D,X)
+    Encrypted Phrase: (D,M)
+
+    Next step:
+    (L,X) is dequeued from the plaintext queue, encrypted, and enqueued into the encrypted queue
+    Plaintext Phrase: (L,O) (W,O) (R,L) (D,X)
+    Encrypted Phrase: (D,M) (Y,R)
+
+    Next step:
+    (L,O) is dequeued from the plaintext queue, encrypted, and enqueued into the encrypted queue
+    Plaintext Phrase: (W,O) (R,L) (D,X)
+    Encrypted Phrase: (D,M) (Y,R) (A,N)
+
+    ...
+
+    Final step:
+    (D,X) is dequeued from the plaintext queue, encrypted, and enqueued into the encrypted queue
+    Plaintext Phrase: EMPTY
+    Ecnrypted Phrase: (D,M) (Y,R) (A,N) (V,Q) (C,R) (G,E)
+    </pre>
+</b>
+<hr>
+
+<p><b><u>SPECIFICATIONS</u></b></p>
+
+<center><img src="./CSE214 Homework 4_files/hw4-uml.png" width="1200px"></center>
+
+<p><strong></strong></p><h2><strong>1. KeyTable</strong></h2><strong>
+<p><b>Write a fully-documented class named <code>KeyTable</code> which represents the key to a Playfair Cipher. The KeyTable class should contain a two-dimensional array of char variables.
+
+</b></p><p><b><b>The KeyTable class should implement the following methods and variables:
+</b></b></p><ul><b><b>
+<li><code>public KeyTable()</code> - constructor</li>
+<li><code>private char[][] key</code> - a 5x5 matrix of characters to hold the key</li>
+<li><code>public static KeyTable buildFromString(String keyphrase)</code>
+	<ul>
+		<li>Brief: Builds a new KeyTable object from the provided string and returns it</li>
+		<li>Parameters:
+			<ul>
+				<li><code>keyphrase</code> - The String to use as the key</li>
+			</ul>
+		</li>
+		<li>Preconditions: <code>keyphrase</code> is not null.</li>
+		<li>Returns: The new <code>KeyTable</code> object.</li>
+		<li>Throws:
+			<ul>
+				<li><code>IllegalArgumentException</code>: Thrown if <code>keyphrase</code> is null.</li>
+			</ul>
+		</li>
+	</ul>
+</li>
+<li><code>public char[][] getKeyTable()</code>
+	<ul>
+		<li>Brief: Returns the <code>key</code> matrix.</li>
+		<li>Returns: The <code>key</code> matrix contained within this KeyTable.</li>
+	</ul>
+</li>
+<li><code>public int findRow(char c)</code>
+	<ul>
+		<li>Brief: Returns the row in which <code>c</code> occurs.</li>
+		<li>Parameters:
+			<ul>
+				<li><code>c</code> - The character to locate within the key matrix</li>
+			</ul>
+		</li>
+		<li>Preconditions: <code>c</code> is a valid letter.</li>
+		<li>Returns: The index of the row in which <code>c</code> occurs.</li>
+		<li>Throws:
+			<ul>
+				<li><code>IllegalArgumentException</code>: Thrown if <code>c</code> is not a valid letter in the key matrix.</li>
+			</ul>
+		</li>
+	</ul>
+</li>
+<li><code>public int findCol(char c)</code>
+	<ul>
+		<li>Brief: Returns the column in which <code>c</code> occurs.</li>
+		<li>Parameters:
+			<ul>
+				<li><code>c</code> - The character to locate within the key matrix</li>
+			</ul>
+		</li>
+		<li>Preconditions: <code>c</code> is a valid letter.</li>
+		<li>Returns: The index of the column in which <code>c</code> occurs.</li>
+		<li>Throws:
+			<ul>
+				<li><code>IllegalArgumentException</code>: Thrown if <code>c</code> is not a valid letter in the key matrix.</li>
+			</ul>
+		</li>
+	</ul>
+</li>
+<li><code>public String toString()</code></li>
+</b></b></ul><b><b>
+
+<p><strong></strong></p><h2><strong>2. Bigram</strong></h2><strong>
+<p><strong>Write a fully-documented class named Bigram which represents a bigram (two characters). The Bigram class should contain two char member variables for the two characters it represents.
+</strong></p><ul><strong>
+	<li><code>public Bigram()</code> - constructor</li>
+	<li><code>private char first, second</code> - the two characters this Bigram represents</li>
+	<li>Getters and setters as needed.</li>
+	<li><code>public String toString()</code> - returns the two characters in a concatenated String</li>
+</strong></ul><strong>
+
+<p><strong></strong></p><h2><strong>3. Phrase</strong></h2><strong>
+<p><strong>Write a fully-documented class named Phrase, which will act as a wrapper for a queue. A queue will be utilized to retain the order of the phrase provided.
+If a Java API class is used, Phrase must extend from the Java API class to simplify definition.
+Phrase will utilize the same functionalities as a queue, including the following methods:
+</strong></p><ul><strong>
+	<li><code>public void enqueue(Bigram b)</code> - adds a new Bigram to the end of the Phrase</li>
+	<li><code>public Bigram dequeue()</code> - removes and returns the first Bigram in the Phrase</li>
+	<li><code>public Bigram peek()</code> - returns (without removing) the first Bigram in the phrase</li>
+	<li><code>public int size()</code> - returns the number of Bigrams in the Phrase</li>
+	<li><code>public boolean isEmpty()</code> - returns true if the queue is empty, false otherwise</li>
+</strong></ul><strong>
+<p><strong>If you use an existing Java API class, your Phrase class <i>should not</i> implement a constructor, size(), or isEmpty().</strong>
+
+</p><p><strong>In addition to the queue methods specified above, Phrase should also implement the following methods:
+</strong></p><ul><strong>
+    <li><code>public Phrase()</code> - constructor</li><br>
+	<li><code>public static Phrase buildPhraseFromStringforEnc(String s)</code>
+		<ul>
+			<li>Brief: Builds and returns a new Phrase object, which is a queue containing bigrams representing <code>s</code></li>
+			<li>Parameters:
+				<ul>
+					<li><code>s</code> - the String to represent as a Bigram queue.</li>
+				</ul>
+			</li>
+			<li>Returns: The new Phrase object which contains a queue of Bigram objects representing s.</li>
+			<li><i>NOTES: Be sure to remember that you <u>will not</u> have an entry for "J" in any KeyTable. This letter must be re-mapped to one which your KeyTable can handle. For the purposes of this assignment,
+			replace any "J" which you encounter with "I". You should also ignore any non-alphabetic characters when encoding a String into Bigrams.</i></li>
+		</ul>
+	</li>
+	<br>
+	<li><code>public Phrase encrypt(KeyTable key)</code>
+		<ul>
+			<li>Brief: Encrypts this Phrase, storing the encrypted bigrams in a new Phrase queue object and returning it.</li>
+			<li>Parameters:
+				<ul>
+					<li><code>key</code> - the KeyTable to use to encrypt this Phrase</li>
+				</ul>
+			</li>
+			<li>Preconditions: <code>key</code> is not null.</li>
+			<li>Returns: The new Phrase object which contains a queue of Bigram objects representing the encrypted version of this Phrase.</li>
+			<li>Throws:
+				<ul>
+					<li><code>IllegalArgumentException</code> - thrown if <code>key</code> is null.</li>
+				</ul>
+			</li>
+			<li><i>NOTE: You may find it simpler to break the encryption method into several different helper methods, one for each replacement rule as described above.</i></li>
+		</ul>
+	</li>
+	<br>
+	<li><code>public Phrase decrypt(KeyTable key)</code>
+		<ul>
+			<li>Brief: Decrypts this Phrase, storing the decypted bigrams in a new Phrase queue object and returning it.</li>
+			<li>Parameters:
+				<ul>
+					<li><code>key</code> - the KeyTable to use to decrypt this Phrase</li>
+				</ul>
+			</li>
+			<li>Preconditions: <code>key</code> is not null.</li>
+			<li>Returns: The new Phrase object which contains a queue of Bigram objects representing the decypted version of this Phrase.</li>
+			<li>Throws:
+				<ul>
+					<li><code>IllegalArgumentException</code> - thrown if <code>key</code> is null.</li>
+				</ul>
+			</li>
+			<li><i>NOTE 1: You may find it simpler to break the decryption method into several different helper methods, one for each replacement rule as described above.</i></li>
+			<li><i><font color="green">NOTE 2: While decrypting, you are not expected to be able to programatically determine where the spaces between words are supposed to go, nor are you
+			expected to figure out if any "I"s are actually supposed to be "J"s, or if there are extra "X"s inserted in the result due to adjacent letters being the same prior to encryption. These
+			issues are easy enough to resolve when simply reading the result.</font></i></li>
+		</ul>
+	</li><br>
+	<li><code>public String toString()</code> - returns a String representation of the Phrase formed by the collection of Bigrams</li>
+</strong></ul><strong>
+
+<p><strong></strong></p><h2><strong>4. PlayfairEncryptionEngine</strong></h2>
+<p><b>Write a fully-documented class named PlayfairEncryptionEngine which holds the menu driver for the program. The driver will first prompt the user for input in order to generate the KeyTable object.
+If no input is given, a default KeyTable object will be created (the alphabet, excluding J). The driver will allow the user to change the current key, print the current key,
+enter a plaintext input and receive an encrypted version, or enter an
+encrypted input and receive a plaintext version (Note: this will only work properly if the encrypted input was encrypted with the current key).
+
+</b></p><ul><li><pre><b>public static void main(String[] args)</b></pre></li><b>
+The main method first prompts the user to input a key phrase and then generates the key table. It then presents a menu to the user, allowing them access to the following functionality:
+<pre>(CK) - Change key (Generates a new encryption key)
+(PK) - Print key (displays the 5x5 table version of the key)
+(EN) - Encrypt (Prompts user input and encrypts the input)
+(DE) - Decrypt (Prompts user input and decrypts the input)
+(Q) - Quit
+</pre>
+</b></ul><b>
+<br>
+<p><strong><font color="red">Note: You may include additional classes, methods, and variables in any class as necessary or as you find convenient.</font></strong></p>
+
+<hr>
+<p><strong><u>INPUT FORMAT</u></strong></p>
+<ul><b>
+	<li>Convert all strings for encryption, decryption, and generating the key table to UPPERCASE.
+	</li><li>You can ignore any whitespace and non-alphabetic characters given as input for encryption/decryption.
+	</li><li>Menu options should be case-insensitive.
+</li></b></ul>
+</b><p></p>
+<hr>
+<p><u><b>SAMPLE INPUT/OUTPUT</b></u></p>
+
+<pre>// Output in black, <font color="red">Input in red</font>, <font color="green">Comments in green</font></pre>
+<pre>Enter key phrase: <font color="red">playfair example</font>
+Generation success!
+
+Menu:
+(CK) - Change key
+(PK) - Print key
+(EN) - Encrypt
+(DE) - Decrypt
+(Q) - Quit
+
+Please select an option: <font color="red">pk</font>
+
+P L A Y F
+I R E X M
+B C D G H
+K N O Q S
+T U V W Z
+
+<font color="green">// Menu not shown in sample I/O</font>
+Please select an option: <font color="red">EN</font>
+Please enter a phrase to encrypt: <font color="red">hello world!</font>
+Encrypted text is: DMYRANVQCRGE
+
+<font color="green">// Menu not shown in sample I/O</font>
+Please select an option: <font color="red">de</font>
+Please enter a phrase to decrypt: <font color="red">dmyranvqcrge</font>
+Decrypted text is: HELXLOWORLDX
+
+<font color="green">// Menu not shown in sample I/O</font>
+Please select an option: <font color="red">ck</font>
+Enter key phrase: <font color="red">hello world</font>
+Generation success!
+
+<font color="green">// Menu not shown in sample I/O</font>
+Please select an option: <font color="red">pk</font>
+
+H E L O W
+R D A B C
+F G I K M
+N P Q S T
+U V X Y Z
+
+<font color="green">// Menu not shown in sample I/O</font>
+Please select an option: <font color="red">en</font>
+Please enter a phrase to encrypt: <font color="red">playfair example</font>
+Encrypted text is: QEBXIRFALVCIQELV
+
+<font color="green">// Menu not shown in sample I/O</font>
+Please select an option: <font color="red">de</font>
+Please enter a phrase to decrypt: <font color="red">QEBXIRFALVCIQELV</font>
+Decrypted text is: PLAYFAIREXAMPLEX
+
+<font color="green">// Menu not shown in sample I/O</font>
+Please select an option: <font color="red">en</font>
+Please enter a phrase to encrypt: <font color="red">this is super secret. shh.</font>
+Encrypted text is: NWKQKQNYVDBNWDDHNTLULU
+
+<font color="green">// Menu not shown in sample I/O</font>
+Please select an option: <font color="red">de</font>
+Please enter a phrase to decrypt: <font color="red">NWKQKQNYVDBNWDDHNTLULU</font>
+Decrypted text is: THISISSUPERSECRETSHXHX
+
+<font color="green">// Menu not shown in sample I/O</font>
+Please select an option: <font color="red">ck</font>
+Enter key phrase: <font color="red">123</font>
+Generation success!
+
+<font color="green">// Menu not shown in sample I/O</font>
+Please select an option: <font color="red">pk</font>
+
+A B C D E
+F G H I K
+L M N O P
+Q R S T U
+V W X Y Z
+
+<font color="green">// Menu not shown in sample I/O</font>
+Please select an option: <font color="red">q</font>
+
+Program terminating....
+</pre>
+
+<hr>
+    <p align="center">
+      <font face="Arial" color="#800000"><strong><a href="http://www.cs.sunysb.edu/~cse214/courseinfo.htm">Course Info</a>
+	  | <a href="http://www.cs.sunysb.edu/~cse214/schedule.htm">Schedule</a>
+      | <a href="http://www.cs.sunysb.edu/~cse214/sections.htm">Sections</a>
+      | <a href="http://www.cs.sunysb.edu/~cse214/index.html">Announcements</a>
+      | <a href="http://www.cs.sunysb.edu/~cse214/homework.htm">Homework</a>
+      | <a href="http://www.cs.sunysb.edu/~cse214/exams.htm">Exams</a> |
+      <a href="http://www.cs.sunysb.edu/~cse214/help.htm">Help/FAQ</a> |
+      <a href="http://www.cs.sunysb.edu/~cse214/grades.htm">Grades</a> |
+      <a href="http://www.cs.sunysb.edu/~cse214/index.html">HOME</a></strong></font>
+    </p><br>
+
+
+
+
+
+
+</strong></strong></strong></strong></strong></b></b></strong></strong></strong></strong></strong></b></b></body></html>

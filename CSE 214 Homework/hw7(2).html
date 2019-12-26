@@ -1,0 +1,570 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!-- saved from url=(0131)https://blackboard.stonybrook.edu/bbcswebdav/pid-5162292-dt-content-rid-38238392_1/courses/1198-CSE-214-SEC01-89003/hw7%282%29.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style>.code{font-family:Courier New;}.comment{color:#00B050;}.input{color:red;}</style></head><body>
+
+<div bgcolor="white" lang="EN-US" link="blue" vlink="purple">
+
+<div>
+
+<h2 align="center" style="text-align:center"><span><img width="244" height="121" src="./hw7(2)_files/logo.gif" alt="Description: Description: Description: http://www.cs.stonybrook.edu/~cse214/images/logo.gif"></span><span> <span style="color:purple"><br>
+</span></span><span style="font-family:&quot;Arial&quot;,&quot;sans-serif&quot;;color:maroon">HOMEWORK 7 - FALL 2019</span><span></span></h2>
+
+<div align="center" style="text-align:center"><span>
+
+<hr size="2" width="100%" align="center">
+
+</span></div>
+
+<h3><strong><span style="font-family:&quot;Arial&quot;,&quot;sans-serif&quot;">HOMEWORK 7 - due December 3rd no later than 5:00PM</span></strong><span></span></h3>
+
+<p><strong><span style="font-family:&quot;Arial&quot;,&quot;sans-serif&quot;">REMINDERS: </span></strong></p>
+
+<ul type="disc">
+ <li><b><span style="font-family:&quot;Arial&quot;,&quot;sans-serif&quot;">Be sure your
+     code follows the <a href="http://www.cs.sunysb.edu/~cse214/codingstyle.htm" target="_blank">coding
+     style</a> for CSE214. </span></b><span></span></li>
+ <li><b><span style="font-family:&quot;Arial&quot;,&quot;sans-serif&quot;">Make sure
+     you read the warnings about <a href="http://www.cs.sunysb.edu/~cse214/courseinfo.htm" target="_blank">academic dishonesty</a>.
+     <i>Remember, all work you submit for homework or exams MUST be your own
+     work.</i> </span></b></li>
+ <li><b><span style="font-family:&quot;Arial&quot;,&quot;sans-serif&quot;">Login to
+     your <a href="http://facdev04.cs.stonybrook.edu:8080/grade.Login" target="_blank">grading
+     account</a> and click "Submit Assignment" to upload and submit
+     your assignment. </span></b></li>
+
+<li><b><span style="font-family:&quot;Arial&quot;,&quot;sans-serif&quot;;color:green">You
+    may use any Java API Data Structures to implement this assignment. </span></b><b><span style="font-family:&quot;Arial&quot;,&quot;sans-serif&quot;"></span></b></li>
+<li><b><span style="font-family:&quot;Arial&quot;,&quot;sans-serif&quot;">You may
+     use Scanner, InputStreamReader, or any other class that you wish for
+     keyboard input.</span></b></li>
+</ul>
+
+<hr size="2" width="100%" align="center">
+
+<p><b>TWITTOR is a social media site that is built on top of its proprietary "Follow Graph". This Graph is composed of
+users, who are the vertices and follows, that are modeled as the edges. Whenever one user of the site follows someone
+else, an edge between the follower and the followed is established. This edge is directed from the follower to the
+user being followed. </b></p>
+
+<p><b>Your program must be persistent.</b></p>
+
+<hr size="2" width="100%" align="center">
+
+<p><b>As this assignment will involve finding minimum distances between nodes, pseudo-code for the Floyd-Warshall algorithm
+is included below. </b></p>
+
+<p><b><u>Floyd-Warshall algorithm:</u></b></p>
+
+<b><pre class="code"><b>let</b> dist be a |V| × |V| array of minimum distances initialized to ∞ (infinity)
+<b>let</b> next be a |V| × |V| array of vertex indices initialized to <b>null</b>
+
+<b>procedure</b> FloydWarshallWithPathReconstruction ()
+   <b>for each</b> edge (u,v)
+      dist[u][v] ← w(u,v)  // the weight of the edge (u,v)
+      next[u][v] ← v
+   <b>for</b> k <b>from</b> 1 <b>to</b> |V| // standard Floyd-Warshall implementation
+      <b>for</b> i <b>from</b> 1 <b>to</b> |V|
+         <b>for</b> j <b>from</b> 1 <b>to</b> |V|
+            <b>if</b> dist[i][k] + dist[k][j] &lt; dist[i][j] <b>then</b>
+               dist[i][j] ← dist[i][k] + dist[k][j]
+               next[i][j] ← next[i][k]
+
+<b>procedure</b> Path(u, v)
+   <b>if</b> next[u][v] = null <b>then</b>
+       <b>return</b> []
+   path = [u]
+   <b>while</b> u ≠ v
+       u ← next[u][v]
+       path.append(u)
+   <b>return</b> path
+</pre></b>
+
+<p><b><i>NOTE: You can use Double.POSITIVE_INFINITY to represent ∞</i></b></p>
+
+<p><b>This is the pseudo-code you might want to review before you start the
+assignment. More information can be found <a href="http://en.wikipedia.org/wiki/Floyd%E2%80%93Warshall_algorithm">
+here</a>.</b></p>
+
+<hr>
+<h3><b><u>File Format:</u></b></h3>
+
+<p><b>users.txt - will contain 1 user's name per line.</b></p>
+
+<p><b><u>SAMPLE:</u></b></p>
+
+<p><code><b>Paul Smith<br>Homer Simpson<br>Tom Doe<br>Jane Doe</b></code></p>
+
+<p><b>connections.txt - will contain 1 connection per line in the format 
+    "<code>srcUser, destUser</code>" (two users' names separated by exactly 1 comma).</b></p>
+
+<p><b><u>SAMPLE:</u></b></p>
+
+<p><code><b>Paul Smith, Homer Simpson<br>Homer Simpson, Jane Doe<br>James Doe, Jane Doe<br>Jane Doe, Paul Smith<br>Paul Smith, Jane Doe<br>Tom Doe, Jane Doe<br></b></code></p><b>
+
+<p><b>NOTE: The entry - <code>James Doe, Jane Doe</code> - should be ignored by your program since James Doe was never recorded. Continue parsing the file.</b></p>
+
+<hr size="2" width="100%" align="center">
+
+<p align="center" class="MsoNormal" style=" text-align:center margin-bottom:0in;margin-bottom:.0001pt;
+    text-align:center;line-height:normal"><img height="300" src="./hw7(2)_files/hw7-graph.png" alt="Description: Description: Description: http://www.cs.stonybrook.edu/~cse214/images/logo.gif"><span> <span style="color:purple"><br>
+
+
+</span></span></p><hr size="2" width="100%" align="center">
+
+    <p align="center" class="MsoNormal" style=" text-align:center margin-bottom:0in;margin-bottom:.0001pt;
+    text-align:center;line-height:normal"><img height="600" src="./hw7(2)_files/hw7-uml.png" alt="Description: Description: Description: http://www.cs.stonybrook.edu/~cse214/images/logo.gif"><span> <span style="color:purple"><br>
+
+
+
+
+
+
+    </span></span></p><hr size="2" width="100%" align="center">
+
+    <p><b>Twittor also requests you to make the graph persistent.
+        This means that our program should save all data from session to session. When
+        we terminate a program, normally the data will be lost. We will preserve this
+        data by using <span class="code">Serializable</span> Java API and object files. All your classes should
+        simply implement the java.io.Serializartion interface.</b></p><p>
+
+</p><p><b><i>Example:</i> Your <span style="font-family:Courier New">HashedLibrary</span>
+    class contains information for all books saved in a electronic database. You
+    would want to preserve this data, so you can load this data the next time you
+    run your program. You would do the following:
+</b></p><ol><b>
+    <li><p><b>Modify the <span style="find-family:Courier New">HashedLibrary</span>
+        so that it implements the <span class="code">Serializable</span> interface.
+        No other changes are necessary.<br><br>
+    </b></p><pre class="code"><b>public class HashedLibrary implements Serializable
+{
+    <span class="comment">// Member methods as is</span>
+}
+    </b></pre><p></p></li>
+    <li class="MsoNormal" style="mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l1 level1 lfo6;tab-stops:list .5in"><b><span style="mso-fareast-font-family:
+     &quot;Times New Roman&quot;">In your application that contains the hash, you can
+     include code that will save the hash into a file so it can be read in
+     again later. To do this, you need to create an </span></b><span class="SpellE"><b><span style="font-family:&quot;Courier New&quot;;mso-fareast-font-family:
+     &quot;Times New Roman&quot;">ObjectOutputStream</span></b></span><b><span style="mso-fareast-font-family:&quot;Times New Roman&quot;"> to send the data to,
+     and then use the </span></b><span class="SpellE"><b><span style="font-family:
+     &quot;Courier New&quot;;mso-fareast-font-family:&quot;Times New Roman&quot;">writeObject</span></b></span><b><span style="mso-fareast-font-family:&quot;Times New Roman&quot;"> method to send the
+     hash to the stream, which is stored in the specified file.<br>
+     <br>
+     </span></b><span class="SpellE"><b><span style="font-family:&quot;Courier New&quot;;
+     mso-fareast-font-family:&quot;Times New Roman&quot;">FileOutputStream</span></b></span><b><span style="font-family:&quot;Courier New&quot;;mso-fareast-font-family:&quot;Times New Roman&quot;">
+     file = new <span class="SpellE">FileOutputStream</span>("library.obj");<br>
+     <span class="SpellE">ObjectOutputStream</span> <span class="SpellE">outStream</span>
+     = new <span class="SpellE">ObjectOutputStream</span>(file);<br>
+     <span class="SpellE">HashedLibrary</span> library = new <span class="SpellE">HashedLibrary</span>(<span style="color:#00B050">/*Constructor Parameters*/</span>);<br>
+     <br>
+     <span style="color:#00B050">// missing code here sets up the hash in some
+     way<br>
+     </span><br>
+     <span style="color:#00B050">// the following line will save the object in
+     the file<br>
+ </span><span class="SpellE">outStream.writeObject</span>(library); <br>
+     &nbsp;</span></b><span style="mso-fareast-font-family:&quot;Times New Roman&quot;"><o:p></o:p></span></li>
+    <li class="MsoNormal" style="mso-margin-top-alt:auto;mso-margin-bottom-alt:
+     auto;mso-list:l1 level1 lfo6;tab-stops:list .5in"><b><span style="mso-fareast-font-family:&quot;Times New Roman&quot;;color:windowtext">When
+     the same application (or another application) runs again, you can
+     initialize the member using the serialized data saved from step 2 so you
+     don't have to recreate the object from scratch. To do this, you need to
+     create an </span></b><span class="SpellE"><b><span style="font-family:&quot;Courier New&quot;;
+     mso-fareast-font-family:&quot;Times New Roman&quot;;color:windowtext">ObjectInputStream</span></b></span><b><span style="mso-fareast-font-family:&quot;Times New Roman&quot;;color:windowtext"> to
+     read the data from, and then use the </span></b><span class="SpellE"><b><span style="font-family:&quot;Courier New&quot;;mso-fareast-font-family:&quot;Times New Roman&quot;;
+     color:windowtext">readObject</span></b></span><b><span style="font-family:
+     &quot;Courier New&quot;;mso-fareast-font-family:&quot;Times New Roman&quot;;color:windowtext">
+     </span></b><b><span style="mso-fareast-font-family:&quot;Times New Roman&quot;;
+     color:windowtext">method to read the hash from the stream.<br>
+     <br>
+     </span></b><span class="SpellE"><b><span style="font-family:&quot;Courier New&quot;;
+     mso-fareast-font-family:&quot;Times New Roman&quot;;color:windowtext">FileInputStream</span></b></span><b><span style="font-family:&quot;Courier New&quot;;mso-fareast-font-family:&quot;Times New Roman&quot;;
+     color:windowtext"> file = new <span class="SpellE">FileInputStream</span>("library.obj");<br>
+     <span class="SpellE">ObjectInputStream</span> <span class="SpellE">inStream</span>
+     = new <span class="SpellE">ObjectInputStream</span>(file);<br>
+     <span class="SpellE">HashedLibrary</span> library;<br>
+     <br>
+     library = (<span class="SpellE">HashedLibrary</span>) <span class="SpellE">inStream.readObject</span>();<br>
+     <br>
+     </span></b><b><span style="font-family:&quot;Courier New&quot;;mso-fareast-font-family:
+     &quot;Times New Roman&quot;" class="comment">// missing code here can use the same hash from step 2
+     now</span></b><span style="mso-fareast-font-family:&quot;Times New Roman&quot;"><o:p></o:p></span></li>
+
+</b></ol><b>
+</b><p></p>
+
+
+    <hr size="2" width="100%" align="center">
+
+
+
+
+
+<p><b>1. Create a <span class="code">User</span> class that contains the name of the
+user (String), indexPos (int), and static variable userCount
+(int). Provide appropriate getters and setters.</b></p>
+
+<p><b><i>HINT: every time a new User object is created (the constructor is invoked),
+assign indexPos of the object to be the userCount, and then increment userCount.</i></b></p>
+
+<p><b>2. Create a <span class="code">FollowGraph</span> class that contains an adjacency
+matrix for the users. Include the following variables:</b></p>
+
+<p><b>
+</b></p><ul><b>
+    <li><span class="code">private ArrayList&lt;User&gt; users</span> - contains all users of the service.
+        <br>This list will be used to map the correspondence between a  name and it's position in the adjacency matrix.</li>
+    <li><span class="code">public static final int MAX_USERS</span> - maximum number of users we are accommodating for in our application (use value 100)</li>
+    <li><span class="code">private boolean[][] connections</span> - adjacency matrix used in our application<br>NOTE: connection[i][j] represents a link from user at i, to a user at j. Use true if a link exits, and false if there is no link. </li>
+</b></ul><b>
+</b><p></p>
+
+<p><b>Include the following methods:</b></p>
+
+<p><b>
+    </b></p><ul><b>
+        <li><span class="code">public FollowGraph()</span> - Constructor for FollowGraph object.Initializes all declared variables.</li>
+        <li><span class="code">public void addUser(String userName)</span> - adds a new user if not already exist</li>
+        <li><span class="code">public void addConnection(String userFrom, String userTo)</span> - if appropriate users are given.</li>
+        <li><span class="code">public void removeConnection(String userFrom, String userTo)</span> - if appropriate users are given, remove the entry in our adjacency table (set value to false)</li>
+        <li><span class="code">public String shortestPath(String userFrom, String userTo)</span> - if appropriate users are given, find the shortest path between the users, and return a String representation of the path</li>
+        <li><span class="code">public List[String] allPaths(String userFrom, String userTo)</span> - if appropriate users are given, find all paths between the users, and return a List of Strings, each String representing one of the paths</li>
+        <li><span class="code">public void printAllUsers(Comparator comp)</span> - prints all users in the order based on the given Comparator</li>
+        <li><span class="code">public void printAllFollowers(String userName)</span> - prints all the followers of the given user (See sample i/o for format)</li>
+        <li><span class="code">public void printAllFollowing(String userName)</span> - prints all the users that the given user is following (See sample i/o for format)</li>
+        <li><span class="code">public List[String] findAllLoops()</span> - finds and returns all the loops in the graph</li>
+        <li><span class="code">public void loadAllUsers(String filename)</span> - parses a file and add all users to the user list. Assume file content is correct.</li>
+        <li><span class="code">public void loadAllConnections(String filename)</span> - parses a file and add all connections to the adjacency matrix. Be careful of invalid source/destination pairs.</li>
+
+</b></ul><b>
+</b><p></p>
+
+<p><b><i>HINT: For shortestPath(), you must return the path as well as the total number of users. You can concatenate these 2 pieces of information using a special delimiter such as "###" so you can <a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html#split(java.lang.String)">string.split()</a> the result when you need each piece of information.</i></b></p>
+
+<p><b><i>HINT: For allPaths() and findAllLoops(), a good understanding of DFS graph traversals will be needed, additionally, you may find it useful to use auxiliary memory to simplify your task.</i></b></p>
+
+<p><b>3. Create appropriate Comparator classes that will be used to sort your
+list of users. See the <a href="https://blackboard.stonybrook.edu/bbcswebdav/pid-5162292-dt-content-rid-38238392_1/courses/1198-CSE-214-SEC01-89003/hw7%282%29.html#comparableCode">sample Comparable code</a>
+section to get an idea of how it is used. Write the following classes:</b></p>
+<ul><b>
+    <li><span class="code">public class NameComparator implements Comparator&lt;<span style="color:red">User</span>&gt;</span></li>
+    <li><span class="code">public class FollowersComparator implements Comparator&lt;<span style="color:red">User</span>&gt;</span></li>
+    <li><span class="code">public class FollowingComparator implements Comparator&lt;<span style="color:red">User</span>&gt;</span></li>
+</b></ul>
+<p><b>4. Create a <span class="code">FollowGraphDriver</span> class that contains the <span class="code">main</span> method and 
+the user interface. Display a menu with the following options:</b></p>
+
+<p><b>
+    </b></p><ul><b>
+        <li><span class="code">(U) Add User</span> - add a User to the list of users.</li>
+        <li><span class="code">(C) Add Connection</span> - add a connection to the adjacency matrix.</li>
+        <li><span class="code">(AU) Load all users</span> - prompts for the name of the file, and records all users on the file.</li>
+        <li><span class="code">(AC) Load all connections</span> - prompts for the name of the file, and records all connections on the file.</li>
+        <li><span class="code">(P) Print all Users</span> - displays another menu that allows the user to sort the list based on a specific field.</li>
+        <ul>
+            <li><span class="code">(SA) Sort by User Name</span> - displays a table that includes all users sorted by name.</li>
+            <li><span class="code">(SB) Sort by User followers</span> - displays a table that includes all users sorted by followers.</li>
+            <li><span class="code">(SC) Sort by User following</span> - displays a table that includes all users sorted by the number of users that they follow.</li>
+            <li><span class="code">(Q) Quit</span> - returns to main menu.</li>
+        </ul>
+        <li><span class="code">(L) Print all Loops</span> - displays all the loops in our graph.</li>
+        <li><span class="code">(RU) Remove User</span> - removes a given user and all the connections from and to that user.</li>
+        <li><span class="code">(RC) Remove Connection</span> - removes a connection from the adjacency matrix. Set the corresponding cell value to false.</li>
+        <li><span class="code">(SP) Find Shortest Path</span> - displays the path from the starting user, all intermediate user, and destination user. Display the total number of users. If multiple paths exist, take one.</li>
+        <li><span class="code">(AP) Find All Paths</span> - displays all the paths between the starting and destination user, if a path contains a loop, do not include the loop.</li>
+    <li><span class="code">(Q) Quit</span> - terminates the program. You should persist the <span class="code">FollowGraph</span> object.</li>
+    </b></ul><b>
+</b><p></p>
+
+<hr size="2" width="100%" align="center">
+
+<p id="comparableCode"><b><u>SAMPLE COMPARABLE CODE:</u></b></p>
+
+<b><pre class="code">import java.util.*;
+
+<span class="comment">/*
+ * An example of type abstraction that implements Comparable
+ * and Comparator interfaces.
+ *
+ * The Comparable/Comparator interfaces provide a standard means
+ * for communication with yet unknown types of objects.
+*/</span>
+
+public class CollectionsTester {
+         public static void main(String[] args) {
+           ArrayList<employee> staff = new ArrayList<employee>();
+
+           staff.add(new Employee("Joe",100000, 177700010));
+           staff.add(new Employee("Jane",200000, 111100010));
+           staff.add(new Employee("Bob",66666, 1999000010));
+           staff.add(new Employee("Andy",77777, 188800010));
+
+           Collections.sort(staff);                                      <span class="comment">// Sort by salary</span>
+           System.out.println("Lowest paid employee: "+staff.get(0));    <span class="comment">// Prints Bob</span>
+
+           Collections.sort(staff, new NameComparator());                <span class="comment">// Sort by aplahabetical order</span>
+           System.out.println("First employee in list: "+staff.get(0));  <span class="comment">// Prints Andy</span>
+
+           Collections.sort(staff, new IdComparator());                  <span class="comment">// Sort by ID number</span>
+           System.out.println("Employee with lowest ID: "+staff.get(0)); <span class="comment">// Prints Jane</span>
+         }
+}
+
+public class Employee implements Comparable {
+        private String name;
+        private int salary;
+        private int id;
+        public Employee(String initName, int initSal, int initId) {
+                id     = initId;
+                name = initName;
+                salary = initSal;
+        }
+        public String getName(){ return name; }
+        public int getSalary() { return salary; }
+        public int getId(){ return id; }
+        public void setSalary(int newSalary) {
+                salary = newSalary;
+        }
+        public int compareTo(Object o) {
+                Employee otherEmp = (Employee)o;
+                if (this.salary == otherEmp.salary)
+                        return 0;
+                else if (this.salary &gt; otherEmp.salary)
+                        return 1;
+                else
+                        return -1;
+        }
+        public String toString() {
+                return name + ", $" + salary + ", "+ id;
+        }
+}
+
+public class NameComparator implements Comparator {
+        public int compare(Object o1, Object o2) {
+                Employee e1 = (Employee) o1;
+                Employee e2 = (Employee) o2;
+                return (e1.getName().compareTo(e2.getName()));
+        }
+}
+
+public class IdComparator implements Comparator {
+       public int compare(Object o1, Object o2) {
+           Employee e1 = (Employee) o1;
+           Employee e2 = (Employee) o2;
+           if (e1.getId() == e2.getId())
+               return 0;
+           else if (e1.getId() &gt; e2.getId())
+               return 1;
+           else
+               return -1;
+       }
+}
+</employee></employee></pre></b>
+
+<hr size="2" width="100%" align="center">
+
+<p><b><u>SAMPLE INPUT/OUTPUT:</u></b></p>
+
+<p><span class="code">follow_graph.obj</span> is not found. New FollowGraph object will be created.</p>
+
+<div class="code"><b><p><span class="comment">// Comments in green, </span><span class="input">
+input in red, </span>output in black</p>
+
+</b><pre><b>
+    (U) Add User
+    (C) Add Connection
+    (AU) Load all Users
+    (AC) Load all Connections
+    (P) Print all Users
+    (L) Print all Loops
+    (RU) Remove User
+    (RC) Remove Connection
+    (SP) Find Shortest Path
+    (AP) Find All Paths
+    (Q) Quit
+
+
+Enter a selection: <span class="input">AU</span>
+Enter the file name: <span class="input">users.txt</span>
+
+    Paul Smith has been added
+    Homer Simpson has been added
+    Jane Doe has been added
+    Tom Doe has been added
+
+Enter a selection: <span class="input">AC</span>
+Enter the file name: <span class="input">connections.txt</span>
+
+    Paul Smith, Homer Simpson added
+    Homer Simpson, Jane Doe added
+    Jane Doe, Paul Smith added
+    Paul Smith, Jane Doe added
+    Tom Doe, Jane Doe added
+
+Enter a selection: <span class="input">P</span>
+
+    (SA) Sort Users by Name
+    (SB) Sort Users by Number of Followers
+    (SC) Sort Users by Number of Following
+    (Q) Quit <span class="comment">// back to main menu</span>
+
+Enter a selection: <span class="input">SB</span>
+
+Users:
+User Name               Number of Followers      Number Following
+Jane Doe                         3                       1
+Homer Simpson                    1                       1
+Paul Smith                       1                       2
+Tom Doe                          0                       1
+
+<span class="comment">// menu not shown in sample i/o</span>
+
+Enter a selection: <span class="input">SC</span>
+
+
+Users:
+User Name               Number of Followers      Number Following
+Paul Smith                       1                       2
+Jane Doe                         3                       1
+Homer Simpson                    1                       1
+Tom Doe                          0                       1
+
+<span class="comment">// menu not shown in sample i/o</span>
+
+Enter a selection: <span class="input">Q</span><span class="comment"> // back to main menu</span>
+
+    (U) Add User
+    (C) Add Connection
+    (AU) Load all Users
+    (AC) Load all Connections
+    (P) Print all Users
+    (L) Print all Loops
+    (RU) Remove User
+    (RC) Remove Connection
+    (SP) Find Shortest Path
+    (AP) Find All Paths
+    (Q) Quit
+
+Enter a selection: <span class="input">L</span>
+
+There is 1 loop: Paul Smith -&gt; Homer Simpson -&gt; Jane Doe
+
+<span class="comment">// menu not shown in sample i/o</span>
+
+Enter a selection: <span class="input">RC</span>
+
+Please enter the source of the connection to remove: <span class="input">Jane Doe</span>
+Please enter the dest of the connection to remove: <span class="input">Paul Smith</span>
+
+<span> class="comment"&gt;// menu not shown in sample i/o</span>
+
+Enter a selection: <span class="input">L</span>
+
+There are no loops.
+
+<span class="comment">// menu not shown in sample i/o</span>
+
+Enter a selection: <span class="input">C</span>
+
+Please enter the source of the connection to add: <span class="input">Homer Simpson</span>
+Please enter the dest of the connection to add: <span class="input">Tom Doe</span>
+
+<span class="comment">// menu not shown in sample i/o</span>
+
+Enter a selection: <span class="input">C</span>
+
+Please enter the source of the connection to add: <span class="input">Tom Doe</span>
+Please enter the dest of the connection to add: <span class="input">Paul Smith</span>
+
+Enter a selection: <span class="input">L</span>
+
+There is 1 loop: Paul Smith -&gt; Homer Simpson -&gt; Tom Doe
+
+<span class="comment">// menu not shown in sample i/o</span>
+
+Enter a selection: <span class="input">U</span>
+
+Please enter the name of the user: <span class="input">Bart Simpson</span>
+
+<span class="comment">// menu not shown in sample i/o</span>
+
+Enter a selection: <span class="input">C</span>
+
+Please enter the source of the connection to add: <span class="input">Bart Simpson</span>
+Please enter the dest of the connection to add: <span class="input">Homer Simpson</span>
+
+<span class="comment">// menu not shown in sample i/o</span>
+
+Enter a selection: <span class="input">C</span>
+
+Please enter the source of the connection to add: <span class="input">Bart Simpson</span>
+Please enter the dest of the connection to add: <span class="input">Paul Smith</span>
+
+<span class="comment">// menu not shown in sample i/o</span>
+
+Enter a selection: <span class="input">SP</span>
+
+Please enter the desired source: <span class="input">Bart Simpson</span>
+Please enter the desired destination: <span class="input">Jane Doe</span>
+
+Bart Simpson -&gt; Homer Simpson -&gt; Jane Doe
+
+<span class="comment">// menu not shown in sample i/o</span>
+
+Enter a selection: <span class="input">AP</span>
+
+Please enter the desired source: <span class="input">Bart Simpson</span>
+Please enter the desired destination <span class="input">Jane Doe</span>
+
+There are a total of 4 paths:
+    Bart Simpson -&gt; Homer Simpson -&gt; Jane Doe
+    Bart Simpson -&gt; Homer Simpson -&gt; Tom Doe -&gt; Jane Doe
+    Bart Simpson -&gt; Paul Smith -&gt; Jane Doe
+    Bart Simpson -&gt; Paul Smith -&gt; Homer Simpson -&gt; Tom Doe -&gt; Jane Doe
+
+<span class="comment">// menu not shown in sample i/o</span>
+
+Enter a selection: <span class="input">RU</span>
+
+Please enter the user to remove: <span class="input">Tom Doe</span>
+
+<span class="comment">// menu not shown in sample i/o</span>
+
+Enter a selection: <span class="input">P</span>
+
+    (SA) Sort Users by Name
+    (SB) Sort Users by Number of Followers
+    (SC) Sort Users by Number of Following
+    (Q) Quit
+
+Enter a selection: <span class="input">SB</span>
+
+Users:
+User Name               Number of Followers      Number Following
+Homer Simpson                    2                       1
+Jane Doe                         2                       0
+Paul Smith                       1                       2
+Bart Simpson                     0                       2
+
+<span class="comment">// menu not shown in sample i/o</span>
+
+Enter a selection: <span class="input">Q</span>
+
+<span class="comment">// menu not shown in sample i/o</span>
+
+Enter a selection: <span class="input">Q</span>
+
+<p>FollowGraph object saved into file <span class="code">FollowGraph.obj</span>.</p>
+
+Program terminating...
+
+<hr size="2" width="100%" align="center">
+
+<p align="center" style="text-align:center"><strong><span style="font-family:&quot;Arial&quot;,&quot;sans-serif&quot;;color:maroon"><a href="http://www.cs.sunysb.edu/~cse214/courseinfo.htm" target="_blank">Course Info</a> | <a href="http://www.cs.sunysb.edu/~cse214/schedule.htm" target="_blank">Schedule</a> | <a href="http://www.cs.sunysb.edu/~cse214/sections.htm" target="_blank">Sections</a> | <a href="http://www.cs.sunysb.edu/~cse214/index.html" target="_blank">Announcements</a> | <a href="http://www.cs.sunysb.edu/~cse214/homework.htm" target="_blank">Homework</a> | <a href="http://www.cs.sunysb.edu/~cse214/exams.htm" target="_blank">Exams</a> | <a href="http://www.cs.sunysb.edu/~cse214/help.htm" target="_blank">Help/FAQ</a> | <a href="http://www.cs.sunysb.edu/~cse214/grades.htm" target="_blank">Grades</a> | <a href="http://www.cs.sunysb.edu/~cse214/index.html" target="_blank">HOME</a></span></strong><b> </b></p>
+
+<p><span> </span></p>
+
+</b></pre></div><b>
+
+
+</b></b></div></div></body></html>
